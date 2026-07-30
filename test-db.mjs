@@ -3,9 +3,9 @@ import mysql from 'mysql2/promise';
 try {
   const pool = mysql.createPool({
     host: 'localhost',
-    user: 'wayseek',
-    password: 'wayseek123',
-    database: 'wayseek_local'
+    user: process.env.DB_USER || 'mora_local',
+    password: process.env.DB_PASSWORD || 'mora_local_pass',
+    database: process.env.DB_NAME || 'mora_local'
   });
   const conn = await pool.getConnection();
   const [rows] = await conn.query('SELECT COUNT(*) as cnt FROM cities');

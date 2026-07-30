@@ -2,9 +2,9 @@ import mysql from 'mysql2/promise';
 
 const connection = await mysql.createConnection({
   host: 'localhost',
-  user: 'wayseek_local',
-  password: 'wayseek_local_pass',
-  database: 'wayseek_local',
+  user: process.env.DB_USER || 'mora_local',
+  password: process.env.DB_PASSWORD || 'mora_local_pass',
+  database: process.env.DB_NAME || 'mora_local',
 });
 
 try {
