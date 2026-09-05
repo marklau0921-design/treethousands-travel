@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'wouter';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
 
@@ -70,12 +71,6 @@ export default function HomepageOurStory() {
           .our-story-home .our-story-edge-image{height:280px}
         }
       `}</style>
-      <div className="px-6 text-center" style={{ marginBottom: 'clamp(48px, 6vw, 76px)' }}>
-        <h2 style={{ fontFamily: DISPLAY_FONT, fontSize: 'clamp(42px, 5vw, 62px)', fontWeight: 400, lineHeight: 1, letterSpacing: '0.05em', textTransform: 'uppercase', color: '#000', margin: 0 }}>
-          Our Story
-        </h2>
-      </div>
-
       {visibleSections.map((section, index) => {
         const image = imagePool[index] || fallbackImages[index % fallbackImages.length];
         const text = (
@@ -83,6 +78,15 @@ export default function HomepageOurStory() {
             <div className="tea-detail-text-inner">
               <h3 style={{ fontFamily: DISPLAY_FONT, fontSize: 'clamp(34px, 3.6vw, 45px)', fontWeight: 400, lineHeight: 1, letterSpacing: '2.25px', color: '#000', margin: '0 0 18px', textTransform: 'uppercase' }}>{section.title}</h3>
               <p style={{ fontFamily: BODY_FONT, fontSize: 17, lineHeight: 1.6, letterSpacing: '0.04em', color: '#52575c', margin: 0 }}>{section.content}</p>
+              <Link href={`/our-story/${section.id}`}>
+                <button
+                  type="button"
+                  style={{ fontFamily: BODY_FONT, marginTop: 28 }}
+                  className="px-8 py-3 bg-black text-white text-sm font-normal tracking-wider uppercase rounded border-2 border-black hover:bg-[#F5F3EF] hover:text-black transition-all duration-300 active:scale-95"
+                >
+                  Discover More
+                </button>
+              </Link>
             </div>
           </div>
         );
