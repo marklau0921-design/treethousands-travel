@@ -14,24 +14,32 @@ export function registerStorageProxy(app: Express) {
     }
 
     // 构建本地文件路径
-    const uploadsDir = path.resolve(UPLOADS_ROOT);
-    const filePath = path.resolve(uploadsDir, key);
+    // Support the configured upload directory and common Hostinger layouts.
+    // New uploads always use UPLOADS_ROOT; fallbacks keep existing files usable
+    // after a deployment-directory migration.
+    const uploadRoots = Array.from(new Set([
+      path.resolve(UPLOADS_ROOT),
+      path.resolve(process.cwd(), "uploads"),
+      path.resolve(process.cwd(), "..", "uploads"),
+      path.resolve(process.cwd(), "..", "public_html", "uploads"),
+    ]));
 
-    // 安全检查：防止路径遍历攻击
-    if (filePath !== uploadsDir && !filePath.startsWith(`${uploadsDir}${path.sep}`)) {
+    const candidates = uploadRoots.map((root) => ({ root, filePath: path.resolve(root, key) }));
+    const isSafe = candidates.every(({ root, filePath }) => filePath !== root && filePath.startsWith(`${root}${path.sep}`));
+    if (!isSafe) {
       res.status(403).send("Access denied");
       return;
     }
 
-    // 检查文件是否存在
-    if (!fs.existsSync(filePath)) {
+    const match = candidates.find(({ filePath }) => fs.existsSync(filePath) && fs.statSync(filePath).isFile());
+    if (!match) {
       res.status(404).send("File not found");
       return;
     }
 
     // 发送文件
     res.set("Cache-Control", "public, max-age=31536000");
-    res.sendFile(filePath);
+    res.sendFile(match.filePath);
   });
 
   // 保留 manus-storage 代理以支持云存储（如果需要）
