@@ -42,6 +42,7 @@ import ExperienceCategoryPage from "./pages/ExperienceCategoryPage";
 import CityPage from "./pages/CityPage";
 import CMSAdmin from "./pages/CMSAdmin";
 import ItineraryDetail from "./pages/ItineraryDetail";
+import Stories from "./pages/Stories";
 
 /**
  * App Router & Layout
@@ -59,6 +60,16 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      {/* First structure migration: reuse existing content and styling while
+          the new TreeThousands routes are established. */}
+      <Route path="/our-story" component={About} />
+      <Route path="/our-story/:section" component={About} />
+      <Route path="/explore" component={Experiences} />
+      <Route path="/explore/:category" component={Experiences} />
+      <Route path="/stories" component={Stories} />
+      <Route path="/stories/:category" component={Stories} />
+      <Route path="/join-us" component={Contact} />
+      <Route path="/join-us/:section" component={Contact} />
       <Route path="/destinations" component={Destinations} />
       <Route path="/destinations/sichuan" component={Sichuan} />
       <Route path="/destinations/:slug" component={CityPage} />
