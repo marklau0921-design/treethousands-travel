@@ -62,7 +62,7 @@ export default function ReadyToStart() {
           So, ready to start?
         </h2>
 
-        <Link href="/make-an-enquiry">
+        <Link href="/join-us">
           <button
             style={{
           backgroundColor: '#111111',
