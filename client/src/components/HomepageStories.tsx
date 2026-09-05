@@ -2,7 +2,6 @@ import { Link } from 'wouter';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
 
-const DISPLAY_FONT = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const BODY_FONT = "var(--font-travel-sans, 'Cabin', 'Josefin Sans', 'Helvetica Neue', Arial, sans-serif)";
 
 const fallbackImages = [
@@ -38,11 +37,7 @@ export default function HomepageStories() {
   );
 
   return (
-    <section id="stories" className="w-full bg-white" style={{ paddingTop: 100, paddingBottom: 80, scrollMarginTop: 80 }}>
-      <h2 className="text-center uppercase px-4" style={{ fontFamily: DISPLAY_FONT, fontSize: 'clamp(36px, 4vw, 45px)', fontWeight: 400, letterSpacing: '2.25px', lineHeight: 1, color: '#000', margin: '0 0 64px' }}>
-        Stories
-      </h2>
-
+    <section id="stories" className="w-full bg-white" style={{ paddingTop: 48, paddingBottom: 80, scrollMarginTop: 80 }}>
       <div className="mx-auto px-4 md:px-8 mb-12" style={{ maxWidth: 1320 }}>
         <div className="hidden xl:flex items-center bg-gray-100" style={{ height: 640 }}>
           <div style={{ width: '60%', height: 640, flex: '0 0 auto' }}>
