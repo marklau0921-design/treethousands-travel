@@ -9,6 +9,13 @@ import { fallbackStories, inferStoryCategory, plainExcerpt, type EditorialStory 
 const DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
 
+const supplements = {
+  'Brand Stories': { label: 'The thought behind the journey', notes: ['Purpose before itinerary', 'Relationships before reach', 'Curiosity without hurry'], reflection: 'We keep returning to the same belief: travel becomes meaningful when attention turns into understanding.' },
+  'Village Notes': { label: 'Observed along the way', notes: ['A path used every morning', 'A door left open', 'A conversation without a schedule'], reflection: 'A village is never a single view. It is a collection of small moments held together by memory and daily use.' },
+  'Local Life': { label: 'Details of the everyday', notes: ['Knowledge carried by hand', 'Food shaped by season', 'Traditions kept through practice'], reflection: 'Culture remains alive when it belongs to everyday life—not behind glass, but in gestures, work, humour, and hospitality.' },
+  Journal: { label: 'From the field notebook', notes: ['Weather changing the route', 'A pause between destinations', 'The detail we nearly passed'], reflection: 'Field notes remind us that the unexpected is not a distraction from the journey. Very often, it is the journey.' },
+};
+
 function formatDate(value: string | Date) { return new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(value)); }
 
 export default function StoryDetail() {
@@ -21,6 +28,9 @@ export default function StoryDetail() {
   }, [data]);
   const story = stories.find((item) => item.slug === params?.slug);
   const related = story ? stories.filter((item) => item.slug !== story.slug && (item.category === story.category || relatedFallback(item, story))).slice(0, 3) : [];
+  const storyIndex = story ? stories.findIndex((item) => item.slug === story.slug) : -1;
+  const previous = storyIndex >= 0 ? stories[(storyIndex - 1 + stories.length) % stories.length] : undefined;
+  const next = storyIndex >= 0 ? stories[(storyIndex + 1) % stories.length] : undefined;
 
   useEffect(() => {
     if (!story) return;
@@ -40,9 +50,13 @@ export default function StoryDetail() {
   if (isLoading && !story) return <div style={{ minHeight: '100vh', background: '#f5f1e8' }}><Navigation /></div>;
   if (!story) return <div style={{ minHeight: '100vh', background: '#f5f1e8', paddingTop: 180, textAlign: 'center', fontFamily: SANS }}><Navigation /><h1 style={{ fontFamily: DISPLAY, fontSize: 72, textTransform: 'uppercase' }}>Story not found</h1><Link href="/stories">Return to Stories</Link></div>;
   const paragraphs = story.content.split(/\n\s*\n/).filter(Boolean);
+  const quote = paragraphs.find((paragraph) => paragraph.trim().startsWith('>'))?.replace(/^>\s*/, '') || story.excerpt;
+  const prose = paragraphs.filter((paragraph) => !paragraph.trim().startsWith('>'));
+  const supplement = supplements[story.category];
+  const supportingImages = [related[0]?.coverImage, related[1]?.coverImage, related[2]?.coverImage, ...fallbackStories.map((item) => item.coverImage)].filter((image): image is string => Boolean(image));
 
   return <div className="story-detail bg-[#f5f1e8] text-[#17251f]" style={{ fontFamily: SANS }}>
-    <style>{`.story-detail .wrap{width:min(1320px,calc(100% - 64px));margin:0 auto}.story-detail .display{font-family:${DISPLAY};font-weight:400;letter-spacing:.04em;line-height:.92;text-transform:uppercase}.story-detail .eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}.story-detail .article-body{width:min(760px,calc(100% - 40px));margin:0 auto}.story-detail .article-body p{font-size:18px;line-height:1.85;letter-spacing:.025em;color:#424b45;margin:0 0 32px}.story-detail .article-body blockquote{width:min(1040px,90vw);margin:90px 50%;transform:translateX(-50%);padding:70px clamp(28px,7vw,100px);background:#17352d;color:#f5f1e8;font-size:clamp(31px,4vw,54px);line-height:1.18;letter-spacing:-.02em}.story-detail .related{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}@media(max-width:767px){.story-detail .wrap{width:calc(100% - 40px)}.story-detail .article-body p{font-size:17px}.story-detail .article-body blockquote{margin-top:60px;margin-bottom:60px}.story-detail .related{display:block}.story-detail .related article{margin-bottom:42px}}`}</style>
+    <style>{`.story-detail .wrap{width:min(1320px,calc(100% - 64px));margin:0 auto}.story-detail .display{font-family:${DISPLAY};font-weight:400;letter-spacing:.04em;line-height:.92;text-transform:uppercase}.story-detail .eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}.story-detail .prose p{font-size:18px;line-height:1.85;letter-spacing:.025em;color:#424b45;margin:0 0 32px}.story-detail .opening-grid{display:grid;grid-template-columns:.38fr 1fr;gap:clamp(45px,8vw,130px);align-items:start}.story-detail .image-pair{display:grid;grid-template-columns:.82fr 1.18fr;gap:28px;align-items:end}.story-detail .notes-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:clamp(50px,9vw,150px)}.story-detail .related{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}.story-detail .adjacent{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.25)}@media(max-width:767px){.story-detail .wrap{width:calc(100% - 40px)}.story-detail .prose p{font-size:17px}.story-detail .opening-grid,.story-detail .image-pair,.story-detail .notes-grid,.story-detail .related,.story-detail .adjacent{display:block}.story-detail .related article{margin-bottom:42px}.story-detail .image-pair figure{margin-bottom:24px!important}.story-detail .adjacent a{display:block;border-bottom:1px solid rgba(255,255,255,.25)}}`}</style>
     <Navigation />
     <main>
       <header className="wrap text-center" style={{ padding: 'clamp(145px,16vw,210px) 0 clamp(65px,8vw,105px)' }}>
@@ -51,11 +65,24 @@ export default function StoryDetail() {
         <p className="eyebrow" style={{ margin: 0 }}>{formatDate(story.date)} · {story.location}</p>
       </header>
       <figure className="wrap" style={{ marginBottom: 'clamp(80px,10vw,140px)' }}><img src={story.coverImage} alt={story.title} style={{ width: '100%', height: 'clamp(480px,67vw,850px)', objectFit: 'cover', objectPosition: getObjectPosition(story.coverImage), display: 'block' }} /></figure>
-      <article className="article-body" style={{ paddingBottom: 'clamp(95px,12vw,170px)' }}>
-        {paragraphs.map((paragraph, index) => paragraph.trim().startsWith('>') ? <blockquote key={index}>{paragraph.replace(/^>\s*/, '')}</blockquote> : <p key={index}>{paragraph}</p>)}
-        {paragraphs.length > 2 && <figure style={{ width: 'min(1100px,92vw)', margin: '90px 50%', transform: 'translateX(-50%)' }}><img src={related[0]?.coverImage || fallbackStories[1].coverImage} alt={`A wider view from ${story.location}`} style={{ width: '100%', height: 'clamp(380px,55vw,700px)', objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(related[0]?.coverImage || fallbackStories[1].coverImage) }} /></figure>}
-      </article>
+
+      <section className="wrap opening-grid" style={{ paddingBottom: 'clamp(90px,12vw,170px)' }}>
+        <aside><p className="eyebrow" style={{ color: '#9b5e3d', margin: '0 0 28px' }}>Story Context</p><dl style={{ margin: 0 }}><dt className="eyebrow" style={{ opacity: .55, marginBottom: 7 }}>Place</dt><dd style={{ margin: '0 0 24px', fontSize: 16 }}>{story.location}</dd><dt className="eyebrow" style={{ opacity: .55, marginBottom: 7 }}>Chapter</dt><dd style={{ margin: '0 0 24px', fontSize: 16 }}>{story.category}</dd><dt className="eyebrow" style={{ opacity: .55, marginBottom: 7 }}>Recorded</dt><dd style={{ margin: 0, fontSize: 16 }}>{formatDate(story.date)}</dd></dl></aside>
+        <div><p style={{ fontSize: 'clamp(27px,3.2vw,44px)', lineHeight: 1.3, letterSpacing: '-.012em', margin: '0 0 55px', maxWidth: 850 }}>{story.excerpt}</p><div className="prose">{prose.slice(0, 2).map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div></div>
+      </section>
+
+      <section className="wrap image-pair" style={{ paddingBottom: 'clamp(95px,12vw,170px)' }}><figure style={{ margin: 0 }}><img src={supportingImages[0]} alt={`A detail from ${story.location}`} style={{ width: '100%', height: 'clamp(390px,48vw,610px)', objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(supportingImages[0]) }} /><figcaption className="eyebrow" style={{ marginTop: 14 }}>Along the way / 01</figcaption></figure><figure style={{ margin: 0 }}><img src={supportingImages[1]} alt={`Life around ${story.location}`} style={{ width: '100%', height: 'clamp(470px,59vw,760px)', objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(supportingImages[1]) }} /><figcaption className="eyebrow" style={{ marginTop: 14 }}>Along the way / 02</figcaption></figure></section>
+
+      <blockquote style={{ margin: 0, padding: 'clamp(90px,12vw,170px) max(24px,calc((100vw - 1160px)/2))', background: '#17352d', color: '#f5f1e8' }}><p className="eyebrow" style={{ color: '#c79a72', margin: '0 0 30px' }}>A line to remember</p><p style={{ fontSize: 'clamp(34px,5vw,70px)', lineHeight: 1.12, letterSpacing: '-.025em', margin: 0, maxWidth: 1100 }}>“{quote}”</p></blockquote>
+
+      <section className="wrap notes-grid" style={{ padding: 'clamp(100px,13vw,185px) 0' }}><div><p className="eyebrow" style={{ color: '#9b5e3d', margin: '0 0 18px' }}>Field Notes</p><h2 className="display" style={{ fontSize: 'clamp(48px,6vw,82px)', margin: 0 }}>{supplement.label}</h2></div><div>{supplement.notes.map((note, index) => <div key={note} style={{ display: 'grid', gridTemplateColumns: '55px 1fr', gap: 22, borderTop: '1px solid #cfc8bb', padding: '24px 0' }}><span className="eyebrow" style={{ color: '#9b5e3d' }}>0{index + 1}</span><span style={{ fontSize: 'clamp(20px,2.2vw,29px)', lineHeight: 1.3 }}>{note}</span></div>)}</div></section>
+
+      <figure style={{ margin: 0 }}><img src={supportingImages[2]} alt={`A wider view of ${story.location}`} style={{ width: '100%', height: 'clamp(500px,75vw,900px)', objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(supportingImages[2]) }} /></figure>
+
+      <section style={{ padding: 'clamp(95px,13vw,180px) 24px', textAlign: 'center', background: '#fff' }}><p className="eyebrow" style={{ color: '#9b5e3d', margin: '0 0 26px' }}>Closing Reflection</p><p style={{ fontSize: 'clamp(29px,4vw,56px)', lineHeight: 1.2, letterSpacing: '-.02em', maxWidth: 970, margin: '0 auto 60px' }}>{supplement.reflection}</p><div className="prose" style={{ maxWidth: 760, margin: '0 auto', textAlign: 'left' }}>{prose.slice(2).map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div></section>
+
       <section style={{ background: '#e5ddce', padding: 'clamp(85px,10vw,140px) 0' }}><div className="wrap"><p className="eyebrow" style={{ color: '#9b5e3d', margin: '0 0 18px' }}>Continue reading</p><h2 className="display" style={{ fontSize: 'clamp(50px,7vw,88px)', margin: '0 0 52px' }}>Related Stories</h2><div className="related">{related.map((item) => <article key={item.slug}><Link href={`/stories/article/${item.slug}`}><img src={item.coverImage} alt={item.title} style={{ width: '100%', height: 340, objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(item.coverImage) }} /><p className="eyebrow" style={{ color: '#9b5e3d', margin: '20px 0 10px' }}>{item.category}</p><h3 style={{ fontSize: 25, lineHeight: 1.25, fontWeight: 500, margin: 0 }}>{item.title}</h3></Link></article>)}</div></div></section>
+      <nav className="adjacent" style={{ background: '#9b5e3d', color: '#fff' }}>{previous && <Link href={`/stories/article/${previous.slug}`} style={{ padding: 'clamp(48px,7vw,95px)' }}><p className="eyebrow" style={{ opacity: .7, margin: '0 0 18px' }}>← Previous Story</p><h3 className="display" style={{ fontSize: 'clamp(35px,4vw,58px)', margin: 0 }}>{previous.title}</h3></Link>}{next && <Link href={`/stories/article/${next.slug}`} style={{ padding: 'clamp(48px,7vw,95px)', textAlign: 'right' }}><p className="eyebrow" style={{ opacity: .7, margin: '0 0 18px' }}>Next Story →</p><h3 className="display" style={{ fontSize: 'clamp(35px,4vw,58px)', margin: 0 }}>{next.title}</h3></Link>}</nav>
     </main>
     <Footer />
   </div>;
