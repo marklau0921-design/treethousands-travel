@@ -45,6 +45,7 @@ import CMSAdmin from "./pages/CMSAdmin";
 import ItineraryDetail from "./pages/ItineraryDetail";
 import Stories from "./pages/Stories";
 import VillageLife from "./pages/VillageLife";
+import StoryDetail from "./pages/StoryDetail";
 
 /**
  * App Router & Layout
@@ -70,6 +71,7 @@ function Router() {
       <Route path="/explore/village-life" component={VillageLife} />
       <Route path="/explore" component={Experiences} />
       <Route path="/explore/:category" component={Experiences} />
+      <Route path="/stories/article/:slug" component={StoryDetail} />
       <Route path="/stories" component={Stories} />
       <Route path="/stories/:category" component={Stories} />
       <Route path="/join-us" component={Contact} />
