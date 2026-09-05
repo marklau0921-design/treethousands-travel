@@ -101,6 +101,13 @@
     max-width: 100%;
     object-fit: cover;
   }
+  /* Our Story uses a consistent image-first reading order on mobile. */
+  .our-story-page .tea-detail-img-wrap {
+    order: 1;
+  }
+  .our-story-page .tea-detail-text {
+    order: 2;
+  }
 }
 
 @custom-variant dark (&:is(.dark *));
