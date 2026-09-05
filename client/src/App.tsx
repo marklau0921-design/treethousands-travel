@@ -11,6 +11,7 @@ import DestinationsMap from '@/pages/DestinationsMap';
 import Sichuan from '@/pages/Sichuan';
 import Experiences from "./pages/Experiences";
 import About from "./pages/About";
+import WhyWeStarted from "./pages/WhyWeStarted";
 import SichuanDetail from "./pages/SichuanDetail";
 import Contact from "./pages/Contact";
 import PlanYourTrip from './pages/PlanYourTrip';
@@ -63,6 +64,7 @@ function Router() {
       {/* First structure migration: reuse existing content and styling while
           the new TreeThousands routes are established. */}
       <Route path="/our-story" component={About} />
+      <Route path="/our-story/why-we-started" component={WhyWeStarted} />
       <Route path="/our-story/:section" component={About} />
       <Route path="/explore" component={Experiences} />
       <Route path="/explore/:category" component={Experiences} />
