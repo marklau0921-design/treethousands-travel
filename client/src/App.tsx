@@ -44,6 +44,7 @@ import CityPage from "./pages/CityPage";
 import CMSAdmin from "./pages/CMSAdmin";
 import ItineraryDetail from "./pages/ItineraryDetail";
 import Stories from "./pages/Stories";
+import VillageLife from "./pages/VillageLife";
 
 /**
  * App Router & Layout
@@ -66,6 +67,7 @@ function Router() {
       <Route path="/our-story/why-we-started" component={WhyWeStarted} />
       <Route path="/our-story/:section" component={About} />
       <Route path="/our-story" component={About} />
+      <Route path="/explore/village-life" component={VillageLife} />
       <Route path="/explore" component={Experiences} />
       <Route path="/explore/:category" component={Experiences} />
       <Route path="/stories" component={Stories} />
