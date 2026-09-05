@@ -100,6 +100,66 @@ Work changes with the weather, and recipes follow what the land offers. Time bec
 
 These observations form a local knowledge carried forward through use rather than explanation.`,
   },
+  {
+    id: 'beginnings', slug: 'the-thought-behind-tree-thousands', title: 'The Thought Behind Tree Thousands', category: 'Brand Stories', date: '2026-02-20', location: 'Tree Thousands Journal',
+    excerpt: 'Why we began with people, patience, and a wish to share a less familiar side of China.',
+    coverImage: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=1700&h=1200&fit=crop',
+    content: `Tree Thousands began with a simple question: what becomes visible when travel leaves more room for listening?
+
+We wanted to share a China found not only in famous places, but in villages, working landscapes, family histories, and daily life.
+
+> A journey can introduce a destination. A relationship can change the way we understand it.
+
+That thought continues to guide how we travel, who we work with, and the stories we choose to tell.`,
+  },
+  {
+    id: 'relationships-first', slug: 'relationships-before-routes', title: 'Relationships Before Routes', category: 'Brand Stories', date: '2026-01-28', location: 'Tree Thousands Journal',
+    excerpt: 'A route may begin on a map, but its meaning comes from the people willing to open a door.',
+    coverImage: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1700&h=1200&fit=crop',
+    content: `The strongest journeys do not begin with a list of attractions. They begin with trust.
+
+Local partners help us understand what should be shared, how slowly we should move, and when a camera should remain in the bag.
+
+> The quality of a journey depends on the quality of the relationships behind it.
+
+Routes change. Relationships deepen. We build from the second and allow the first to follow.`,
+  },
+  {
+    id: 'courtyard', slug: 'an-afternoon-in-the-courtyard', title: 'An Afternoon in the Courtyard', category: 'Village Notes', date: '2025-12-16', location: 'Jiangxi',
+    excerpt: 'Sunlight moves across old walls while conversation, work, and play share the same courtyard.',
+    coverImage: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=1600&h=1200&fit=crop',
+    content: `The courtyard changed purpose throughout the afternoon. It was a workshop, a kitchen, a playground, and a place to sit in the last warm light.
+
+No single activity defined it. Its character came from the way different generations moved through the same space.
+
+> Some places tell their story through architecture. Others tell it through use.
+
+We stayed until the light left the wall and the evening meal moved everyone indoors.`,
+  },
+  {
+    id: 'field-note-river', slug: 'notes-from-the-river-road', title: 'Notes from the River Road', category: 'Journal', date: '2025-11-09', location: 'Fujian',
+    excerpt: 'A day of unplanned stops along a road that follows water through tea fields and small settlements.',
+    coverImage: 'https://images.unsplash.com/photo-1439853949127-fa647821eba0?w=1700&h=1200&fit=crop',
+    content: `The road stayed close to the river, curving whenever the water disappeared behind trees.
+
+We stopped for tea, for a bridge, and once because the sound of work from an open doorway made us curious.
+
+> Field notes preserve the details a schedule would have asked us to ignore.
+
+By the end of the day, the distance travelled mattered less than the number of times we had decided to stop.`,
+  },
+  {
+    id: 'returning', slug: 'what-changes-when-we-return', title: 'What Changes When We Return', category: 'Journal', date: '2025-10-21', location: 'Sichuan',
+    excerpt: 'On returning to a familiar village and discovering that memory is never a fixed version of place.',
+    coverImage: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1700&h=1200&fit=crop',
+    content: `Returning creates a different kind of attention. We no longer search for first impressions; we notice what has moved, grown, or disappeared.
+
+Familiar faces make room for longer conversations. Familiar paths reveal changes too small for a first-time visitor to see.
+
+> A place is not the same place twice, and neither is the person who returns.
+
+This is why our journal leaves room for second visits and unfinished stories.`,
+  },
 ];
 
 export function inferStoryCategory(title: string, index: number): StoryCategory {
