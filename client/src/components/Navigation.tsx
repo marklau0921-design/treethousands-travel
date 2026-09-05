@@ -9,12 +9,12 @@ const NAV_DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow
 
 const NAV_ITEMS: Array<{ label: string; href: string; key?: MenuKey; children?: Array<{ label: string; href: string }> }> = [
   { label: 'Home', href: '/' },
-  { label: 'Our Story', href: '/our-story', key: 'our-story', children: [
-    { label: 'Why We Started', href: '/our-story/why-we-started' },
-    { label: 'What We Believe', href: '/our-story/what-we-believe' },
-    { label: 'Our Way of Travel', href: '/our-story/our-way-of-travel' },
-    { label: 'Why Rural China', href: '/our-story/why-rural-china' },
-    { label: 'Growing Together', href: '/our-story/growing-together' },
+  { label: 'Our Story', href: '/#our-story', key: 'our-story', children: [
+    { label: 'Why We Started', href: '/#why-we-started' },
+    { label: 'What We Believe', href: '/#what-we-believe' },
+    { label: 'Our Way of Travel', href: '/#our-way-of-travel' },
+    { label: 'Why Rural China', href: '/#why-rural-china' },
+    { label: 'Growing Together', href: '/#growing-together' },
   ] },
   { label: 'Explore', href: '/explore', key: 'explore', children: [
     { label: 'Village Life', href: '/explore/village-life' },
@@ -87,7 +87,13 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
     return () => window.removeEventListener('keydown', handleEscape);
   }, []);
 
-  const navigate = (href: string) => { setActiveMenu(null); setIsOpen(false); setLocation(href); };
+  const navigate = (href: string) => {
+    setActiveMenu(null);
+    setIsOpen(false);
+    setLocation(href);
+    const hash = href.includes('#') ? href.split('#')[1] : '';
+    if (hash) window.setTimeout(() => window.dispatchEvent(new Event('hashchange')), 0);
+  };
   const isActive = (href: string) => href === '/' ? location === '/' : location.startsWith(href);
 
   return <>
