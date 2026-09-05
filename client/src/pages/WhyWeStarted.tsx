@@ -5,7 +5,6 @@ import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
 
 const DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
-const SERIF = "'Cormorant Garamond', 'Times New Roman', serif";
 const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
 
 const fallbacks = [
@@ -76,7 +75,7 @@ export default function WhyWeStarted() {
         <div className="relative z-10 w-full text-white" style={{ padding: '0 clamp(24px,7vw,110px) clamp(62px,8vw,112px)' }}>
           <p className="eyebrow" style={{ color: 'rgba(255,255,255,.78)', margin: '0 0 20px' }}>The beginning of TreeThousands</p>
           <h1 className="display-title" style={{ fontSize: 'clamp(64px,10vw,142px)', margin: 0, maxWidth: 1050 }}>Why We Started</h1>
-          <p style={{ fontFamily: SERIF, fontSize: 'clamp(22px,2.4vw,34px)', fontStyle: 'italic', lineHeight: 1.25, margin: '28px 0 0', maxWidth: 760 }}>
+          <p style={{ fontFamily: SANS, fontSize: 'clamp(20px,2.1vw,30px)', fontWeight: 400, letterSpacing: '.025em', lineHeight: 1.4, margin: '28px 0 0', maxWidth: 760 }}>
             To share a China found not only in places, but in people, memory, and everyday life.
           </p>
         </div>
@@ -99,7 +98,7 @@ export default function WhyWeStarted() {
       <section className="split" style={{ background: '#17352d', color: '#f4f0e7' }}>
         <div className="flex flex-col justify-center" style={{ padding: 'clamp(70px,9vw,140px)' }}>
           <p className="eyebrow" style={{ color: '#c79a72', margin: '0 0 34px' }}>02 — More Than a Destination</p>
-          <blockquote style={{ fontFamily: SERIF, fontSize: 'clamp(42px,5.6vw,82px)', fontWeight: 400, lineHeight: 1.02, margin: 0 }}>
+          <blockquote style={{ fontFamily: SANS, fontSize: 'clamp(38px,5vw,72px)', fontWeight: 400, letterSpacing: '-.025em', lineHeight: 1.08, margin: 0 }}>
             “A place becomes meaningful when someone shares their story with you.”
           </blockquote>
           <p className="body-copy" style={{ color: 'rgba(244,240,231,.72)', maxWidth: 610, margin: '40px 0 0' }}>
@@ -113,7 +112,7 @@ export default function WhyWeStarted() {
         <div className="editorial-wrap">
           <div style={{ maxWidth: 760, marginBottom: 'clamp(64px,8vw,110px)' }}>
             <p className="eyebrow" style={{ color: '#8b5a3c', margin: '0 0 22px' }}>03 — What We Want to Share</p>
-            <h2 style={{ fontFamily: SERIF, fontSize: 'clamp(46px,6vw,82px)', fontWeight: 500, lineHeight: 1.02, color: '#17352d', margin: '0 0 28px' }}>The stories live in the details.</h2>
+            <h2 className="display-title" style={{ fontSize: 'clamp(46px,6vw,82px)', color: '#17352d', margin: '0 0 28px' }}>The stories live in the details.</h2>
             <p className="body-copy" style={{ maxWidth: 650, margin: 0 }}>Four threads guide the way we explore, listen, and tell stories about rural China.</p>
           </div>
 
@@ -145,7 +144,7 @@ export default function WhyWeStarted() {
 
       <section className="text-center" style={{ background: '#9b5e3d', color: '#fff', padding: 'clamp(90px,10vw,140px) 24px' }}>
         <p className="eyebrow" style={{ color: 'rgba(255,255,255,.72)', margin: '0 0 20px' }}>Keep exploring</p>
-        <h2 style={{ fontFamily: SERIF, fontSize: 'clamp(46px,6vw,82px)', fontWeight: 500, lineHeight: 1, margin: '0 auto 36px', maxWidth: 850 }}>Meet the people and places behind the journey.</h2>
+        <h2 className="display-title" style={{ fontSize: 'clamp(46px,6vw,82px)', margin: '0 auto 36px', maxWidth: 850 }}>Meet the people and places behind the journey.</h2>
         <Link href="/stories" className="story-button">Explore the Stories</Link>
       </section>
 
