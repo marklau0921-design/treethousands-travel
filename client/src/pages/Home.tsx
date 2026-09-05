@@ -4,11 +4,9 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import CarouselSection from '@/components/CarouselSection';
-import PartnerLogos from '@/components/PartnerLogos';
 import LuxuryTravelExperts from '@/components/LuxuryTravelExperts';
 import WhyIntoChinaSection from '@/components/WhyIntoChinaSection';
 import ReadyToStart from '@/components/ReadyToStart';
-import PlanYourTrip from '@/pages/PlanYourTrip';
 import ResponsiveImage from '@/components/ResponsiveImage';
 import { Link, useLocation } from 'wouter';
 import { trpc } from '@/lib/trpc';
@@ -65,28 +63,6 @@ interface Trip {
   href: string;
 }
 
-function toSlug(str: string): string {
-  return str
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]/g, '')
-    .replace(/--+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
-function firstGalleryImage(value: unknown): string {
-  if (typeof value !== 'string' || value.length === 0) return '';
-  try {
-    const parsed = JSON.parse(value);
-    return Array.isArray(parsed) && typeof parsed[0] === 'string' ? parsed[0] : '';
-  } catch {
-    return '';
-  }
-}
-
-
-
-
 export default function Home() {
   // The userAuth hooks provides authentication state
   // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
@@ -103,21 +79,8 @@ export default function Home() {
   // 首页管理模块公开数据（hero/intro/stories/sponsors）
   const { data: homepageData } = trpc.homepage.getPublicData.useQuery();
   
-  // Load experience cards for Explore Our Trips.
+  // Reuse existing experience-type imagery for the three new Explore pillars.
   const { data: experienceNav = [] } = trpc.cms.listExperienceTypesWithNav.useQuery();
-  
-  // Convert grouped experience data to the card format used by this section.
-  const exploreExperiences: Trip[] = experienceNav.flatMap((type) => {
-    const categorySlug = toSlug(type.name);
-    return type.items.map((item) => ({
-      id: item.slug,
-      eyebrow: type.name,
-      title: item.recommendationTitle || item.title || item.name,
-      buttonText: 'Explore Experience',
-      image: item.recommendationImage || item.cityDisplayImage || firstGalleryImage(item.gallery) || type.coverImage || '',
-      href: `/experiences/${categorySlug}/${item.slug}`,
-    }));
-  });
   // 始终使用静态图片作为 fallback，只有 API 返回且有数据时才替换
   const FALLBACK_BANNER = '';
   const apiBanners = homepageAssets?.banners as Array<{ url: string; id: number }> | undefined;
@@ -127,6 +90,11 @@ export default function Home() {
   const activeBanners = heroBackgroundImages.length > 0
     ? heroBackgroundImages
     : (apiBanners && apiBanners.length > 0) ? apiBanners.map((b) => b.url) : [FALLBACK_BANNER];
+  const explorationCategories: Trip[] = [
+    { id: 'village-life', eyebrow: 'Explore', title: 'Village Life', buttonText: 'Explore', image: experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/village-life' },
+    { id: 'nature-landscape', eyebrow: 'Explore', title: 'Nature & Landscape', buttonText: 'Explore', image: experienceNav[1]?.coverImage || experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/nature-landscape' },
+    { id: 'people-culture', eyebrow: 'Explore', title: 'People & Culture', buttonText: 'Explore', image: experienceNav[2]?.coverImage || experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/people-culture' },
+  ];
   const heroTitle = homepageData?.hero?.title || 'The Immersive China Experts';
   const heroSubtitle = homepageData?.hero?.subtitle || 'Tailor-made experiences, crafted with local insight.';
 
@@ -136,7 +104,7 @@ export default function Home() {
   const [tripsShowRightBtn, setTripsShowRightBtn] = useState(true);
   const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= 1024);
 
-  // ── Explore Our Trips: native DOM scrollLeft (same as GalleryStrip) ──
+  // ── What We're Exploring: native DOM scrollLeft (same as GalleryStrip) ──
   const tripsTrackRef = useRef<HTMLDivElement>(null);
   const tripsDraggingRef = useRef(false);
   const tripsStartXRef = useRef(0);
@@ -348,15 +316,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Luxury Travel Experts Section */}
-      <div className="bg-[#F5F3EF]">
+      {/* Brand Philosophy */}
+      <section className="bg-[#F5F3EF]" aria-label="Brand Philosophy">
         <LuxuryTravelExperts />
-      </div>
+      </section>
 
-      {/* Plan Your Trip Section */}
-      <PlanYourTrip />
+      {/* A Different Side of China */}
+      <WhyIntoChinaSection />
 
-      {/* Explore Our Trips Section - native DOM scrollLeft, zero jank */}
+      {/* What We're Exploring - native DOM scrollLeft, zero jank */}
       <div
         className="w-full relative flex flex-col lg:flex-row lg:items-center"
         style={{
@@ -375,10 +343,10 @@ export default function Home() {
         {/* Mobile: Title above carousel */}
         <div className="lg:hidden w-full px-6 mb-6 relative z-10">
           <h2 style={{ fontFamily: 'Alternate Gothic No1 D, sans-serif', fontWeight: 400, fontSize: '28px', color: 'white', textTransform: 'uppercase', letterSpacing: '0.10em', marginBottom: '12px', lineHeight: 1.1 }}>
-            Explore Our Trips
+            What We’re Exploring
           </h2>
           <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic', lineHeight: 1.6 }}>
-            Explore our sample trips or get in touch to begin your bespoke adventure.
+            Village life, natural landscapes, and the people and cultures that shape rural China.
           </p>
         </div>
 
@@ -412,15 +380,15 @@ export default function Home() {
             {isDesktop && (
               <div style={{ width: '260px', flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', paddingTop: '8px' }}>
                 <h2 style={{ fontFamily: 'Alternate Gothic No1 D, sans-serif', fontWeight: '700', fontSize: '32px', color: 'white', textTransform: 'uppercase', letterSpacing: '0.10em', marginBottom: '16px', lineHeight: 1.1 }}>
-                  Explore Our Trips
+                  What We’re Exploring
                 </h2>
                 <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic', lineHeight: 1.6 }}>
-                  Explore our sample trips or get in touch to begin your bespoke adventure.
+                  Village life, natural landscapes, and the people and cultures that shape rural China.
                 </p>
               </div>
             )}
             {/* Trip Cards */}
-            {exploreExperiences.map((trip) => (
+            {explorationCategories.map((trip) => (
               <div key={trip.id} className="relative group overflow-hidden flex-shrink-0" style={{ width: '310px', height: '550px', userSelect: 'none' }}>
                 {tripImagesLoaded[trip.id] && (
                   <img
@@ -474,14 +442,6 @@ export default function Home() {
                 </div>
               </div>
             ))}
-            {/* View More */}
-            <div className="flex-shrink-0" style={{ width: '155px', height: '550px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
-              <button
-                className="px-6 py-3 rounded-sm transition-all duration-300 bg-white/20 border border-white/50 text-white font-semibold uppercase tracking-wider text-sm"
-                onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#ffffff'; e.currentTarget.style.color = '#000000'; }}
-                onMouseLeave={e => { e.currentTarget.style.backgroundColor = ''; e.currentTarget.style.color = '#ffffff'; }}
-              >View More</button>
-            </div>
           </div>
         </div>
 
@@ -499,16 +459,10 @@ export default function Home() {
         )}
       </div>
 
-      {/* Discover China Carousel Section */}
-      <CarouselSection />
-
-      {/* Partner Logos Section */}
-      <div style={{ marginTop: '48px' }}>
-        <PartnerLogos />
-      </div>
-
-      {/* Why Into China Section */}
-      <WhyIntoChinaSection />
+      {/* Stories */}
+      <section aria-label="Stories">
+        <CarouselSection />
+      </section>
 
       {/* Ready To Start CTA */}
       <ReadyToStart />
