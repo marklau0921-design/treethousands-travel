@@ -20,12 +20,7 @@ const NAV_ITEMS: Array<{ label: string; href: string; key?: MenuKey; children?: 
     { label: 'Nature & Landscape', href: '/explore/nature-landscape' },
     { label: 'People & Culture', href: '/explore/people-culture' },
   ] },
-  { label: 'Stories', href: '/stories', key: 'stories', children: [
-    { label: 'Brand Stories', href: '/stories/brand-stories' },
-    { label: 'Village Notes', href: '/stories/village-notes' },
-    { label: 'Local Life', href: '/stories/local-life' },
-    { label: 'Journal', href: '/stories/journal' },
-  ] },
+  { label: 'Stories', href: '/stories' },
   { label: 'Join Us', href: '/join-us', key: 'join-us', children: [
     { label: 'Individual Travelers', href: '/join-us/individual-travelers' },
     { label: 'Groups / Education', href: '/join-us/groups-education' },
