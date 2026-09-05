@@ -69,6 +69,37 @@
   border-radius: 2px;
 }
 
+/* Homepage Our Story: retain the 50/50 Experience layout while allowing the
+   image side to meet the viewport edge. */
+.our-story-edge-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  margin: 0 0 32px;
+}
+.our-story-edge-text,
+.our-story-edge-image-wrap {
+  flex: 0 0 50%;
+  min-width: 0;
+}
+.our-story-edge-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  box-sizing: border-box;
+}
+.our-story-edge-image-wrap {
+  display: flex;
+}
+.our-story-edge-image {
+  display: block;
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+}
+
 /* Mobile: single column, text on top, image below, centered */
 @media (max-width: 767px) {
   .tea-body {
@@ -107,6 +138,25 @@
   }
   .our-story-page .tea-detail-text {
     order: 2;
+  }
+  .our-story-edge-row {
+    flex-direction: column;
+    margin-bottom: 28px;
+  }
+  .our-story-edge-text,
+  .our-story-edge-image-wrap {
+    flex: none;
+    width: 100%;
+  }
+  .our-story-edge-image-wrap {
+    order: 1;
+  }
+  .our-story-edge-text {
+    order: 2;
+    padding: 32px 24px 20px;
+  }
+  .our-story-edge-image {
+    height: 280px;
   }
 }
 
