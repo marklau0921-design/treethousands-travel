@@ -7,6 +7,7 @@ import CarouselSection from '@/components/CarouselSection';
 import LuxuryTravelExperts from '@/components/LuxuryTravelExperts';
 import WhyIntoChinaSection from '@/components/WhyIntoChinaSection';
 import ReadyToStart from '@/components/ReadyToStart';
+import HomepageOurStory from '@/components/HomepageOurStory';
 import ResponsiveImage from '@/components/ResponsiveImage';
 import { Link, useLocation } from 'wouter';
 import { trpc } from '@/lib/trpc';
@@ -320,6 +321,9 @@ export default function Home() {
       <section className="bg-[#F5F3EF]" aria-label="Brand Philosophy">
         <LuxuryTravelExperts />
       </section>
+
+      {/* Our Story — alternating edge-to-edge image and text rows */}
+      <HomepageOurStory />
 
       {/* A Different Side of China */}
       <WhyIntoChinaSection />
