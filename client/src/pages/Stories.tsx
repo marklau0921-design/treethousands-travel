@@ -15,16 +15,23 @@ const categorySlug: Record<StoryCategory, string> = {
 };
 const slugCategory = Object.fromEntries(Object.entries(categorySlug).map(([name, slug]) => [slug, name])) as Record<string, StoryCategory>;
 
+const categoryIntro: Record<StoryCategory, { kicker: string; description: string; statement: string }> = {
+  'Brand Stories': { kicker: 'Ideas / Purpose / The Journey So Far', description: 'Notes on why Tree Thousands began, what guides our work, and how we hope to grow alongside the people and places we encounter.', statement: 'Every journey begins with a reason to look more closely.' },
+  'Village Notes': { kicker: 'Places / Encounters / Observations', description: 'Unhurried observations from village lanes, family kitchens, fields, courtyards, and the people who give each place its rhythm.', statement: 'The smallest details often hold the clearest sense of place.' },
+  'Local Life': { kicker: 'People / Food / Everyday Culture', description: 'Stories of daily work, shared meals, local knowledge, and living traditions—documented through the people who carry them forward.', statement: 'Culture lives in what people make, remember, and share each day.' },
+  Journal: { kicker: 'Field Notes / Reflections / On the Road', description: 'Travel reflections, changing landscapes, and fragments gathered while moving slowly through rural China.', statement: 'A field journal keeps what the itinerary leaves behind.' },
+};
+
 function formatDate(value: string | Date) {
   return new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(value));
 }
 
-export default function Stories() {
+export default function StoryCategoryTemplate() {
   const [location] = useLocation();
   const { data = [] } = trpc.cms.listStories.useQuery();
   const getObjectPosition = useMediaObjectPosition();
   const pathCategory = slugCategory[location.split('/')[2] || ''];
-  const [activeCategory, setActiveCategory] = useState<(typeof STORY_CATEGORIES)[number]>(pathCategory || 'All Stories');
+  const [activeCategory, setActiveCategory] = useState<StoryCategory>(pathCategory || 'Brand Stories');
   const [page, setPage] = useState(1);
 
   const stories = useMemo<EditorialStory[]>(() => {
@@ -37,20 +44,21 @@ export default function Stories() {
     return [...databaseStories, ...fallbackStories.filter((fallback) => !databaseStories.some((story) => story.slug === fallback.slug))];
   }, [data]);
 
-  useEffect(() => { setActiveCategory(pathCategory || 'All Stories'); setPage(1); }, [pathCategory]);
+  useEffect(() => { setActiveCategory(pathCategory || 'Brand Stories'); setPage(1); }, [pathCategory]);
   useEffect(() => {
-    document.title = activeCategory === 'All Stories' ? 'Stories | TreeThousands' : `${activeCategory} | TreeThousands Stories`;
+    document.title = `${activeCategory} | TreeThousands Stories`;
     const description = 'Field notes, documentary stories, and local perspectives from rural China by TreeThousands.';
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) { meta = document.createElement('meta'); meta.name = 'description'; document.head.appendChild(meta); }
     meta.content = description;
   }, [activeCategory]);
 
-  const filtered = activeCategory === 'All Stories' ? stories : stories.filter((story) => story.category === activeCategory);
+  const filtered = stories.filter((story) => story.category === activeCategory);
   const featured = filtered[0] || stories[0];
   const latest = filtered.filter((story) => story.slug !== featured?.slug);
   const totalPages = Math.max(1, Math.ceil(latest.length / PAGE_SIZE));
   const visible = latest.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const intro = categoryIntro[activeCategory];
 
   return (
     <div className="stories-page min-h-screen bg-[#f5f1e8] text-[#17251f]" style={{ fontFamily: SANS }}>
@@ -60,15 +68,15 @@ export default function Stories() {
       <Navigation />
       <main style={{ paddingTop: 'clamp(128px,14vw,190px)' }}>
         <header className="wrap" style={{ paddingBottom: 'clamp(64px,8vw,105px)' }}>
-          <p className="eyebrow" style={{ color: '#9b5e3d', margin: '0 0 22px' }}>Travel Magazine / Field Journal</p>
+          <p className="eyebrow" style={{ color: '#9b5e3d', margin: '0 0 22px' }}>Stories / {intro.kicker}</p>
           <div className="grid md:grid-cols-[1.2fr_.8fr] gap-8 items-end">
-            <h1 className="display" style={{ fontSize: 'clamp(74px,12vw,168px)', margin: 0 }}>Stories</h1>
-            <p className="summary" style={{ margin: '0 0 10px', maxWidth: 520 }}>People, places, and everyday moments from across rural China—recorded slowly and shared with care.</p>
+            <h1 className="display" style={{ fontSize: 'clamp(66px,10vw,142px)', margin: 0 }}>{activeCategory}</h1>
+            <p className="summary" style={{ margin: '0 0 10px', maxWidth: 520 }}>{intro.description}</p>
           </div>
         </header>
 
         <nav className="wrap category-row" aria-label="Story categories">
-          {STORY_CATEGORIES.map((category) => <button key={category} className={`category-button ${activeCategory === category ? 'active' : ''}`} onClick={() => { setActiveCategory(category); setPage(1); window.history.replaceState(null, '', category === 'All Stories' ? '/stories' : `/stories/${categorySlug[category]}`); }}>{category}</button>)}
+          {(STORY_CATEGORIES.slice(1) as StoryCategory[]).map((category) => <button key={category} className={`category-button ${activeCategory === category ? 'active' : ''}`} onClick={() => { setActiveCategory(category); setPage(1); window.history.replaceState(null, '', `/stories/${categorySlug[category]}`); }}>{category}</button>)}
         </nav>
 
         {featured && <section className="wrap" style={{ padding: 'clamp(56px,7vw,96px) 0 clamp(95px,11vw,160px)' }}>
@@ -83,26 +91,11 @@ export default function Stories() {
           </Link>
         </section>}
 
-        <section style={{ background: '#17352d', color: '#f5f1e8', padding: 'clamp(90px,10vw,145px) 0' }}>
-          <div className="wrap">
-            <p className="eyebrow" style={{ color: '#c79a72', margin: '0 0 17px' }}>Four ongoing chapters</p>
-            <h2 className="display" style={{ fontSize: 'clamp(52px,7vw,92px)', margin: '0 0 58px' }}>Explore the Journal</h2>
-            <div className="chapter-grid">
-              {(STORY_CATEGORIES.slice(1) as StoryCategory[]).map((category, index) => {
-                const chapterStory = stories.find((story) => story.category === category) || stories[index];
-                return <Link href={`/stories/${categorySlug[category]}`} className="chapter" key={category}>
-                  <img src={chapterStory.coverImage} alt={category} className="image" style={{ height: index % 2 ? 360 : 450, objectPosition: getObjectPosition(chapterStory.coverImage) }} />
-                  <p className="eyebrow" style={{ color: '#c79a72', margin: '19px 0 11px' }}>0{index + 1}</p>
-                  <h3 className="display" style={{ fontSize: 'clamp(31px,3vw,44px)', margin: 0 }}>{category}</h3>
-                </Link>;
-              })}
-            </div>
-          </div>
-        </section>
+        <section style={{ background: '#17352d', color: '#f5f1e8', padding: 'clamp(95px,12vw,170px) 0' }}><div className="wrap grid md:grid-cols-[.45fr_1.55fr] gap-10 md:gap-24 items-start"><p className="eyebrow" style={{ color: '#c79a72', margin: 0 }}>From this chapter</p><p style={{ fontSize: 'clamp(33px,4.6vw,66px)', lineHeight: 1.12, letterSpacing: '-.025em', maxWidth: 1000, margin: 0 }}>{intro.statement}</p></div></section>
 
         <section style={{ background: '#fff', padding: 'clamp(90px,10vw,145px) 0' }}>
           <div className="wrap">
-            <div className="flex justify-between items-end gap-8" style={{ marginBottom: 55 }}><div><p className="eyebrow" style={{ color: '#9b5e3d', margin: '0 0 16px' }}>Recently recorded</p><h2 className="display" style={{ fontSize: 'clamp(52px,7vw,92px)', margin: 0 }}>{activeCategory === 'All Stories' ? 'Latest Stories' : activeCategory}</h2></div><p className="eyebrow hidden md:block" style={{ margin: 0 }}>{filtered.length} stories</p></div>
+            <div className="flex justify-between items-end gap-8" style={{ marginBottom: 55 }}><div><p className="eyebrow" style={{ color: '#9b5e3d', margin: '0 0 16px' }}>Recently recorded</p><h2 className="display" style={{ fontSize: 'clamp(52px,7vw,92px)', margin: 0 }}>More {activeCategory}</h2></div><p className="eyebrow hidden md:block" style={{ margin: 0 }}>{filtered.length} stories</p></div>
             <div className="latest-grid">
               {visible.map((story, index) => <article className="story-card" key={story.slug}>
                 <Link href={`/stories/article/${story.slug}`}>
