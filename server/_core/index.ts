@@ -68,13 +68,28 @@ async function startServer() {
     const publicHtmlDir = path.resolve(process.cwd(), "..", "public_html");
     const symlinkPath = path.join(publicHtmlDir, "uploads");
     if (fs.existsSync(publicHtmlDir)) {
-      // Remove existing symlink or directory if it exists
-      const symlinkExists = fs.existsSync(symlinkPath) || (() => { try { return fs.lstatSync(symlinkPath).isSymbolicLink(); } catch { return false; } })();
-      if (symlinkExists) {
-        fs.rmSync(symlinkPath, { recursive: true, force: true });
+      let shouldCreateSymlink = true;
+      try {
+        const existing = fs.lstatSync(symlinkPath);
+        if (existing.isSymbolicLink()) {
+          const currentTarget = path.resolve(publicHtmlDir, fs.readlinkSync(symlinkPath));
+          if (currentTarget === path.resolve(uploadsRoot)) {
+            shouldCreateSymlink = false;
+          } else {
+            fs.unlinkSync(symlinkPath);
+          }
+        } else {
+          // Never delete a real uploads directory: it may contain user files.
+          shouldCreateSymlink = false;
+          console.log(`[Startup] Keeping existing uploads path: ${symlinkPath}`);
+        }
+      } catch (err: any) {
+        if (err?.code !== "ENOENT") throw err;
       }
-      fs.symlinkSync(uploadsRoot, symlinkPath);
-      console.log(`[Startup] Symlink created: ${symlinkPath} -> ${uploadsRoot}`);
+      if (shouldCreateSymlink) {
+        fs.symlinkSync(uploadsRoot, symlinkPath);
+        console.log(`[Startup] Symlink created: ${symlinkPath} -> ${uploadsRoot}`);
+      }
     }
   } catch (err) {
     console.log(`[Startup] Symlink note: ${err}`);
