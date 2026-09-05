@@ -85,7 +85,7 @@ export default function ExploreTemplate({ content }: ExploreTemplateProps) {
       <section style={{ padding: 'clamp(90px,11vw,160px) 0' }}>
         <div className="wrap grid md:grid-cols-[.7fr_1.8fr] gap-12 md:gap-24 items-start">
           <p className="eyebrow" style={{ color: '#8b5a3c', margin: 0 }}>Explore / {content.title}</p>
-          <p style={{ margin: 0, fontSize: 'clamp(30px,4vw,56px)', lineHeight: 1.13, letterSpacing: '-.02em', maxWidth: 920 }}>{content.introduction}</p>
+          <p style={{ margin: 0, fontSize: 'clamp(23px,2.7vw,38px)', lineHeight: 1.32, letterSpacing: '-.01em', maxWidth: 920 }}>{content.introduction}</p>
         </div>
       </section>
 
@@ -131,7 +131,7 @@ export default function ExploreTemplate({ content }: ExploreTemplateProps) {
       <section style={{ padding: 'clamp(120px,16vw,230px) 0', background: '#17352d', color: '#f5f1e8' }}>
         <div className="wrap">
           <p className="eyebrow" style={{ color: '#c79a72', margin: '0 0 28px' }}>A way of seeing</p>
-          <p style={{ fontSize: 'clamp(48px,7.2vw,104px)', lineHeight: 1.02, letterSpacing: '-.035em', maxWidth: 1160, margin: 0 }}>{content.statement}</p>
+          <p style={{ fontSize: 'clamp(34px,4.6vw,66px)', lineHeight: 1.14, letterSpacing: '-.025em', maxWidth: 1040, margin: 0 }}>{content.statement}</p>
         </div>
       </section>
 
