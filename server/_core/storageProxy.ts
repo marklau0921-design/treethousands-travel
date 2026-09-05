@@ -2,6 +2,7 @@ import type { Express } from "express";
 import path from "path";
 import fs from "fs";
 import { ENV } from "./env";
+import { UPLOADS_ROOT } from "../storage.js";
 
 export function registerStorageProxy(app: Express) {
   // 本地文件存储路由
@@ -13,11 +14,11 @@ export function registerStorageProxy(app: Express) {
     }
 
     // 构建本地文件路径
-    const uploadsDir = path.join(process.cwd(), "uploads");
-    const filePath = path.join(uploadsDir, key);
+    const uploadsDir = path.resolve(UPLOADS_ROOT);
+    const filePath = path.resolve(uploadsDir, key);
 
     // 安全检查：防止路径遍历攻击
-    if (!filePath.startsWith(uploadsDir)) {
+    if (filePath !== uploadsDir && !filePath.startsWith(`${uploadsDir}${path.sep}`)) {
       res.status(403).send("Access denied");
       return;
     }
