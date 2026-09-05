@@ -8,7 +8,6 @@ const NAV_SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans
 const NAV_DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 
 const NAV_ITEMS: Array<{ label: string; href: string; key?: MenuKey; children?: Array<{ label: string; href: string }> }> = [
-  { label: 'Home', href: '/' },
   { label: 'Our Story', href: '/#our-story', key: 'our-story', children: [
     { label: 'Why We Started', href: '/#why-we-started' },
     { label: 'What We Believe', href: '/#what-we-believe' },
@@ -117,7 +116,6 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
     {activeItem && <div style={{ position: 'fixed', inset: '55px 0 0', background: '#fff', zIndex: 49, overflow: 'auto' }}>
       <button onClick={() => setActiveMenu(null)} aria-label="Close menu" style={{ position: 'absolute', top: 12, right: 'clamp(28px,calc(-645px + 49.82vw),305px)', background: 'none', border: 0, cursor: 'pointer', color: '#222', padding: 4 }}><X size={24}/></button>
       <div style={{ paddingTop: 60, paddingBottom: 40, paddingLeft: 'clamp(28px,calc(-645px + 49.82vw),305px)', paddingRight: 64, maxWidth: 760 }}>
-        <button onClick={() => navigate(activeItem.href)} className="tt-menu-row" style={{ width: '100%', background: 'none', border: 0 }}><span>{activeItem.label}</span><span>›</span></button>
         {activeItem.children?.map(child => <button key={child.href} onClick={() => navigate(child.href)} className="tt-menu-row" style={{ width: '100%', background: 'none', border: 0 }}><span>{child.label}</span><span>›</span></button>)}
       </div>
     </div>}
