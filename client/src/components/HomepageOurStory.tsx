@@ -56,6 +56,20 @@ export default function HomepageOurStory() {
 
   return (
     <section id="our-story" className="our-story-home bg-[#F5F3EF]" style={{ scrollMarginTop: 80, paddingTop: 'clamp(64px, 7vw, 96px)', paddingBottom: 'clamp(50px, 6vw, 80px)' }}>
+      <style>{`
+        .our-story-home .our-story-edge-row{display:flex;flex-direction:row;align-items:stretch;width:100%;margin:0 0 32px}
+        .our-story-home .our-story-edge-text,.our-story-home .our-story-edge-image-wrap{flex:0 0 50%;min-width:0}
+        .our-story-home .our-story-edge-text{display:flex;align-items:center;justify-content:center;padding:48px;box-sizing:border-box}
+        .our-story-home .our-story-edge-image-wrap{display:flex}
+        .our-story-home .our-story-edge-image{display:block;width:100%;height:480px;object-fit:cover}
+        @media(max-width:767px){
+          .our-story-home .our-story-edge-row{flex-direction:column;margin-bottom:28px}
+          .our-story-home .our-story-edge-text,.our-story-home .our-story-edge-image-wrap{flex:none;width:100%}
+          .our-story-home .our-story-edge-image-wrap{order:1}
+          .our-story-home .our-story-edge-text{order:2;padding:32px 24px 20px}
+          .our-story-home .our-story-edge-image{height:280px}
+        }
+      `}</style>
       <div className="px-6 text-center" style={{ marginBottom: 'clamp(48px, 6vw, 76px)' }}>
         <h2 style={{ fontFamily: DISPLAY_FONT, fontSize: 'clamp(42px, 5vw, 62px)', fontWeight: 400, lineHeight: 1, letterSpacing: '0.05em', textTransform: 'uppercase', color: '#000', margin: 0 }}>
           Our Story
