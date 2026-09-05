@@ -92,9 +92,9 @@ export default function Home() {
     ? heroBackgroundImages
     : (apiBanners && apiBanners.length > 0) ? apiBanners.map((b) => b.url) : [FALLBACK_BANNER];
   const explorationCategories: Trip[] = [
-    { id: 'village-life', eyebrow: 'Explore', title: 'Village Life', buttonText: 'Explore', image: experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/village-life' },
-    { id: 'nature-landscape', eyebrow: 'Explore', title: 'Nature & Landscape', buttonText: 'Explore', image: experienceNav[1]?.coverImage || experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/nature-landscape' },
-    { id: 'people-culture', eyebrow: 'Explore', title: 'People & Culture', buttonText: 'Explore', image: experienceNav[2]?.coverImage || experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/people-culture' },
+    { id: 'village-life', title: 'Village Life', buttonText: 'Explore', image: experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/village-life' },
+    { id: 'nature-landscape', title: 'Nature & Landscape', buttonText: 'Explore', image: experienceNav[1]?.coverImage || experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/nature-landscape' },
+    { id: 'people-culture', title: 'People & Culture', buttonText: 'Explore', image: experienceNav[2]?.coverImage || experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/people-culture' },
   ];
   const heroTitle = homepageData?.hero?.title || 'The Immersive China Experts';
   const heroSubtitle = homepageData?.hero?.subtitle || 'Tailor-made experiences, crafted with local insight.';
@@ -325,9 +325,6 @@ export default function Home() {
       {/* Our Story — alternating edge-to-edge image and text rows */}
       <HomepageOurStory />
 
-      {/* A Different Side of China */}
-      <WhyIntoChinaSection />
-
       {/* What We're Exploring - native DOM scrollLeft, zero jank */}
       <div
         className="w-full relative flex flex-col lg:flex-row lg:items-center"
@@ -418,7 +415,7 @@ export default function Home() {
                 )}
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70" />
                 <div className="absolute inset-0 flex flex-col justify-between p-6 text-white">
-                  {trip.eyebrow && <div className="text-xs font-bold uppercase tracking-wider text-yellow-300 text-right" style={{color: '#ffffff', fontWeight: '500'}}>{trip.eyebrow}</div>}
+                  <div aria-hidden="true" />
                   <div>
                     <h3 className="text-base font-bold uppercase tracking-wider mb-4 leading-tight opacity-85" style={{fontWeight: '300'}}>{trip.title}</h3>
                     <button
@@ -467,6 +464,9 @@ export default function Home() {
       <section aria-label="Stories">
         <CarouselSection />
       </section>
+
+      {/* A Different Side of China */}
+      <WhyIntoChinaSection />
 
       {/* Ready To Start CTA */}
       <ReadyToStart />
