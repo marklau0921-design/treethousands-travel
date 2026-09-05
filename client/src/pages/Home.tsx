@@ -3,7 +3,7 @@ import { useAuth } from '@/_core/hooks/useAuth';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import CarouselSection from '@/components/CarouselSection';
+import HomepageStories from '@/components/HomepageStories';
 import LuxuryTravelExperts from '@/components/LuxuryTravelExperts';
 import WhyIntoChinaSection from '@/components/WhyIntoChinaSection';
 import ReadyToStart from '@/components/ReadyToStart';
@@ -461,9 +461,7 @@ export default function Home() {
       </div>
 
       {/* Stories */}
-      <section aria-label="Stories">
-        <CarouselSection />
-      </section>
+      <HomepageStories />
 
       {/* A Different Side of China */}
       <WhyIntoChinaSection />
