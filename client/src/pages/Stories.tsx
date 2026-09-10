@@ -39,7 +39,7 @@ export default function Stories() {
 
   useEffect(() => {
     setPage(1);
-    document.title = selectedCategory ? `${selectedCategory} | TreeThousands Stories` : 'Stories | TreeThousands';
+    document.title = 'TreeThousands';
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) { meta = document.createElement('meta'); meta.name = 'description'; document.head.appendChild(meta); }
     meta.content = selectedCategory ? categoryIntro[selectedCategory].description : 'Field notes, documentary stories, and local perspectives from rural China by TreeThousands.';
