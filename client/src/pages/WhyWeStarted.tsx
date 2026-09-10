@@ -1,4 +1,4 @@
-import { Link } from 'wouter';
+import ReadyToStart from '@/components/ReadyToStart';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { trpc } from '@/lib/trpc';
@@ -49,8 +49,6 @@ export default function WhyWeStarted() {
         .why-started-page .eyebrow{font-family:${SANS};font-size:11px;font-weight:700;letter-spacing:.19em;text-transform:uppercase}
         .why-started-page .display-title{font-family:${DISPLAY};font-weight:400;letter-spacing:.045em;line-height:.92;text-transform:uppercase}
         .why-started-page .body-copy{font-family:${SANS};font-size:17px;line-height:1.72;letter-spacing:.035em;color:#4d554f}
-        .why-started-page .story-button{display:inline-block;background:#111;color:#fff;border:2px solid #111;border-radius:3px;padding:13px 30px;font-family:${SANS};font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:background .2s,color .2s}
-        .why-started-page .story-button:hover{background:transparent;color:#111}
         .why-started-page .pillar-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:54px 34px;align-items:start}
         .why-started-page .pillar:nth-child(1),.why-started-page .pillar:nth-child(4){grid-column:span 7}
         .why-started-page .pillar:nth-child(2),.why-started-page .pillar:nth-child(3){grid-column:span 5}
@@ -142,11 +140,7 @@ export default function WhyWeStarted() {
         </div>
       </section>
 
-      <section className="text-center" style={{ background: '#9b5e3d', color: '#fff', padding: 'clamp(90px,10vw,140px) 24px' }}>
-        <p className="eyebrow" style={{ color: 'rgba(255,255,255,.72)', margin: '0 0 20px' }}>Keep exploring</p>
-        <h2 className="display-title" style={{ fontSize: 'clamp(46px,6vw,82px)', margin: '0 auto 36px', maxWidth: 850 }}>Meet the people and places behind the journey.</h2>
-        <Link href="/stories" className="story-button">Explore the Stories</Link>
-      </section>
+      <ReadyToStart />
 
       <Footer />
     </div>
