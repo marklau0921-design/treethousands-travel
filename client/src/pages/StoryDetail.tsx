@@ -34,7 +34,7 @@ export default function StoryDetail() {
 
   useEffect(() => {
     if (!story) return;
-    document.title = `${story.title} | TreeThousands`;
+    document.title = 'TreeThousands';
     const description = story.excerpt || plainExcerpt(story.content);
     const setMeta = (selector: string, attribute: 'name' | 'property', key: string, content: string) => { let element = document.querySelector(selector) as HTMLMetaElement | null; if (!element) { element = document.createElement('meta'); element.setAttribute(attribute, key); document.head.appendChild(element); } element.content = content; };
     setMeta('meta[name="description"]', 'name', 'description', description);
