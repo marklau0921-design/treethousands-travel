@@ -245,6 +245,7 @@ export const stories = mysqlTable("stories", {
   slug: varchar("slug", { length: 200 }).notNull().unique(),
   content: text("content"),
   coverImage: varchar("coverImage", { length: 512 }),
+  pageContent: json("pageContent"),
   isActive: boolean("isActive").default(true).notNull(),
   sortOrder: int("sortOrder").default(0),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

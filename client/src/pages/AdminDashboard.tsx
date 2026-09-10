@@ -279,6 +279,7 @@ export default function AdminDashboard() {
           <StatCard icon={Home}    label="Homepage"    count={undefined}          path="/admin/homepage"    color="#F5569B" />
           <StatCard icon={BookOpen} label="Our Story"  count={undefined}          path="/admin/our-story"   color="#c96e9e" />
           <StatCard icon={Compass} label="Explore"     count={undefined}          path="/admin/explore"     color="#6e9ec9" />
+          <StatCard icon={BookOpen} label="Story Details" count={undefined}        path="/admin/stories"     color="#9e6ec9" />
         </div>
 
         {/* Recent enquiries */}

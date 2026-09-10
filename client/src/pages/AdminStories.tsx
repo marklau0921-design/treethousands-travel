@@ -1,190 +1,46 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import AdminLayout from "@/components/AdminLayout";
-import ImageUploader from "@/components/ImageUploader";
-import TagSelector from "@/components/TagSelector";
-import { Plus, Edit2, Trash2, X, Check } from "lucide-react";
+import React from 'react';
+import { Check, Edit2, Plus, Trash2, X } from 'lucide-react';
+import { toast } from 'sonner';
+import AdminLayout from '@/components/AdminLayout';
+import ImageUploader from '@/components/ImageUploader';
+import TagSelector from '@/components/TagSelector';
+import { trpc } from '@/lib/trpc';
+import { createDefaultStoryDetail, normalizeStoryDetail, type StoryCategory, type StoryDetailPageContent } from '@/lib/story-content';
 
-const ACCENT = "#F5569B";
+const ACCENT='#F5569B', categories:StoryCategory[]=['Brand Stories','Village Notes','Local Life','Journal'];
+const box:React.CSSProperties={background:'#fff',border:'1px solid #eee',padding:28,marginBottom:24};
+const input:React.CSSProperties={width:'100%',padding:'9px 12px',fontSize:13,background:'#f2f2f2',border:'1px solid #ddd',outline:'none',color:'#2d2d2d',boxSizing:'border-box'};
+const label:React.CSSProperties={display:'block',fontSize:11,fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',color:'#888',marginBottom:7};
+type Form={title:string;slug:string;content:string;coverImage:string;isActive:boolean;sortOrder:number;tagIds:number[];pageContent:StoryDetailPageContent};
+const emptyBase={title:'New Story',category:'Journal' as StoryCategory,date:new Date().toISOString(),location:'Rural China',excerpt:'',content:'',coverImage:''};
+const empty:Form={title:'',slug:'',content:'',coverImage:'',isActive:true,sortOrder:0,tagIds:[],pageContent:createDefaultStoryDetail(emptyBase)};
+function Field({name,children}:{name:string;children:React.ReactNode}){return <div><label style={label}>{name}</label>{children}</div>}
+function Text({value,onChange,area=false}:{value:string;onChange:(v:string)=>void;area?:boolean}){return area?<textarea value={value} onChange={e=>onChange(e.target.value)} rows={3} style={{...input,resize:'vertical'}}/>:<input value={value} onChange={e=>onChange(e.target.value)} style={input}/>}
+function Color({name,value,onChange}:{name:string;value:string;onChange:(v:string)=>void}){return <Field name={name}><div style={{display:'flex',gap:10}}><input type="color" value={/^#[0-9a-f]{6}$/i.test(value)?value:'#000000'} onChange={e=>onChange(e.target.value)} style={{width:44,height:36}}/><Text value={value} onChange={onChange}/></div></Field>}
+function Grid({children}:{children:React.ReactNode}){return <div style={{display:'grid',gridTemplateColumns:'repeat(2,minmax(0,1fr))',gap:20}}>{children}</div>}
+function Heading({children}:{children:React.ReactNode}){return <div style={{fontSize:13,fontWeight:600,letterSpacing:'.12em',textTransform:'uppercase',paddingBottom:12,borderBottom:'1px solid #eee',marginBottom:22}}>{children}</div>}
 
-const emptyForm = {
-  title: "",
-  slug: "",
-  content: "",
-  coverImage: "",
-  isActive: true,
-  sortOrder: 0,
-  tagIds: [] as number[],
-};
-
-const labelStyle: React.CSSProperties = {
-  display: "block", fontSize: "11px", letterSpacing: "0.12em",
-  textTransform: "uppercase", color: "#888", marginBottom: "8px",
-};
-const inputStyle: React.CSSProperties = {
-  width: "100%", padding: "9px 12px", fontSize: "13px",
-  background: "#f2f2f2", border: "1px solid #ddd", outline: "none",
-  color: "#2d2d2d", boxSizing: "border-box",
-};
-const iconBtnStyle = (color: string): React.CSSProperties => ({
-  background: "none", border: "none", cursor: "pointer", color,
-  padding: "4px", display: "flex", alignItems: "center", opacity: 0.7,
-});
-
-function StoryForm({ initial, onSave, onCancel, saving }: {
-  initial: typeof emptyForm;
-  onSave: (data: typeof emptyForm) => void;
-  onCancel: () => void;
-  saving: boolean;
-}) {
-  const [form, setForm] = useState(initial);
-  const set = (k: keyof typeof emptyForm, v: any) => setForm(f => ({ ...f, [k]: v }));
-
-  return (
-    <div style={{ background: "#fff", border: "1px solid #eee", padding: "28px", marginBottom: "24px" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-        <div>
-          <label style={labelStyle}>Story Title *</label>
-          <input value={form.title} onChange={e => { set("title", e.target.value); if (!initial.slug) set("slug", e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "")); }} placeholder="e.g. A Morning in the Tea Mountains" style={inputStyle} onFocus={e => { e.target.style.borderColor = ACCENT; }} onBlur={e => { e.target.style.borderColor = "#ddd"; }} />
-        </div>
-        <div>
-          <label style={labelStyle}>URL Slug</label>
-          <input value={form.slug} onChange={e => set("slug", e.target.value)} placeholder="auto-generated" style={inputStyle} onFocus={e => { e.target.style.borderColor = ACCENT; }} onBlur={e => { e.target.style.borderColor = "#ddd"; }} />
-        </div>
-        <div style={{ gridColumn: "1 / -1" }}>
-          <label style={labelStyle}>Story Content</label>
-          <textarea value={form.content} onChange={e => set("content", e.target.value)} rows={8} placeholder="Write the story content here..." style={{ ...inputStyle, resize: "vertical" }} onFocus={e => { e.target.style.borderColor = ACCENT; }} onBlur={e => { e.target.style.borderColor = "#ddd"; }} />
-        </div>
-        <div style={{ gridColumn: "1 / -1" }}>
-          <ImageUploader value={form.coverImage} onChange={url => set("coverImage", url)} category="story" label="Cover Image" />
-        </div>
-        <div style={{ gridColumn: "1 / -1" }}>
-          <TagSelector selectedIds={form.tagIds} onChange={ids => set("tagIds", ids)} label="Tags" />
-        </div>
-        <div>
-          <label style={labelStyle}>Sort Order</label>
-          <input type="number" value={form.sortOrder} onChange={e => set("sortOrder", parseInt(e.target.value) || 0)} style={inputStyle} onFocus={e => { e.target.style.borderColor = ACCENT; }} onBlur={e => { e.target.style.borderColor = "#ddd"; }} />
-        </div>
-        <div style={{ display: "flex", alignItems: "flex-end", paddingBottom: "2px" }}>
-          <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
-            <input type="checkbox" checked={form.isActive} onChange={e => set("isActive", e.target.checked)} style={{ accentColor: ACCENT, width: "16px", height: "16px" }} />
-            <span style={{ fontSize: "12px", letterSpacing: "0.08em", textTransform: "uppercase", color: "#888" }}>Active</span>
-          </label>
-        </div>
-      </div>
-      <div style={{ display: "flex", gap: "12px", marginTop: "24px" }}>
-        <button onClick={() => onSave(form)} disabled={saving || !form.title.trim()} style={{ padding: "10px 24px", fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", background: ACCENT, color: "#fff", border: "none", cursor: "pointer", opacity: saving || !form.title.trim() ? 0.5 : 1 }}>
-          {saving ? "Saving..." : "Save"}
-        </button>
-        <button onClick={onCancel} style={{ padding: "10px 24px", fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", background: "transparent", color: "#888", border: "1px solid #ddd", cursor: "pointer" }}>
-          Cancel
-        </button>
-      </div>
-    </div>
-  );
+function Editor({initial,saving,onSave,onCancel}:{initial:Form;saving:boolean;onSave:(v:Form)=>void;onCancel:()=>void}){
+ const [form,setForm]=React.useState(initial), page=form.pageContent;
+ const set=<K extends keyof Form>(k:K,v:Form[K])=>setForm(f=>({...f,[k]:v}));
+ const sec=<K extends keyof StoryDetailPageContent>(k:K,v:Partial<StoryDetailPageContent[K]>)=>setForm(f=>({...f,pageContent:{...f.pageContent,[k]:{...f.pageContent[k],...v}}}));
+ const image=(name:string,value:string,onChange:(v:string)=>void,source:string)=><ImageUploader label={name} value={value} onChange={onChange} category="story" source={source} sourceLabel={form.title} sourceUrl={`/stories/article/${form.slug}`}/>;
+ return <form onSubmit={e=>{e.preventDefault();onSave(form)}}>
+  <div style={box}><Heading>Article & Hero</Heading><Grid><Field name="Story Title"><Text value={form.title} onChange={v=>{set('title',v);if(!initial.slug)set('slug',v.toLowerCase().replace(/\s+/g,'-').replace(/[^\w-]/g,''))}}/></Field><Field name="URL Slug"><Text value={form.slug} onChange={v=>set('slug',v)}/></Field><Field name="Category"><select value={page.meta.category} onChange={e=>sec('meta',{category:e.target.value as StoryCategory})} style={input}>{categories.map(v=><option key={v}>{v}</option>)}</select></Field><Field name="Location"><Text value={page.meta.location} onChange={v=>sec('meta',{location:v})}/></Field><Field name="Published Date"><input type="date" value={page.meta.publishedDate.slice(0,10)} onChange={e=>sec('meta',{publishedDate:e.target.value})} style={input}/></Field><Field name="Sort Order"><input type="number" value={form.sortOrder} onChange={e=>set('sortOrder',Number(e.target.value))} style={input}/></Field></Grid><div style={{marginTop:20}}><Field name="Excerpt"><Text area value={page.meta.excerpt} onChange={v=>sec('meta',{excerpt:v})}/></Field></div><div style={{marginTop:20}}>{image('Hero / Cover Image',form.coverImage,v=>set('coverImage',v),'story-hero')}</div><div style={{marginTop:20}}><TagSelector selectedIds={form.tagIds} onChange={v=>set('tagIds',v)} label="Tags"/></div><label style={{display:'flex',gap:8,marginTop:20,fontSize:13}}><input type="checkbox" checked={form.isActive} onChange={e=>set('isActive',e.target.checked)}/> Show on public pages</label></div>
+  <div style={box}><Heading>Opening Content</Heading><Grid><Field name="Context Label"><Text value={page.opening.contextLabel} onChange={v=>sec('opening',{contextLabel:v})}/></Field><Field name="Place Label"><Text value={page.opening.placeLabel} onChange={v=>sec('opening',{placeLabel:v})}/></Field><Field name="Chapter Label"><Text value={page.opening.chapterLabel} onChange={v=>sec('opening',{chapterLabel:v})}/></Field><Field name="Recorded Label"><Text value={page.opening.recordedLabel} onChange={v=>sec('opening',{recordedLabel:v})}/></Field></Grid>{page.opening.paragraphs.map((p,i)=><div key={i} style={{marginTop:20}}><Field name={`Paragraph ${i+1}`}><Text area value={p} onChange={v=>sec('opening',{paragraphs:page.opening.paragraphs.map((x,n)=>n===i?v:x)})}/></Field></div>)}<div style={{marginTop:20}}><Field name="Legacy Full Text"><Text area value={form.content} onChange={v=>set('content',v)}/></Field></div></div>
+  <div style={box}><Heading>Inside the Story</Heading><Grid><Field name="Eyebrow"><Text value={page.inside.eyebrow} onChange={v=>sec('inside',{eyebrow:v})}/></Field><Field name="Title"><Text value={page.inside.title} onChange={v=>sec('inside',{title:v})}/></Field><Color name="Background Color" value={page.inside.backgroundColor} onChange={v=>sec('inside',{backgroundColor:v})}/><Field name="Context"><Text area value={page.inside.context} onChange={v=>sec('inside',{context:v})}/></Field><Field name="Body"><Text area value={page.inside.body} onChange={v=>sec('inside',{body:v})}/></Field></Grid><Grid>{page.inside.images.map((v,i)=><div key={i} style={{marginTop:20}}>{image(`Inside Image ${i+1}`,v,value=>sec('inside',{images:page.inside.images.map((x,n)=>n===i?value:x)}),`story-inside-${i+1}`)}</div>)}</Grid></div>
+  <div style={box}><Heading>Quote Section</Heading><Grid><Field name="Eyebrow"><Text value={page.quote.eyebrow} onChange={v=>sec('quote',{eyebrow:v})}/></Field><Color name="Background Color" value={page.quote.backgroundColor} onChange={v=>sec('quote',{backgroundColor:v})}/><Field name="Quote"><Text area value={page.quote.quote} onChange={v=>sec('quote',{quote:v})}/></Field><Field name="Supporting Text"><Text area value={page.quote.body} onChange={v=>sec('quote',{body:v})}/></Field></Grid><Grid>{page.quote.images.map((v,i)=><div key={i} style={{marginTop:20}}>{image(`Quote Image ${i+1}`,v,value=>sec('quote',{images:page.quote.images.map((x,n)=>n===i?value:x)}),`story-quote-${i+1}`)}</div>)}</Grid></div>
+  <div style={box}><Heading>Closing Reflection</Heading><Grid><Field name="Eyebrow"><Text value={page.closing.eyebrow} onChange={v=>sec('closing',{eyebrow:v})}/></Field><Color name="Background Color" value={page.closing.backgroundColor} onChange={v=>sec('closing',{backgroundColor:v})}/><Field name="Title / Reflection"><Text area value={page.closing.title} onChange={v=>sec('closing',{title:v})}/></Field><div>{image('Closing Image',page.closing.image,v=>sec('closing',{image:v}),'story-closing')}</div></Grid>{page.closing.paragraphs.map((p,i)=><div key={i} style={{marginTop:20}}><Field name={`Paragraph ${i+1}`}><Text area value={p} onChange={v=>sec('closing',{paragraphs:page.closing.paragraphs.map((x,n)=>n===i?v:x)})}/></Field></div>)}</div>
+  <div style={box}><Heading>Related Stories & Navigation</Heading><Grid><Field name="Related Eyebrow"><Text value={page.related.eyebrow} onChange={v=>sec('related',{eyebrow:v})}/></Field><Field name="Related Title"><Text value={page.related.title} onChange={v=>sec('related',{title:v})}/></Field><Color name="Related Background" value={page.related.backgroundColor} onChange={v=>sec('related',{backgroundColor:v})}/><Field name="Previous Label"><Text value={page.navigation.previousLabel} onChange={v=>sec('navigation',{previousLabel:v})}/></Field><Field name="Next Label"><Text value={page.navigation.nextLabel} onChange={v=>sec('navigation',{nextLabel:v})}/></Field><Color name="Navigation Background" value={page.navigation.backgroundColor} onChange={v=>sec('navigation',{backgroundColor:v})}/><Color name="Navigation Text" value={page.navigation.textColor} onChange={v=>sec('navigation',{textColor:v})}/></Grid></div>
+  <div style={box}><Heading>Page Colors</Heading><Grid><Color name="Page Background" value={page.page.backgroundColor} onChange={v=>sec('page',{backgroundColor:v})}/><Color name="Page Text" value={page.page.textColor} onChange={v=>sec('page',{textColor:v})}/><Color name="Accent" value={page.page.accentColor} onChange={v=>sec('page',{accentColor:v})}/></Grid></div>
+  <div style={{display:'flex',gap:12,marginBottom:32}}><button disabled={saving||!form.title} style={{padding:'11px 30px',background:ACCENT,color:'#fff',border:0}}>{saving?'Saving...':'Save Complete Story'}</button><button type="button" onClick={onCancel} style={{padding:'10px 24px',background:'transparent',border:'1px solid #ddd'}}>Cancel</button></div>
+ </form>
 }
 
-export default function AdminStories() {
-  const utils = trpc.useUtils();
-  const [showForm, setShowForm] = useState(false);
-  const [editId, setEditId] = useState<number | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
-
-  const { data: stories = [], isLoading } = trpc.admin.listStories.useQuery();
-  const createStory = trpc.admin.createStory.useMutation({ onSuccess: () => { utils.admin.listStories.invalidate(); setShowForm(false); } });
-  const updateStory = trpc.admin.updateStory.useMutation({ onSuccess: () => { utils.admin.listStories.invalidate(); setEditId(null); } });
-  const deleteStory = trpc.admin.deleteStory.useMutation({ onSuccess: () => utils.admin.listStories.invalidate() });
-  const { data: storyDetail } = trpc.admin.getStory.useQuery({ id: editId! }, { enabled: editId !== null });
-
-  return (
-    <AdminLayout title="Stories">
-      <div style={{ padding: "32px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px" }}>
-          <div>
-            <h1 style={{ fontSize: "22px", fontWeight: "300", letterSpacing: "0.1em", textTransform: "uppercase", color: "#1a1a1a", margin: 0 }}>Stories</h1>
-            <p style={{ fontSize: "13px", color: "#888", marginTop: "4px" }}>{stories.length} stories</p>
-          </div>
-          {!showForm && editId === null && (
-            <button onClick={() => setShowForm(true)} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 20px", fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", background: ACCENT, color: "#fff", border: "none", cursor: "pointer" }}>
-              <Plus size={14} /> New Story
-            </button>
-          )}
-        </div>
-
-        {showForm && (
-          <StoryForm initial={emptyForm} onSave={data => createStory.mutate(data)} onCancel={() => setShowForm(false)} saving={createStory.isPending} />
-        )}
-
-        {isLoading ? (
-          <div style={{ textAlign: "center", padding: "48px", color: "#888", fontSize: "13px" }}>Loading...</div>
-        ) : (
-          <div style={{ background: "#fff", border: "1px solid #eee" }}>
-            <div style={{ display: "flex", alignItems: "center", padding: "10px 20px", background: "#e8e8e8" }}>
-              <span style={{ flex: 1, fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase", color: "#888" }}>Story</span>
-              <span style={{ width: "80px", fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase", color: "#888", textAlign: "center" }}>Status</span>
-              <span style={{ width: "100px" }} />
-            </div>
-
-            {stories.length === 0 && (
-              <div style={{ padding: "48px", textAlign: "center", color: "#888", fontSize: "13px" }}>No stories yet.</div>
-            )}
-
-            {stories.map((story, idx) => {
-              const bg = idx % 2 === 0 ? "#f2f2f2" : "#e8e8e8";
-              const isEditing = editId === story.id;
-
-              if (isEditing && storyDetail) {
-                return (
-                  <div key={story.id} style={{ background: "#fff", padding: "20px", borderBottom: "1px solid #ddd" }}>
-                    <StoryForm
-                      initial={{
-                        title: storyDetail.title,
-                        slug: storyDetail.slug,
-                        content: storyDetail.content || "",
-                        coverImage: storyDetail.coverImage || "",
-                        isActive: storyDetail.isActive,
-                        sortOrder: storyDetail.sortOrder ?? 0,
-                        tagIds: storyDetail.tagIds || [],
-                      }}
-                      onSave={data => updateStory.mutate({ id: story.id, ...data })}
-                      onCancel={() => setEditId(null)}
-                      saving={updateStory.isPending}
-                    />
-                  </div>
-                );
-              }
-
-              return (
-                <div key={story.id} style={{ display: "flex", alignItems: "center", padding: "14px 20px", background: bg, borderBottom: "1px solid rgba(0,0,0,0.04)" }}>
-                  <div style={{ width: "48px", height: "32px", background: "#ddd", marginRight: "14px", flexShrink: 0, overflow: "hidden" }}>
-                    {story.coverImage && <img src={story.coverImage} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.target as HTMLImageElement).style.display = "none"; }} />}
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: "14px", color: "#1a1a1a" }}>{story.title}</div>
-                    <div style={{ fontSize: "11px", color: "#aaa", marginTop: "2px" }}>/{story.slug}</div>
-                  </div>
-                  <div style={{ width: "80px", textAlign: "center" }}>
-                    <span style={{ fontSize: "11px", color: story.isActive ? "#4caf50" : "#aaa" }}>{story.isActive ? "Active" : "Hidden"}</span>
-                  </div>
-                  <div style={{ width: "100px", display: "flex", justifyContent: "flex-end", gap: "8px" }}>
-                    {deleteConfirm === story.id ? (
-                      <>
-                        <button onClick={() => { deleteStory.mutate({ id: story.id }); setDeleteConfirm(null); }} style={iconBtnStyle("#e53e3e")}><Check size={14} /></button>
-                        <button onClick={() => setDeleteConfirm(null)} style={iconBtnStyle("#888")}><X size={14} /></button>
-                      </>
-                    ) : (
-                      <>
-                        <button onClick={() => { setEditId(story.id); setShowForm(false); }} style={iconBtnStyle("#888")}><Edit2 size={14} /></button>
-                        <button onClick={() => setDeleteConfirm(story.id)} style={iconBtnStyle("#e53e3e")}><Trash2 size={14} /></button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    </AdminLayout>
-  );
+export default function AdminStories(){
+ const utils=trpc.useUtils();const {data:stories=[],isLoading}=trpc.admin.listStories.useQuery();const [editing,setEditing]=React.useState<number|'new'|null>(null);const [confirmId,setConfirmId]=React.useState<number|null>(null);
+ const create=trpc.admin.createStory.useMutation({onSuccess:()=>{utils.admin.listStories.invalidate();setEditing(null);toast.success('Story created')},onError:e=>toast.error(e.message)});const update=trpc.admin.updateStory.useMutation({onSuccess:()=>{utils.admin.listStories.invalidate();setEditing(null);toast.success('Story saved')},onError:e=>toast.error(e.message)});const remove=trpc.admin.deleteStory.useMutation({onSuccess:()=>utils.admin.listStories.invalidate()});
+ const id=typeof editing==='number'?editing:null;const {data:detail}=trpc.admin.getStory.useQuery({id:id!},{enabled:id!==null});
+ const toForm=(s:any):Form=>{const base={title:s.title,category:s.pageContent?.meta?.category||'Journal',date:new Date(s.createdAt).toISOString(),location:'Rural China',excerpt:'',content:s.content||'',coverImage:s.coverImage||''};return {title:s.title,slug:s.slug,content:s.content||'',coverImage:s.coverImage||'',isActive:s.isActive,sortOrder:s.sortOrder||0,tagIds:s.tagIds||[],pageContent:normalizeStoryDetail(s.pageContent,base)}};
+ return <AdminLayout title="Story Details"><div style={{padding:32,maxWidth:1050}}><div style={{display:'flex',justifyContent:'space-between',marginBottom:24}}><div><h1 style={{fontSize:22,fontWeight:300,letterSpacing:'.1em',textTransform:'uppercase',margin:0}}>Story Detail Pages</h1><p style={{fontSize:13,color:'#888'}}>Edit the complete content of each article detail page. The Stories homepage is managed separately.</p></div>{editing===null&&<button onClick={()=>setEditing('new')} style={{display:'flex',gap:8,padding:'10px 20px',background:ACCENT,color:'#fff',border:0}}><Plus size={14}/> New Story</button>}</div>{editing==='new'?<Editor initial={empty} saving={create.isPending} onCancel={()=>setEditing(null)} onSave={v=>create.mutate(v)}/>:id!==null?(detail?<Editor initial={toForm(detail)} saving={update.isPending} onCancel={()=>setEditing(null)} onSave={v=>update.mutate({id,...v})}/>:<div>Loading...</div>):isLoading?<div>Loading...</div>:<div style={{background:'#fff',border:'1px solid #eee'}}>{stories.map((s,i)=><div key={s.id} style={{display:'flex',alignItems:'center',padding:'14px 20px',background:i%2?'#e8e8e8':'#f2f2f2'}}><div style={{width:64,height:44,marginRight:14,background:'#ddd'}}>{s.coverImage&&<img src={s.coverImage} alt="" style={{width:'100%',height:'100%',objectFit:'cover'}}/>}</div><div style={{flex:1}}><div>{s.title}</div><small style={{color:'#999'}}>/stories/article/{s.slug}</small></div><span style={{fontSize:11,color:s.isActive?'#4caf50':'#aaa',marginRight:24}}>{s.isActive?'ACTIVE':'HIDDEN'}</span>{confirmId===s.id?<><button onClick={()=>{remove.mutate({id:s.id});setConfirmId(null)}} style={{border:0,background:'none',color:'#e53e3e'}}><Check size={15}/></button><button onClick={()=>setConfirmId(null)} style={{border:0,background:'none'}}><X size={15}/></button></>:<><button onClick={()=>setEditing(s.id)} style={{border:0,background:'none'}}><Edit2 size={15}/></button><button onClick={()=>setConfirmId(s.id)} style={{border:0,background:'none',color:'#e53e3e'}}><Trash2 size={15}/></button></>}</div>)}</div>}</div></AdminLayout>
 }

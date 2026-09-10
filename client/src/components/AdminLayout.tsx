@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { label: "Homepage",     path: "/admin/homepage",     icon: Home },
   { label: "Our Story",    path: "/admin/our-story",    icon: BookOpen },
   { label: "Explore",      path: "/admin/explore",      icon: Compass },
+  { label: "Story Details", path: "/admin/stories",     icon: BookOpen },
   { label: "Enquiries",    path: "/admin/enquiries",    icon: Mail },
 ];
 

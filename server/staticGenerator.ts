@@ -17,6 +17,7 @@ import {
   listExperienceTypesWithNav,
   listOurStorySections,
   listExploreSections,
+  listStories,
   toSlug,
 } from "./db-cms";
 
@@ -143,6 +144,15 @@ async function buildPageList(baseUrl: string): Promise<{ url: string; filePath: 
     }
   } catch (err) {
     console.error("[StaticGen] Failed to load Explore pages:", err);
+  }
+
+  try {
+    const stories = await listStories(false);
+    for (const story of stories) {
+      pages.push({ url: `${baseUrl}/stories/article/${story.slug}`, filePath: path.join(STATIC_CACHE_DIR, `stories/article/${story.slug}/index.html`) });
+    }
+  } catch (err) {
+    console.error("[StaticGen] Failed to load Story detail pages:", err);
   }
 
   // Dynamic city pages
