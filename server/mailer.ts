@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { getContactSettings } from "./db-contact-settings";
 
 export interface ContactFormData {
   firstName: string;
@@ -123,7 +124,8 @@ function buildEmailHtml(data: ContactFormData & { createdAt: Date }): string {
 
 export async function sendContactEmail(data: ContactFormData): Promise<void> {
   const transporter = getTransporter();
-  const toEmail = process.env.SMTP_TO || process.env.SMTP_USER!;
+  const contactSettings = await getContactSettings();
+  const toEmail = contactSettings.email || process.env.SMTP_TO || process.env.SMTP_USER!;
   const fromEmail = process.env.SMTP_USER!;
   const fromName = process.env.SMTP_FROM_NAME || "China Luxury Travel";
 
