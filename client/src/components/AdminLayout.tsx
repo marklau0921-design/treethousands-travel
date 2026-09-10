@@ -24,7 +24,7 @@ interface AdminLayoutProps {
 }
 
 // ── Login form ──
-function LoginForm({ onSuccess }: { onSuccess: () => void }) {
+function LoginForm({ onSuccess, logoUrl }: { onSuccess: () => void; logoUrl: string }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -43,13 +43,12 @@ function LoginForm({ onSuccess }: { onSuccess: () => void }) {
   return (
     <div style={{ minHeight: "100vh", background: "#1a1a1a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 16px" }}>
       <div style={{ width: "100%", maxWidth: "360px" }}>
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "40px" }}>
-          <img
-            src=""
-            alt="Logo"
-            style={{ height: "52px", width: "auto", objectFit: "contain" }}
-            onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
-          />
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "52px", marginBottom: "40px" }}>
+          {logoUrl ? <img
+            src={logoUrl}
+            alt="TreeThousands"
+            style={{ height: "52px", maxWidth: "280px", width: "auto", objectFit: "contain" }}
+          /> : <span style={{ color: "#fff", fontSize: 19, letterSpacing: "0.12em", textTransform: "uppercase" }}>TreeThousands</span>}
         </div>
         <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "36px 32px" }}>
           <p style={{ color: "#888", fontSize: "11px", letterSpacing: "0.15em", textTransform: "uppercase", textAlign: "center", marginBottom: "28px" }}>
@@ -121,7 +120,7 @@ function LoginForm({ onSuccess }: { onSuccess: () => void }) {
 }
 
 // ── Sidebar — defined OUTSIDE AdminLayout to prevent remount on route change ──
-function Sidebar({ onLogout }: { onLogout: () => void }) {
+function Sidebar({ onLogout, logoUrl }: { onLogout: () => void; logoUrl: string }) {
   const [location] = useLocation();
 
   return (
@@ -139,12 +138,11 @@ function Sidebar({ onLogout }: { onLogout: () => void }) {
       {/* Logo */}
       <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <a href="/" style={{ display: "block", height: "36px" }}>
-          <img
-            src=""
-            alt="Logo"
-            style={{ height: "36px", width: "auto", objectFit: "contain" }}
-            onError={e => { (e.target as HTMLImageElement).style.visibility = "hidden"; }}
-          />
+          {logoUrl ? <img
+            src={logoUrl}
+            alt="TreeThousands"
+            style={{ height: "36px", maxWidth: "180px", width: "auto", objectFit: "contain" }}
+          /> : <span style={{ display: "flex", alignItems: "center", height: "36px", color: "#fff", fontSize: 14, letterSpacing: "0.1em", textTransform: "uppercase" }}>TreeThousands</span>}
         </a>
         <div style={{ marginTop: "8px", fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#555" }}>
           Admin Panel
@@ -217,6 +215,8 @@ function Sidebar({ onLogout }: { onLogout: () => void }) {
 // ── Main Layout ──
 export default function AdminLayout({ children, title }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { data: homepageAssets } = trpc.media.getHomepageAssets.useQuery();
+  const logoUrl = homepageAssets?.logo?.url || "";
   const { data: authData, isLoading: authLoading, isError: authError } = trpc.admin.check.useQuery(
     undefined,
     {
@@ -248,14 +248,14 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
   }
 
   if (!authData?.authenticated || authError) {
-    return <LoginForm onSuccess={handleLoginSuccess} />;
+    return <LoginForm onSuccess={handleLoginSuccess} logoUrl={logoUrl} />;
   }
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "#f5f5f5" }}>
       {/* Desktop sidebar */}
       <div className="hidden md:flex">
-        <Sidebar onLogout={handleLogout} />
+        <Sidebar onLogout={handleLogout} logoUrl={logoUrl} />
       </div>
 
       {/* Mobile sidebar overlay */}
@@ -265,7 +265,7 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
           onClick={() => setSidebarOpen(false)}
         >
           <div onClick={e => e.stopPropagation()} style={{ position: "relative", zIndex: 51 }}>
-            <Sidebar onLogout={handleLogout} />
+            <Sidebar onLogout={handleLogout} logoUrl={logoUrl} />
           </div>
           <div style={{ flex: 1, background: "rgba(0,0,0,0.5)" }} />
         </div>
