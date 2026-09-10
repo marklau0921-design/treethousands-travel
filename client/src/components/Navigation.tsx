@@ -42,6 +42,9 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
   const { data: ourStorySections } = trpc.ourStory.listPublicSections.useQuery();
   const { data: exploreSections } = trpc.explore.listPublicSections.useQuery();
   const logoUrl = homepageAssets?.logo?.url || '';
+  const storedLogoScale = Number(homepageAssets?.logo?.opacity);
+  const logoScale = [25, 50, 75, 100].includes(storedLogoScale) ? storedLogoScale : 25;
+  const logoHeight = Math.round(40 * (logoScale / 25));
   const navItems = NAV_ITEMS.map(item => {
     if (item.key === 'our-story' && ourStorySections?.length) return { ...item, children: ourStorySections.map(section => ({ label: section.title, href: `/our-story/${section.slug}` })) };
     if (item.key === 'explore' && exploreSections?.length) return { ...item, children: exploreSections.map(section => ({ label: section.title, href: `/explore/${section.slug}` })) };
@@ -106,7 +109,7 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
     <nav className="fixed top-0 left-0 right-0 z-50" style={{ display: navVisible && !forceHide ? 'block' : 'none', background: anyOverlayOpen ? '#fff' : 'linear-gradient(to bottom,rgba(20,20,20,.55),rgba(20,20,20,0))', transition: 'background .25s ease' }}>
       <div className="flex items-center relative" style={{ height: 55 }}>
         <Link href="/" className="flex-shrink-0 group absolute" style={{ left: 'clamp(28px,calc(-645px + 49.82vw),305px)' }}>
-          {logoUrl && <img src={logoUrl} alt="TreeThousands" className="group-hover:opacity-70 transition-opacity" style={{ height: 40, width: 'auto', objectFit: 'contain', visibility: logoLoaded ? 'visible' : 'hidden' }} onLoad={() => setLogoLoaded(true)} onError={() => setLogoLoaded(false)} />}
+          {logoUrl && <img src={logoUrl} alt="TreeThousands" className="group-hover:opacity-70 transition-opacity" style={{ height: logoHeight, width: 'auto', maxWidth: '45vw', objectFit: 'contain', visibility: logoLoaded ? 'visible' : 'hidden', transition: 'height .2s ease' }} onLoad={() => setLogoLoaded(true)} onError={() => setLogoLoaded(false)} />}
         </Link>
         <div className="hidden md:flex items-center gap-7 absolute left-1/2" style={{ transform: 'translateX(-50%)' }}>
           {navItems.map(item => item.key ? <button key={item.href} onClick={() => setActiveMenu(activeMenu === item.key ? null : item.key!)} style={{ color: anyOverlayOpen ? '#111' : '#fff', fontFamily: NAV_SANS, fontSize: 12, fontWeight: 700, letterSpacing: '.065em', textTransform: 'uppercase', background: 'none', border: 0, cursor: 'pointer', padding: 0 }}><span className={`tt-nav-link${isActive(item.href) || activeMenu === item.key ? ' active' : ''}`}>{item.label}</span></button> : <Link key={item.href} href={item.href} style={{ color: anyOverlayOpen ? '#111' : '#fff', fontFamily: NAV_SANS, fontSize: 12, fontWeight: 700, letterSpacing: '.065em', textTransform: 'uppercase', textDecoration: 'none' }}><span className={`tt-nav-link${isActive(item.href) ? ' active' : ''}`}>{item.label}</span></Link>)}
