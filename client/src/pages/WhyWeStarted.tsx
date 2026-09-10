@@ -20,6 +20,7 @@ const fallbackMeta: Record<string, { title: string; content: string; image: stri
 export default function WhyWeStarted() {
   const { slug = 'why-we-started' } = useParams<{ slug: string }>();
   const { data: sections, isLoading } = trpc.ourStory.listPublicSections.useQuery();
+  const { data: homepageAssets } = trpc.media.getHomepageAssets.useQuery();
   const getObjectPosition = useMediaObjectPosition();
   const section = sections?.find(item => item.slug === slug);
   const meta = section ?? fallbackMeta[slug];
@@ -32,6 +33,8 @@ export default function WhyWeStarted() {
   const page = section
     ? normalizeOurStoryPage(section.pageContent, section.title, section.content, section.image ?? '')
     : createDefaultOurStoryPage(safeMeta.title, safeMeta.content, safeMeta.image ?? '');
+  const ctaTexture = homepageAssets?.cta?.url || '';
+  const ctaTextureOpacity = Math.max(0, Math.min(1, Number(homepageAssets?.cta?.opacity ?? 28) / 100));
 
   return (
     <div className="our-story-detail bg-[#f4f0e7] text-[#1b241f]">
@@ -65,7 +68,7 @@ export default function WhyWeStarted() {
 
       <section className="split" style={{ background: page.closing.backgroundColor }}><img src={page.closing.image} alt={page.closing.title} className="w-full h-full object-cover" style={{ minHeight: 650, objectPosition: getObjectPosition(page.closing.image) }} /><div className="flex flex-col justify-center" style={{ padding: 'clamp(60px,8vw,120px)' }}><p className="eyebrow" style={{ color: '#74482f', margin: '0 0 24px' }}>{page.closing.eyebrow}</p><h2 className="display-title" style={{ fontSize: 'clamp(48px,5.4vw,78px)', color: '#17352d', margin: '0 0 30px' }}>{page.closing.title}</h2><div className="body-copy" style={{ color: '#3f4741' }}>{page.closing.paragraphs.map((paragraph, index) => <p key={index} style={{ margin: index === page.closing.paragraphs.length - 1 ? 0 : '0 0 20px' }}>{paragraph}</p>)}</div></div></section>
 
-      <section style={{ position: 'relative', minHeight: 275, backgroundColor: page.cta.backgroundColor, color: page.cta.textColor, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '55px 24px' }}>{page.cta.textureImage && <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${page.cta.textureImage})`, backgroundSize: '420px 420px', backgroundRepeat: 'repeat', opacity: Math.max(0, Math.min(1, page.cta.textureOpacity / 100)) }} />}<div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>{page.cta.eyebrow && <p className="eyebrow" style={{ opacity: .72, margin: '0 0 16px' }}>{page.cta.eyebrow}</p>}<h2 className="display-title" style={{ fontSize: 'clamp(38px,5vw,64px)', margin: '0 0 28px' }}>{page.cta.title}</h2><Link href={page.cta.buttonHref} style={{ display: 'inline-block', background: page.cta.buttonBackgroundColor, color: page.cta.buttonTextColor, border: `2px solid ${page.cta.buttonBackgroundColor}`, padding: '13px 34px', fontFamily: SANS, fontSize: 12, fontWeight: 700, letterSpacing: '.15em', textTransform: 'uppercase', textDecoration: 'none' }}>{page.cta.buttonLabel}</Link></div></section>
+      <section style={{ position: 'relative', minHeight: 275, backgroundColor: page.cta.backgroundColor, color: page.cta.textColor, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '55px 24px' }}>{ctaTexture && <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${ctaTexture})`, backgroundSize: '420px 420px', backgroundRepeat: 'repeat', opacity: ctaTextureOpacity }} />}<div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}><h2 className="display-title" style={{ fontSize: 'clamp(38px,5vw,64px)', margin: '0 0 28px' }}>{page.cta.title}</h2><Link href="/make-an-enquiry" style={{ display: 'inline-block', background: page.cta.buttonBackgroundColor, color: page.cta.buttonTextColor, border: `2px solid ${page.cta.buttonBackgroundColor}`, padding: '13px 34px', fontFamily: SANS, fontSize: 12, fontWeight: 700, letterSpacing: '.15em', textTransform: 'uppercase', textDecoration: 'none' }}>{page.cta.buttonLabel}</Link></div></section>
 
       <OurStoryRecommendations currentSlug={slug} settings={page.recommendations} />
       <Footer />
