@@ -86,6 +86,24 @@ type MediaAsset = {
   createdAt: Date;
 };
 
+function LogoScaleControl({ value, onCommit }: { value: number; onCommit: (value: number) => void }) {
+  const [scale, setScale] = useState(value);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const changeScale = (next: number) => {
+    setScale(next);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => onCommit(next), 180);
+  };
+
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 12, flex: "1 1 320px", justifyContent: "flex-end" }}>
+      <input type="range" min={10} max={100} step={1} value={scale} aria-label="Frontend logo size" onChange={(event) => changeScale(Number(event.target.value))} style={{ width: "min(320px, 100%)", accentColor: "#F5569B" }} />
+      <strong style={{ minWidth: 48, textAlign: "right", color: "#F5569B", fontSize: 13 }}>{scale}%</strong>
+    </div>
+  );
+}
+
 function ImageCard({
   asset,
   onDelete,
@@ -227,18 +245,7 @@ function HomepageAssetsTab() {
         </div>
         {(logos as MediaAsset[]).filter((logo) => logo.isActive).map((logo) => {
           const storedScale = Number(logo.opacity);
-          const scale = [25, 50, 75, 100].includes(storedScale) ? storedScale : 25;
-          const changeScale = (nextScale: number) => updateOpacityMut.mutate({ id: logo.id, opacity: nextScale });
-          const controlButtonStyle: React.CSSProperties = {
-            border: "1px solid #d8d8d8",
-            borderRadius: 5,
-            background: "#fff",
-            color: "#333",
-            cursor: "pointer",
-            fontSize: 12,
-            fontWeight: 600,
-            padding: "7px 13px",
-          };
+          const scale = Number.isFinite(storedScale) && storedScale >= 10 && storedScale <= 100 && storedScale !== 28 ? storedScale : 25;
 
           return (
             <div key={`logo-size-${logo.id}`} style={{ marginBottom: 16, padding: "14px 16px", border: "1px solid #f0f0f0", borderRadius: 8, background: "#fafafa", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
@@ -246,11 +253,7 @@ function HomepageAssetsTab() {
                 <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#444" }}>Frontend Logo Size</div>
                 <div style={{ marginTop: 4, fontSize: 11, color: "#888" }}>Changes the logo size displayed in the website navigation.</div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <button type="button" disabled={scale <= 25 || updateOpacityMut.isPending} onClick={() => changeScale(Math.max(25, scale - 25))} style={{ ...controlButtonStyle, opacity: scale <= 25 ? 0.4 : 1, cursor: scale <= 25 ? "not-allowed" : "pointer" }}>− Smaller</button>
-                <strong style={{ minWidth: 48, textAlign: "center", color: "#F5569B", fontSize: 13 }}>{scale}%</strong>
-                <button type="button" disabled={scale >= 100 || updateOpacityMut.isPending} onClick={() => changeScale(Math.min(100, scale + 25))} style={{ ...controlButtonStyle, opacity: scale >= 100 ? 0.4 : 1, cursor: scale >= 100 ? "not-allowed" : "pointer" }}>Larger +</button>
-              </div>
+              <LogoScaleControl value={scale} onCommit={(nextScale) => updateOpacityMut.mutate({ id: logo.id, opacity: nextScale })} />
             </div>
           );
         })}
