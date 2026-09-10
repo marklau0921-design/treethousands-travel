@@ -19,6 +19,7 @@ import {
   findMediaAssetUsages, updateAssetObjectPositionByUrl, listMediaObjectPositions,
 } from "./db-media";
 import { storagePut, UPLOADS_ROOT, storageDelete } from "./storage";
+import { getContactSettings, updateContactSettings } from "./db-contact-settings";
 import { generateStaticPages, generateNavData, clearStaticCache, STATIC_CACHE_DIR } from "./staticGenerator";
 import {
   listTags, createTag, updateTag, deleteTag,
@@ -226,6 +227,10 @@ const videoInput = z.object({
 
 // ─── Router ───────────────────────────────────────────────────────────────────
 export const appRouter = router({
+  contactSettings: router({
+    get: publicProcedure.query(() => getContactSettings()),
+    update: publicProcedure.input(z.object({ email: z.string().email(), whatsappNumber: z.string().min(6).max(40) })).mutation(async ({ ctx, input }) => { await requireAdmin(ctx); return updateContactSettings(input); }),
+  }),
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
