@@ -13,6 +13,7 @@ import { Link, useLocation } from 'wouter';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
 import { defaultHomepageSections, type HomepageCtaContent, type HomepageExploreContent, type HomepageFeaturesContent, type HomepageHeroContent, type HomepageIntroContent, type HomepageOurStoryContent, type HomepageSectionKey, type HomepageStoriesContent } from '@shared/homepage';
+import { normalizeExplorePage } from '@shared/explore';
 
 
 /**
@@ -80,6 +81,7 @@ export default function Home() {
   const getObjectPosition = useMediaObjectPosition();
   // 首页管理模块公开数据（hero/intro/stories/sponsors）
   const { data: homepageData } = trpc.homepage.getPublicData.useQuery();
+  const { data: explorePages } = trpc.explore.listPublicSections.useQuery();
   
   const section = <T,>(key:HomepageSectionKey) => {
     const live=homepageData?.sections?.find(item=>item.sectionKey===key);
@@ -96,7 +98,9 @@ export default function Home() {
   const activeBanners = heroBackgroundImages.length > 0
     ? heroBackgroundImages
     : (apiBanners && apiBanners.length > 0) ? apiBanners.map((b) => b.url) : [FALLBACK_BANNER];
-  const explorationCategories: Trip[] = exploreSection.content.cards.map((card,index)=>({id:index,title:card.title,buttonText:card.buttonLabel,image:card.image,href:card.href}));
+  const explorationCategories: Trip[] = explorePages?.length
+    ? explorePages.map((item,index)=>{const card=normalizeExplorePage(item.pageContent,item.slug).homepageCard;return{id:item.id,title:card.title,buttonText:'Explore',image:card.image,href:`/explore/${item.slug}`}})
+    : exploreSection.content.cards.map((card,index)=>({id:index,title:card.title,buttonText:card.buttonLabel,image:card.image,href:card.href}));
   const heroTitle = heroSection.content.title;
   const heroSubtitle = heroSection.content.subtitle;
 
