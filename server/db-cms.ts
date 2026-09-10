@@ -864,7 +864,7 @@ export async function updateHomepageSection(id:number,data:Partial<InsertHomepag
   await ensureHomepageSectionsTable();const db=await getDb();if(!db)throw new Error('DB unavailable');
   const [current]=await db.select().from(homepageSections).where(eq(homepageSections.id,id)).limit(1);if(!current)throw new Error('Homepage section not found');
   const key=current.sectionKey as HomepageSectionKey;
-  if(key==='explore')delete data.content;
+  if(key==='explore'||key==='features')delete data.content;
   else if(data.content){
     const before=normalizeHomepageSection(key,current.content) as any;const after=normalizeHomepageSection(key,data.content) as any;
     if(key==='introduction'||key==='cta')after.buttonHref=before.buttonHref;
