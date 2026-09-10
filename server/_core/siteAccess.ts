@@ -36,7 +36,7 @@ function loginPage(hasError = false): string {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
-  <title>TreeThousands — Private Preview</title>
+  <title>TreeThousands</title>
   <style>
     *{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f5f3ef;color:#111;font-family:Arial,Helvetica,sans-serif;padding:24px}.gate{width:min(440px,100%);text-align:center}.brand{font-family:'Arial Narrow',Impact,sans-serif;font-size:42px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 12px}.eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#777;margin:0 0 42px}.copy{font-size:15px;line-height:1.6;color:#52575c;margin:0 0 24px}.field{width:100%;height:50px;border:1px solid #bbb;background:#fff;border-radius:3px;padding:0 16px;font-size:16px;outline:none}.field:focus{border-color:#111}.button{width:100%;height:50px;margin-top:14px;background:#111;color:#fff;border:2px solid #111;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:.2s}.button:hover{background:#f5f3ef;color:#111}.error{font-size:13px;color:#a32323;margin:14px 0 0}
   </style>
