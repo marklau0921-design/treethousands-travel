@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import AdminLayout from "@/components/AdminLayout";
-import { MapPin, Compass, Map, BookOpen, Video, Tag, Mail, ArrowRight, Home, Zap, X, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { Compass, BookOpen, Mail, ArrowRight, Home, Zap, X, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 
 const ACCENT = "#F5569B";
 const GREEN = "#3d9e8c";
@@ -196,12 +196,6 @@ function ResultDialog({
 
 // ── Main Component ──────────────────────────────────────────────────────────
 export default function AdminDashboard() {
-  const { data: cities = [] } = trpc.admin.listCities.useQuery();
-  const { data: experiences = [] } = trpc.admin.listExperiences.useQuery();
-  const { data: itineraries = [] } = trpc.admin.listItineraries.useQuery();
-  const { data: stories = [] } = trpc.admin.listStories.useQuery();
-  const { data: videos = [] } = trpc.admin.listVideos.useQuery();
-  const { data: tags = [] } = trpc.admin.listTags.useQuery();
   const { data: enquiries = [] } = trpc.admin.listEnquiries.useQuery();
 
   const [showConfirm, setShowConfirm] = useState(false);
@@ -282,13 +276,9 @@ export default function AdminDashboard() {
         {/* Stats grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "16px" }}>
           <StatCard icon={Mail}    label="Enquiries"   count={enquiries.length}   path="/admin/enquiries"   color="#F5569B" />
-          <StatCard icon={MapPin}  label="Cities"      count={cities.length}      path="/admin/cities"      color="#c9a96e" />
-          <StatCard icon={Compass} label="Experiences" count={experiences.length} path="/admin/experiences" color="#6e9ec9" />
-          <StatCard icon={Map}     label="Itineraries" count={itineraries.length} path="/admin/itineraries" color="#6ec98b" />
-          <StatCard icon={BookOpen}label="Stories"     count={stories.length}     path="/admin/stories"     color="#c96e9e" />
-          <StatCard icon={Video}   label="Videos"      count={videos.length}      path="/admin/videos"      color="#9e6ec9" />
-          <StatCard icon={Tag}     label="Tags"        count={tags.length}        path="/admin/tags"        color="#c9896e" />
           <StatCard icon={Home}    label="Homepage"    count={undefined}          path="/admin/homepage"    color="#F5569B" />
+          <StatCard icon={BookOpen} label="Our Story"  count={undefined}          path="/admin/our-story"   color="#c96e9e" />
+          <StatCard icon={Compass} label="Explore"     count={undefined}          path="/admin/explore"     color="#6e9ec9" />
         </div>
 
         {/* Recent enquiries */}

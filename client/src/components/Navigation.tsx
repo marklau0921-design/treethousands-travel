@@ -40,10 +40,13 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
   const [location, setLocation] = useLocation();
   const { data: homepageAssets } = trpc.media.getHomepageAssets.useQuery();
   const { data: ourStorySections } = trpc.ourStory.listPublicSections.useQuery();
+  const { data: exploreSections } = trpc.explore.listPublicSections.useQuery();
   const logoUrl = homepageAssets?.logo?.url || '';
-  const navItems = NAV_ITEMS.map(item => item.key === 'our-story' && ourStorySections?.length
-    ? { ...item, children: ourStorySections.map(section => ({ label: section.title, href: `/our-story/${section.slug}` })) }
-    : item);
+  const navItems = NAV_ITEMS.map(item => {
+    if (item.key === 'our-story' && ourStorySections?.length) return { ...item, children: ourStorySections.map(section => ({ label: section.title, href: `/our-story/${section.slug}` })) };
+    if (item.key === 'explore' && exploreSections?.length) return { ...item, children: exploreSections.map(section => ({ label: section.title, href: `/explore/${section.slug}` })) };
+    return item;
+  });
   const activeItem = navItems.find(item => item.key === activeMenu);
   const anyOverlayOpen = activeMenu !== null;
 

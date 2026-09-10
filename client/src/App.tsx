@@ -45,7 +45,8 @@ import CityPage from "./pages/CityPage";
 import CMSAdmin from "./pages/CMSAdmin";
 import ItineraryDetail from "./pages/ItineraryDetail";
 import Stories from "./pages/Stories";
-import VillageLife from "./pages/VillageLife";
+import ExplorePage from "./pages/ExplorePage";
+import AdminExplore from "./pages/AdminExplore";
 import StoryDetail from "./pages/StoryDetail";
 
 /**
@@ -68,9 +69,8 @@ function Router() {
           the new TreeThousands routes are established. */}
       <Route path="/our-story/:slug" component={WhyWeStarted} />
       <Route path="/our-story" component={About} />
-      <Route path="/explore/village-life" component={VillageLife} />
-      <Route path="/explore" component={Experiences} />
-      <Route path="/explore/:category" component={Experiences} />
+      <Route path="/explore" component={ExplorePage} />
+      <Route path="/explore/:category" component={ExplorePage} />
       <Route path="/stories/article/:slug" component={StoryDetail} />
       <Route path="/stories" component={Stories} />
       <Route path="/stories/:category" component={Stories} />
@@ -114,6 +114,7 @@ function Router() {
       <Route path="/admin/about/why-us" component={AdminAboutWhyUs} />
       <Route path="/admin/homepage" component={AdminHomepage} />
       <Route path="/admin/our-story" component={AdminOurStory} />
+      <Route path="/admin/explore" component={AdminExplore} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

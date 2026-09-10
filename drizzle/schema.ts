@@ -427,6 +427,20 @@ export const ourStorySections = mysqlTable("our_story_sections", {
 export type OurStorySection = typeof ourStorySections.$inferSelect;
 export type InsertOurStorySection = typeof ourStorySections.$inferInsert;
 
+// Explore editorial pages
+export const exploreSections = mysqlTable("explore_sections", {
+  id: int("id").autoincrement().primaryKey(),
+  slug: varchar("slug", { length: 100 }).notNull().unique(),
+  title: varchar("title", { length: 300 }).notNull(),
+  pageContent: json("pageContent"),
+  isVisible: boolean("isVisible").default(true).notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type ExploreSection = typeof exploreSections.$inferSelect;
+export type InsertExploreSection = typeof exploreSections.$inferInsert;
+
 // Why Us 板块内容（多行，可增删排序）
 export const whyUsSections = mysqlTable("why_us_sections", {
   id: int("id").autoincrement().primaryKey(),

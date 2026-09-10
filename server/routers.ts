@@ -47,6 +47,7 @@ import {
   getHomepageStorySection, upsertHomepageStorySection,
   listAboutSections, createAboutSection, updateAboutSection, deleteAboutSection,
   listOurStorySections, createOurStorySection, updateOurStorySection, deleteOurStorySection,
+  listExploreSections, createExploreSection, updateExploreSection, deleteExploreSection,
   listWhyUsSections, createWhyUsSection, updateWhyUsSection, deleteWhyUsSection,
   getWhyUsHomeSettings, updateWhyUsHomeSettings,
 } from "./db-cms";
@@ -1644,6 +1645,22 @@ export const appRouter = router({
         await deleteOurStorySection(input.id);
         return { success: true };
       }),
+  }),
+
+  explore: router({
+    listPublicSections: publicProcedure.query(async () => (await listExploreSections()).filter(section => section.isVisible)),
+    listSections: publicProcedure.query(async ({ ctx }) => { await requireAdmin(ctx); return listExploreSections(); }),
+    createSection: publicProcedure.input(z.object({
+      slug: z.string().min(1), title: z.string().min(1), pageContent: z.unknown(),
+      isVisible: z.boolean().default(true), sortOrder: z.number().default(0),
+    })).mutation(async ({ ctx, input }) => { await requireAdmin(ctx); return createExploreSection(input); }),
+    updateSection: publicProcedure.input(z.object({
+      id: z.number(), slug: z.string().min(1).optional(), title: z.string().min(1).optional(),
+      pageContent: z.unknown().optional(), isVisible: z.boolean().optional(), sortOrder: z.number().optional(),
+    })).mutation(async ({ ctx, input }) => { await requireAdmin(ctx); const { id, ...data } = input; return updateExploreSection(id, data); }),
+    deleteSection: publicProcedure.input(z.object({ id: z.number() })).mutation(async ({ ctx, input }) => {
+      await requireAdmin(ctx); await deleteExploreSection(input.id); return { success: true };
+    }),
   }),
 
   about: router({

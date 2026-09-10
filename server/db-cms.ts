@@ -1,12 +1,13 @@
 import { eq, desc, and, sql } from "drizzle-orm";
 import { normalizeOurStoryPage } from "../shared/our-story";
+import { defaultExploreSections, normalizeExplorePage } from "../shared/explore";
 import { getDb, getPool } from "./db";
 import {
   cities, tags, experiences, experienceTags, experienceTypes, experienceDetails, experienceLabels,
   teamMembers, itineraries, itineraryTags, stories, storyTags,
   videos, videoTags, images, cityExperiences, cityWhatToSee,
   homepageHero, homepageIntro, homepageStories, homepageSponsors, homepageStorySections,
-  aboutSections, ourStorySections, whyUsSections,
+  aboutSections, ourStorySections, exploreSections, whyUsSections,
   type InsertCity, type InsertTag, type InsertExperience, type InsertExperienceType,
   type InsertExperienceDetail, type InsertTeamMember,
   type InsertItinerary, type InsertStory, type InsertVideo, type InsertImage,
@@ -16,6 +17,7 @@ import {
   type InsertHomepageStory, type InsertHomepageSponsor, type InsertHomepageStorySection,
   type AboutSection, type InsertAboutSection,
   type InsertOurStorySection,
+  type InsertExploreSection,
   type WhyUsSection, type InsertWhyUsSection,
 } from "../drizzle/schema";
 
@@ -1277,6 +1279,49 @@ export async function deleteOurStorySection(id: number) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
   await db.delete(ourStorySections).where(eq(ourStorySections.id, id));
+}
+
+// ─── Explore Pages ───────────────────────────────────────────────────────────
+async function ensureExploreSectionsTable() {
+  const pool = await getPool();
+  if (!pool) return false;
+  const [existingTables] = await pool.query("SHOW TABLES LIKE 'explore_sections'");
+  const wasCreated = (existingTables as any[]).length === 0;
+  await pool.execute(`CREATE TABLE IF NOT EXISTS \`explore_sections\` (
+    \`id\` int AUTO_INCREMENT NOT NULL, \`slug\` varchar(100) NOT NULL,
+    \`title\` varchar(300) NOT NULL, \`pageContent\` json,
+    \`isVisible\` boolean NOT NULL DEFAULT true, \`sortOrder\` int NOT NULL DEFAULT 0,
+    \`createdAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    \`updatedAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (\`id\`), UNIQUE KEY \`explore_sections_slug_unique\` (\`slug\`)
+  )`);
+  return wasCreated;
+}
+
+export async function listExploreSections() {
+  const wasCreated = await ensureExploreSectionsTable();
+  const db = await getDb();
+  if (!db) return defaultExploreSections.map((item, id) => ({ ...item, id: id + 1, createdAt: new Date(), updatedAt: new Date() }));
+  let rows = await db.select().from(exploreSections).orderBy(exploreSections.sortOrder);
+  if (wasCreated || rows.length === 0) {
+    try { await db.insert(exploreSections).values(defaultExploreSections); } catch (error: any) { if (error?.code !== "ER_DUP_ENTRY") throw error; }
+    rows = await db.select().from(exploreSections).orderBy(exploreSections.sortOrder);
+  }
+  return rows.map(row => ({ ...row, pageContent: normalizeExplorePage(row.pageContent, row.slug) }));
+}
+
+export async function createExploreSection(data: Omit<InsertExploreSection, "id" | "createdAt" | "updatedAt">) {
+  await ensureExploreSectionsTable(); const db = await getDb(); if (!db) throw new Error("DB unavailable");
+  const [result] = await db.insert(exploreSections).values(data); return { id: (result as any).insertId };
+}
+export async function updateExploreSection(id: number, data: Partial<InsertExploreSection>) {
+  await ensureExploreSectionsTable(); const db = await getDb(); if (!db) throw new Error("DB unavailable");
+  await db.update(exploreSections).set({ ...data, updatedAt: new Date() }).where(eq(exploreSections.id, id));
+  const rows = await db.select().from(exploreSections).where(eq(exploreSections.id, id)).limit(1); return rows[0] ?? null;
+}
+export async function deleteExploreSection(id: number) {
+  await ensureExploreSectionsTable(); const db = await getDb(); if (!db) throw new Error("DB unavailable");
+  await db.delete(exploreSections).where(eq(exploreSections.id, id));
 }
 
 // ─── Why Us Sections ─────────────────────────────────────────────────────────

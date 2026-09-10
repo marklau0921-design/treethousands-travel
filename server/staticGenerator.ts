@@ -16,6 +16,7 @@ import {
   listCities,
   listExperienceTypesWithNav,
   listOurStorySections,
+  listExploreSections,
   toSlug,
 } from "./db-cms";
 
@@ -108,6 +109,7 @@ async function buildPageList(baseUrl: string): Promise<{ url: string; filePath: 
     { route: "/experiences", file: "experiences/index.html" },
     { route: "/about", file: "about/index.html" },
     { route: "/our-story", file: "our-story/index.html" },
+    { route: "/explore", file: "explore/index.html" },
     { route: "/about/our-team", file: "about/our-team/index.html" },
     { route: "/about/why-us", file: "about/why-us/index.html" },
     { route: "/make-an-enquiry", file: "make-an-enquiry/index.html" },
@@ -132,6 +134,15 @@ async function buildPageList(baseUrl: string): Promise<{ url: string; filePath: 
     }
   } catch (err) {
     console.error("[StaticGen] Failed to load Our Story pages:", err);
+  }
+
+  try {
+    const explorePages = await listExploreSections();
+    for (const page of explorePages.filter(item => item.isVisible)) {
+      pages.push({ url: `${baseUrl}/explore/${page.slug}`, filePath: path.join(STATIC_CACHE_DIR, `explore/${page.slug}/index.html`) });
+    }
+  } catch (err) {
+    console.error("[StaticGen] Failed to load Explore pages:", err);
   }
 
   // Dynamic city pages
