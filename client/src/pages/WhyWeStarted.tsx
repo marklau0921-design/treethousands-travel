@@ -1,4 +1,5 @@
 import ReadyToStart from '@/components/ReadyToStart';
+import OurStoryRecommendations from '@/components/OurStoryRecommendations';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { trpc } from '@/lib/trpc';
@@ -141,6 +142,7 @@ export default function WhyWeStarted() {
       </section>
 
       <ReadyToStart />
+      <OurStoryRecommendations currentSlug="why-we-started" />
 
       <Footer />
     </div>

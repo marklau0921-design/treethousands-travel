@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'wouter';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import OurStoryRecommendations from '@/components/OurStoryRecommendations';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
 
@@ -59,6 +60,7 @@ function normalizeImages(value: unknown): string[] {
 
 export default function About() {
   const [location] = useLocation();
+  const currentSlug = location.startsWith('/our-story/') ? location.slice('/our-story/'.length) : undefined;
   const { data: homepageData } = trpc.homepage.getPublicData.useQuery();
   const getObjectPosition = useMediaObjectPosition();
 
@@ -69,7 +71,7 @@ export default function About() {
   const imagePool = [...storyImages, ...heroImages, ...fallbackImages];
 
   useEffect(() => {
-    const sectionId = location.startsWith('/our-story/') ? location.slice('/our-story/'.length) : '';
+    const sectionId = currentSlug ?? '';
     window.requestAnimationFrame(() => {
       if (!sectionId) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -77,7 +79,7 @@ export default function About() {
       }
       document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-  }, [location]);
+  }, [currentSlug]);
 
   return (
     <div className="our-story-page min-h-screen flex flex-col bg-[#F5F3EF]">
@@ -125,6 +127,8 @@ export default function About() {
           );
         })}
       </main>
+
+      <OurStoryRecommendations currentSlug={currentSlug} />
 
       <Footer />
     </div>
