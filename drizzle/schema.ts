@@ -455,6 +455,13 @@ export const exploreSections = mysqlTable("explore_sections", {
 export type ExploreSection = typeof exploreSections.$inferSelect;
 export type InsertExploreSection = typeof exploreSections.$inferInsert;
 
+export const siteContactSettings = mysqlTable("site_contact_settings", {
+  id: int("id").primaryKey(),
+  email: varchar("email", { length: 320 }).default("").notNull(),
+  whatsappNumber: varchar("whatsappNumber", { length: 40 }).default("").notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
 // Why Us 板块内容（多行，可增删排序）
 export const whyUsSections = mysqlTable("why_us_sections", {
   id: int("id").autoincrement().primaryKey(),
