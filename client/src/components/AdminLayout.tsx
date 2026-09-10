@@ -43,11 +43,11 @@ function LoginForm({ onSuccess, logoUrl }: { onSuccess: () => void; logoUrl: str
   return (
     <div style={{ minHeight: "100vh", background: "#1a1a1a", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 16px" }}>
       <div style={{ width: "100%", maxWidth: "360px" }}>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "52px", marginBottom: "40px" }}>
+        <div style={{ display: "flex", width: "100%", justifyContent: "center", alignItems: "center", minHeight: "52px", marginBottom: "40px", textAlign: "center" }}>
           {logoUrl ? <img
             src={logoUrl}
             alt="TreeThousands"
-            style={{ height: "52px", maxWidth: "280px", width: "auto", objectFit: "contain" }}
+            style={{ display: "block", height: "52px", maxWidth: "280px", width: "auto", objectFit: "contain", margin: "0 auto" }}
           /> : <span style={{ color: "#fff", fontSize: 19, letterSpacing: "0.12em", textTransform: "uppercase" }}>TreeThousands</span>}
         </div>
         <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "36px 32px" }}>
@@ -137,7 +137,7 @@ function Sidebar({ onLogout, logoUrl }: { onLogout: () => void; logoUrl: string 
     >
       {/* Logo */}
       <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        <a href="/" style={{ display: "block", height: "36px" }}>
+        <a href="/" style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "36px", textAlign: "center" }}>
           {logoUrl ? <img
             src={logoUrl}
             alt="TreeThousands"
