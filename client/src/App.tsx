@@ -48,6 +48,8 @@ import Stories from "./pages/Stories";
 import ExplorePage from "./pages/ExplorePage";
 import AdminExplore from "./pages/AdminExplore";
 import StoryDetail from "./pages/StoryDetail";
+import AdminContactInformation from "./pages/AdminContactInformation";
+import FloatingWhatsApp from "./components/FloatingWhatsApp";
 
 /**
  * App Router & Layout
@@ -115,6 +117,7 @@ function Router() {
       <Route path="/admin/homepage" component={AdminHomepage} />
       <Route path="/admin/our-story" component={AdminOurStory} />
       <Route path="/admin/explore" component={AdminExplore} />
+      <Route path="/admin/contact-information" component={AdminContactInformation} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
@@ -129,6 +132,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Router />
+          <FloatingWhatsApp />
           </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
