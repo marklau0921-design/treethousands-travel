@@ -182,12 +182,12 @@ function HomepageAssetsTab() {
   const { data: ctas = [], isLoading: ctasLoading } = trpc.media.listByType.useQuery({ assetType: "cta" });
   const { data: pageBgs = [], isLoading: pageBgsLoading } = trpc.media.listByType.useQuery({ assetType: "page_bg" });
 
-  const invalidate = () => { utils.media.listByType.invalidate(); utils.media.list.invalidate(); };
+  const invalidate = () => { utils.media.listByType.invalidate(); utils.media.list.invalidate(); utils.media.getHomepageAssets.invalidate(); };
 
   const uploadMut = trpc.media.upload.useMutation({ onSuccess: invalidate });
-  const setActiveMut = trpc.media.setActive.useMutation({ onSuccess: () => utils.media.listByType.invalidate() });
+  const setActiveMut = trpc.media.setActive.useMutation({ onSuccess: invalidate });
   const updateSortMut = trpc.media.updateSortOrder.useMutation({ onSuccess: () => utils.media.listByType.invalidate() });
-  const updateOpacityMut = trpc.media.updateOpacity.useMutation({ onSuccess: () => utils.media.listByType.invalidate() });
+  const updateOpacityMut = trpc.media.updateOpacity.useMutation({ onSuccess: invalidate });
   const replaceMut = trpc.media.replace.useMutation({ onSuccess: invalidate });
 
   const handleUpload = async (file: File, assetType: "logo" | "banner" | "cta" | "page_bg") => {
@@ -225,6 +225,35 @@ function HomepageAssetsTab() {
             </div>
           ))}
         </div>
+        {(logos as MediaAsset[]).filter((logo) => logo.isActive).map((logo) => {
+          const storedScale = Number(logo.opacity);
+          const scale = [25, 50, 75, 100].includes(storedScale) ? storedScale : 25;
+          const changeScale = (nextScale: number) => updateOpacityMut.mutate({ id: logo.id, opacity: nextScale });
+          const controlButtonStyle: React.CSSProperties = {
+            border: "1px solid #d8d8d8",
+            borderRadius: 5,
+            background: "#fff",
+            color: "#333",
+            cursor: "pointer",
+            fontSize: 12,
+            fontWeight: 600,
+            padding: "7px 13px",
+          };
+
+          return (
+            <div key={`logo-size-${logo.id}`} style={{ marginBottom: 16, padding: "14px 16px", border: "1px solid #f0f0f0", borderRadius: 8, background: "#fafafa", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#444" }}>Frontend Logo Size</div>
+                <div style={{ marginTop: 4, fontSize: 11, color: "#888" }}>Changes the logo size displayed in the website navigation.</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <button type="button" disabled={scale <= 25 || updateOpacityMut.isPending} onClick={() => changeScale(Math.max(25, scale - 25))} style={{ ...controlButtonStyle, opacity: scale <= 25 ? 0.4 : 1, cursor: scale <= 25 ? "not-allowed" : "pointer" }}>− Smaller</button>
+                <strong style={{ minWidth: 48, textAlign: "center", color: "#F5569B", fontSize: 13 }}>{scale}%</strong>
+                <button type="button" disabled={scale >= 100 || updateOpacityMut.isPending} onClick={() => changeScale(Math.min(100, scale + 25))} style={{ ...controlButtonStyle, opacity: scale >= 100 ? 0.4 : 1, cursor: scale >= 100 ? "not-allowed" : "pointer" }}>Larger +</button>
+              </div>
+            </div>
+          );
+        })}
         <UploadZone onUpload={(f) => handleUpload(f, "logo")} loading={uploadMut.isPending} label="Upload new logo (drag & drop or click)" />
       </div>
 
