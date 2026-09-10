@@ -21,6 +21,7 @@ function formatDate(value: string | Date) { return new Intl.DateTimeFormat('en',
 export default function StoryDetail() {
   const [, params] = useRoute('/stories/article/:slug');
   const { data = [], isLoading } = trpc.cms.listStories.useQuery();
+  const { data: homepageAssets } = trpc.media.getHomepageAssets.useQuery();
   const getObjectPosition = useMediaObjectPosition();
   const stories = useMemo<EditorialStory[]>(() => {
     const databaseStories = data.map((item, index) => { const detail = item.pageContent; return { id: item.id, slug: item.slug, title: item.title, category: detail.meta.category || inferStoryCategory(item.title, index), date: detail.meta.publishedDate || new Date(item.createdAt).toISOString(), location: detail.meta.location, excerpt: detail.meta.excerpt || plainExcerpt(item.content), content: item.content || '', coverImage: item.coverImage || fallbackStories[index % fallbackStories.length].coverImage, pageContent: detail }; });
@@ -31,6 +32,8 @@ export default function StoryDetail() {
   const storyIndex = story ? stories.findIndex((item) => item.slug === story.slug) : -1;
   const previous = storyIndex >= 0 ? stories[(storyIndex - 1 + stories.length) % stories.length] : undefined;
   const next = storyIndex >= 0 ? stories[(storyIndex + 1) % stories.length] : undefined;
+  const navigationTexture = homepageAssets?.cta?.url || '';
+  const navigationTextureOpacity = Math.max(0, Math.min(1, Number(homepageAssets?.cta?.opacity ?? 28) / 100));
 
   useEffect(() => {
     if (!story) return;
@@ -75,7 +78,7 @@ export default function StoryDetail() {
       <section style={{ background: page.closing.backgroundColor, padding: 'clamp(90px,11vw,155px) 0' }}><div className="magazine-sheet closing-spread"><div><p className="eyebrow" style={{ color: page.page.accentColor, margin: '0 0 24px' }}>{page.closing.eyebrow}</p><p style={{ fontSize: 'clamp(28px,3.4vw,47px)', lineHeight: 1.24, letterSpacing: '-.018em', margin: '0 0 38px' }}>{page.closing.title}</p><div className="prose">{page.closing.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div></div><img src={page.closing.image} alt={`A final view from ${page.meta.location}`} style={{ width: '100%', height: 650, objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(page.closing.image) }} /></div></section>
 
       <section style={{ background: page.related.backgroundColor, padding: 'clamp(85px,10vw,140px) 0' }}><div className="wrap"><p className="eyebrow" style={{ color: page.page.accentColor, margin: '0 0 18px' }}>{page.related.eyebrow}</p><h2 className="display" style={{ fontSize: 'clamp(50px,7vw,88px)', margin: '0 0 52px' }}>{page.related.title}</h2><div className="related">{related.map((item) => <article key={item.slug}><Link href={`/stories/article/${item.slug}`}><img src={item.coverImage} alt={item.title} style={{ width: '100%', height: 340, objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(item.coverImage) }} /><p className="eyebrow" style={{ color: page.page.accentColor, margin: '20px 0 10px' }}>{item.category}</p><h3 style={{ fontSize: 25, lineHeight: 1.25, fontWeight: 500, margin: 0 }}>{item.title}</h3></Link></article>)}</div></div></section>
-      <nav className="adjacent" style={{ background: page.navigation.backgroundColor, color: page.navigation.textColor }}>{previous && <Link href={`/stories/article/${previous.slug}`} style={{ padding: 'clamp(48px,7vw,95px)' }}><p className="eyebrow" style={{ opacity: .7, margin: '0 0 18px' }}>{page.navigation.previousLabel}</p><h3 className="display" style={{ fontSize: 'clamp(35px,4vw,58px)', margin: 0 }}>{previous.title}</h3></Link>}{next && <Link href={`/stories/article/${next.slug}`} style={{ padding: 'clamp(48px,7vw,95px)', textAlign: 'right' }}><p className="eyebrow" style={{ opacity: .7, margin: '0 0 18px' }}>{page.navigation.nextLabel}</p><h3 className="display" style={{ fontSize: 'clamp(35px,4vw,58px)', margin: 0 }}>{next.title}</h3></Link>}</nav>
+      <nav className="adjacent" style={{ position: 'relative', overflow: 'hidden', background: page.navigation.backgroundColor, color: page.navigation.textColor }}>{navigationTexture && <div aria-hidden="true" style={{ position: 'absolute', inset: 0, backgroundImage: `url(${navigationTexture})`, backgroundSize: '420px 420px', backgroundRepeat: 'repeat', opacity: navigationTextureOpacity, pointerEvents: 'none' }} />}{previous && <Link href={`/stories/article/${previous.slug}`} style={{ position: 'relative', zIndex: 1, padding: 'clamp(48px,7vw,95px)' }}><p className="eyebrow" style={{ opacity: .7, margin: '0 0 18px' }}>{page.navigation.previousLabel}</p><h3 className="display" style={{ fontSize: 'clamp(35px,4vw,58px)', margin: 0 }}>{previous.title}</h3></Link>}{next && <Link href={`/stories/article/${next.slug}`} style={{ position: 'relative', zIndex: 1, padding: 'clamp(48px,7vw,95px)', textAlign: 'right' }}><p className="eyebrow" style={{ opacity: .7, margin: '0 0 18px' }}>{page.navigation.nextLabel}</p><h3 className="display" style={{ fontSize: 'clamp(35px,4vw,58px)', margin: 0 }}>{next.title}</h3></Link>}</nav>
     </main>
     <Footer />
   </div>;
