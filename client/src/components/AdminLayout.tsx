@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { label: "Explore",      path: "/admin/explore",      icon: Compass },
   { label: "Story Details", path: "/admin/stories",     icon: BookOpen },
   { label: "Enquiries",    path: "/admin/enquiries",    icon: Mail },
+  { label: "Contact Information", path: "/admin/contact-information", icon: Mail },
 ];
 
 const ACCENT = "#F5569B";
