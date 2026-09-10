@@ -45,6 +45,7 @@ import {
   listHomepageStories, listHomepageStoriesByType, createHomepageStory, updateHomepageStory, deleteHomepageStory,
   listHomepageSponsors, createHomepageSponsor, updateHomepageSponsor, deleteHomepageSponsor,
   getHomepageStorySection, upsertHomepageStorySection,
+  listHomepageSections, updateHomepageSection,
   listAboutSections, createAboutSection, updateAboutSection, deleteAboutSection,
   listOurStorySections, createOurStorySection, updateOurStorySection, deleteOurStorySection,
   listExploreSections, createExploreSection, updateExploreSection, deleteExploreSection,
@@ -1366,15 +1367,16 @@ export const appRouter = router({
   homepage: router({
     // Public: get all homepage data for frontend rendering
     getAll: publicProcedure.query(async () => {
-      const [hero, intro, stories, sponsors, imageSection, videoSection] = await Promise.all([
+      const [hero, intro, stories, sponsors, imageSection, videoSection, sections] = await Promise.all([
         getHomepageHero(),
         getHomepageIntro(),
         listHomepageStories(),
         listHomepageSponsors(),
         getHomepageStorySection("image"),
         getHomepageStorySection("video"),
+        listHomepageSections(),
       ]);
-      return { hero, intro, stories, sponsors, imageSection, videoSection };
+      return { hero, intro, stories, sponsors, imageSection, videoSection, sections };
     }),
 
     // Public: Homepage data for frontend
@@ -1382,7 +1384,7 @@ export const appRouter = router({
       try {
         console.log('[homepage.getPublicData] Starting query...');
         
-        const [hero, intro, allStories, sponsors, imageSection, videoSection] = await Promise.all([
+        const [hero, intro, allStories, sponsors, imageSection, videoSection, sections] = await Promise.all([
           getHomepageHero().catch(e => {
             console.error('[homepage.getPublicData] getHomepageHero failed:', e.message);
             return null;
@@ -1407,6 +1409,7 @@ export const appRouter = router({
             console.error('[homepage.getPublicData] getHomepageStorySection(video) failed:', e.message);
             return null;
           }),
+          listHomepageSections().catch(e => { console.error('[homepage.getPublicData] listHomepageSections failed:', e.message); return []; }),
         ]);
         
         console.log('[homepage.getPublicData] All queries completed');
@@ -1422,12 +1425,16 @@ export const appRouter = router({
           sponsors: (sponsors || []).filter(s => s.isVisible),
           imageSection,
           videoSection,
+          sections,
         };
       } catch (error) {
         console.error('[homepage.getPublicData] Unexpected error:', error);
         throw error;
       }
     }),
+
+    listSections: publicProcedure.query(async ({ctx})=>{await requireAdmin(ctx);return listHomepageSections()}),
+    updateSection: publicProcedure.input(z.object({id:z.number(),isVisible:z.boolean().optional(),sortOrder:z.number().optional(),content:z.unknown().optional()})).mutation(async({ctx,input})=>{await requireAdmin(ctx);const {id,...data}=input;return updateHomepageSection(id,data)}),
 
     // Admin: Hero
     getHero: publicProcedure.query(async ({ ctx }) => {

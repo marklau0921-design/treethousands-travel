@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
+import type { HomepageOurStoryContent } from '@shared/homepage';
 
 const DISPLAY_FONT = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const BODY_FONT = "var(--font-travel-sans, 'Cabin', 'Josefin Sans', 'Helvetica Neue', Arial, sans-serif)";
@@ -31,7 +32,7 @@ function normalizeImages(value: unknown): string[] {
   }
 }
 
-export default function HomepageOurStory() {
+export default function HomepageOurStory({ content: settings }: { content: HomepageOurStoryContent }) {
   const [expanded, setExpanded] = useState(false);
   const { data: homepageData } = trpc.homepage.getPublicData.useQuery();
   const { data: cmsSections } = trpc.ourStory.listPublicSections.useQuery();
@@ -50,7 +51,7 @@ export default function HomepageOurStory() {
         ctaTextColor: '#ffffff',
       }))
     : defaultSections.map(section => ({ ...section, eyebrow: '', image: '', ctaLabel: 'Discover More', ctaBgColor: '#000000', ctaTextColor: '#ffffff' }));
-  const visibleSections = expanded ? sections : sections.slice(0, 3);
+  const visibleSections = expanded ? sections : sections.slice(0, settings.initiallyVisible);
 
   useEffect(() => {
     const revealHashTarget = () => {
@@ -71,7 +72,7 @@ export default function HomepageOurStory() {
   if (cmsSections && cmsSections.length === 0) return null;
 
   return (
-    <section id="our-story" className="our-story-home bg-[#F5F3EF]" style={{ scrollMarginTop: 80, paddingTop: 'clamp(64px, 7vw, 96px)', paddingBottom: 'clamp(50px, 6vw, 80px)' }}>
+    <section id="our-story" className="our-story-home" style={{ background:settings.backgroundColor, scrollMarginTop: 80, paddingTop: 'clamp(64px, 7vw, 96px)', paddingBottom: 'clamp(50px, 6vw, 80px)' }}>
       <style>{`
         .our-story-home .our-story-edge-row{display:flex;flex-direction:row;align-items:stretch;width:100%;margin:0 0 32px}
         .our-story-home .our-story-edge-text,.our-story-home .our-story-edge-image-wrap{flex:0 0 50%;min-width:0}
@@ -126,7 +127,7 @@ export default function HomepageOurStory() {
           onClick={() => setExpanded((value) => !value)}
           className="px-8 py-3 bg-black text-white text-sm font-normal tracking-wider uppercase rounded border-2 border-black hover:bg-[#F5F3EF] hover:text-black transition-all duration-300 active:scale-95"
         >
-          {expanded ? 'Show Less' : 'Explore More'}
+          {expanded ? settings.showLessLabel : settings.showMoreLabel}
         </button>
       </div>
     </section>

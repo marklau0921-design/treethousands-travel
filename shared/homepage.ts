@@ -1,0 +1,31 @@
+export interface HomepageHeroContent { title:string; subtitle:string; images:string[]; overlayOpacity:number }
+export interface HomepageIntroContent { title:string; content:string; buttonLabel:string; buttonHref:string; backgroundColor:string; textColor:string }
+export interface HomepageOurStoryContent { showMoreLabel:string; showLessLabel:string; backgroundColor:string; initiallyVisible:number }
+export interface HomepageExploreContent { title:string; description:string; backgroundImage:string; overlayOpacity:number; cards:Array<{title:string;buttonLabel:string;href:string;image:string}> }
+export interface HomepageStoriesContent { backgroundColor:string; cards:Array<{title:string;description:string;buttonLabel:string;href:string;image:string}> }
+export interface HomepageFeaturesContent { title:string; backgroundColor:string; items:Array<{title:string}> }
+export interface HomepageCtaContent { title:string;buttonLabel:string;buttonHref:string;backgroundColor:string;textColor:string;buttonBackgroundColor:string;buttonTextColor:string;textureImage:string;textureOpacity:number }
+export type HomepageSectionKey='hero'|'introduction'|'our-story'|'explore'|'stories'|'features'|'cta';
+export type HomepageSectionContent=HomepageHeroContent|HomepageIntroContent|HomepageOurStoryContent|HomepageExploreContent|HomepageStoriesContent|HomepageFeaturesContent|HomepageCtaContent;
+
+const images=['https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1800&h=1200&fit=crop','https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1500&h=1000&fit=crop','https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1500&h=1000&fit=crop','https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1500&h=1000&fit=crop'];
+export const defaultHomepageSections:Array<{sectionKey:HomepageSectionKey;name:string;isVisible:boolean;sortOrder:number;content:HomepageSectionContent}>=[
+ {sectionKey:'hero',name:'Hero',isVisible:true,sortOrder:0,content:{title:'The Immersive China Experts',subtitle:'Tailor-made experiences, crafted with local insight.',images:[images[0]],overlayOpacity:30} as HomepageHeroContent},
+ {sectionKey:'introduction',name:'Brand Introduction',isVisible:true,sortOrder:1,content:{title:'Tailor-made China journeys',content:"China is vast, full of wonders. But information engulfs us. See this, do that, don't miss this. It seems that the more choices there are, the more overwhelmed we feel. What's more, you're rarely asked how you want to feel.\n\nThat's not us. We are a tailor-made immersive travel company that designs fully personalised itineraries.\n\nFor the past five years, we've been exploring China through its people, culture, landscapes, and everyday life — searching for experiences that feel genuine, personal, and deeply connected to the place itself. No rushed tours. No generic itineraries. Just a deeper, more personal way to travel through China.\n\nSo let's begin. Let's do something remarkable.",buttonLabel:'Get In Touch',buttonHref:'/make-an-enquiry',backgroundColor:'#ffffff',textColor:'#52575c'} as HomepageIntroContent},
+ {sectionKey:'our-story',name:'Our Story',isVisible:true,sortOrder:2,content:{showMoreLabel:'Explore More',showLessLabel:'Show Less',backgroundColor:'#F5F3EF',initiallyVisible:3} as HomepageOurStoryContent},
+ {sectionKey:'explore',name:'What We’re Exploring',isVisible:true,sortOrder:3,content:{title:'What We’re Exploring',description:'Village life, natural landscapes, and the people and cultures that shape rural China.',backgroundImage:images[0],overlayOpacity:85,cards:[{title:'Village Life',buttonLabel:'Explore',href:'/explore/village-life',image:images[1]},{title:'Nature & Landscape',buttonLabel:'Explore',href:'/explore/nature-landscape',image:images[2]},{title:'People & Culture',buttonLabel:'Explore',href:'/explore/people-culture',image:images[3]}]} as HomepageExploreContent},
+ {sectionKey:'stories',name:'Stories',isVisible:true,sortOrder:4,content:{backgroundColor:'#ffffff',cards:[{title:'Brand Stories',description:'The ideas, people, and purpose behind TreeThousands—and the journeys that continue to shape who we are.',buttonLabel:'Discover More',href:'/stories/brand-stories',image:images[0]},{title:'Village Notes',description:'Observations and encounters from villages across China, recorded with time, curiosity, and care.',buttonLabel:'Read More',href:'/stories/village-notes',image:images[1]},{title:'Local Life',description:'Everyday traditions, shared meals, working landscapes, and the people who keep local culture alive.',buttonLabel:'Read More',href:'/stories/local-life',image:images[2]},{title:'Journal',description:'Field notes, travel reflections, and practical inspiration for seeing a different side of China.',buttonLabel:'Read More',href:'/stories/journal',image:images[3]}]} as HomepageStoriesContent},
+ {sectionKey:'features',name:'A Different Side of China',isVisible:true,sortOrder:5,content:{title:'A Different Side of China',backgroundColor:'#fafafa',items:[{title:'Award-winning planners'},{title:'No-obligation quotes'},{title:'No planning fees'},{title:'24/7 on the ground support'},{title:'Expert private guides'}]} as HomepageFeaturesContent},
+ {sectionKey:'cta',name:'Ready to Start CTA',isVisible:true,sortOrder:6,content:{title:'So, ready to start?',buttonLabel:'Get in Touch',buttonHref:'/join-us',backgroundColor:'#a84900',textColor:'#ffffff',buttonBackgroundColor:'#111111',buttonTextColor:'#ffffff',textureImage:'',textureOpacity:28} as HomepageCtaContent},
+];
+
+export function normalizeHomepageSection(key:HomepageSectionKey,value:unknown):HomepageSectionContent{
+ const fallback=defaultHomepageSections.find(s=>s.sectionKey===key)!.content;
+ if(typeof value==='string'){try{value=JSON.parse(value)}catch{return fallback}}
+ if(!value||typeof value!=='object')return fallback;
+ const result={...fallback,...value} as any;
+ if('cards' in fallback)result.cards=Array.isArray((value as any).cards)?(value as any).cards:(fallback as any).cards;
+ if('items' in fallback)result.items=Array.isArray((value as any).items)?(value as any).items:(fallback as any).items;
+ if('images' in fallback)result.images=Array.isArray((value as any).images)?(value as any).images:(fallback as any).images;
+ return result;
+}

@@ -394,6 +394,19 @@ export const homepageSponsors = mysqlTable("homepage_sponsors", {
 export type HomepageSponsor = Omit<typeof homepageSponsors.$inferSelect, "logoUrls"> & { logoUrls: string[] };
 export type InsertHomepageSponsor = typeof homepageSponsors.$inferInsert;
 
+export const homepageSections = mysqlTable("homepage_sections", {
+  id: int("id").autoincrement().primaryKey(),
+  sectionKey: varchar("sectionKey", { length: 50 }).notNull().unique(),
+  name: varchar("name", { length: 200 }).notNull(),
+  isVisible: boolean("isVisible").default(true).notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  content: json("content"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type HomepageSection = typeof homepageSections.$inferSelect;
+export type InsertHomepageSection = typeof homepageSections.$inferInsert;
+
 // ─── About Page Management ────────────────────────────────────────────────────
 // About 子板块目录（可增删，控制显示/隐藏）
 export const aboutSections = mysqlTable("about_sections", {

@@ -12,6 +12,7 @@ import ResponsiveImage from '@/components/ResponsiveImage';
 import { Link, useLocation } from 'wouter';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
+import { defaultHomepageSections, type HomepageCtaContent, type HomepageExploreContent, type HomepageFeaturesContent, type HomepageHeroContent, type HomepageIntroContent, type HomepageOurStoryContent, type HomepageSectionKey, type HomepageStoriesContent } from '@shared/homepage';
 
 
 /**
@@ -80,24 +81,24 @@ export default function Home() {
   // 首页管理模块公开数据（hero/intro/stories/sponsors）
   const { data: homepageData } = trpc.homepage.getPublicData.useQuery();
   
-  // Reuse existing experience-type imagery for the three new Explore pillars.
-  const { data: experienceNav = [] } = trpc.cms.listExperienceTypesWithNav.useQuery();
+  const section = <T,>(key:HomepageSectionKey) => {
+    const live=homepageData?.sections?.find(item=>item.sectionKey===key);
+    const fallback=defaultHomepageSections.find(item=>item.sectionKey===key)!;
+    return {isVisible:live?.isVisible??fallback.isVisible,content:(live?.content??fallback.content) as T};
+  };
+  const heroSection=section<HomepageHeroContent>('hero'),introSection=section<HomepageIntroContent>('introduction'),ourStorySection=section<HomepageOurStoryContent>('our-story'),exploreSection=section<HomepageExploreContent>('explore'),storiesSection=section<HomepageStoriesContent>('stories'),featuresSection=section<HomepageFeaturesContent>('features'),ctaSection=section<HomepageCtaContent>('cta');
   // 始终使用静态图片作为 fallback，只有 API 返回且有数据时才替换
   const FALLBACK_BANNER = '';
   const apiBanners = homepageAssets?.banners as Array<{ url: string; id: number }> | undefined;
   const activeLogo = '';
   // 若 homepage_hero 有 backgroundImage，优先使用；否则回退到 media assets banners
-  const heroBackgroundImages = normalizeHeroImages(homepageData?.hero?.backgroundImage);
+  const heroBackgroundImages = heroSection.content.images.length?heroSection.content.images:normalizeHeroImages(homepageData?.hero?.backgroundImage);
   const activeBanners = heroBackgroundImages.length > 0
     ? heroBackgroundImages
     : (apiBanners && apiBanners.length > 0) ? apiBanners.map((b) => b.url) : [FALLBACK_BANNER];
-  const explorationCategories: Trip[] = [
-    { id: 'village-life', title: 'Village Life', buttonText: 'Explore', image: experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/village-life' },
-    { id: 'nature-landscape', title: 'Nature & Landscape', buttonText: 'Explore', image: experienceNav[1]?.coverImage || experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/nature-landscape' },
-    { id: 'people-culture', title: 'People & Culture', buttonText: 'Explore', image: experienceNav[2]?.coverImage || experienceNav[0]?.coverImage || activeBanners[0] || '', href: '/explore/people-culture' },
-  ];
-  const heroTitle = homepageData?.hero?.title || 'The Immersive China Experts';
-  const heroSubtitle = homepageData?.hero?.subtitle || 'Tailor-made experiences, crafted with local insight.';
+  const explorationCategories: Trip[] = exploreSection.content.cards.map((card,index)=>({id:index,title:card.title,buttonText:card.buttonLabel,image:card.image,href:card.href}));
+  const heroTitle = heroSection.content.title;
+  const heroSubtitle = heroSection.content.subtitle;
 
   const [, navigate] = useLocation();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -229,7 +230,7 @@ export default function Home() {
       <Navigation />
 
       {/* Hero Section - Full Screen Image Background */}
-      <section className="relative w-full h-screen bg-black overflow-hidden">
+      {heroSection.isVisible && <section className="relative w-full h-screen bg-black overflow-hidden">
         {/* Image Background */}
         <div className="relative w-full h-full">
           <div className="w-full h-full">
@@ -254,7 +255,7 @@ export default function Home() {
               />
             )}
           </div>
-          <div className="absolute inset-0 bg-black/30"></div>
+          <div className="absolute inset-0" style={{backgroundColor:`rgba(0,0,0,${heroSection.content.overlayOpacity/100})`}}></div>
         </div>
 
         {/* Hero Logo - Center */}
@@ -315,39 +316,37 @@ export default function Home() {
             </p>
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* Brand Philosophy */}
-      <section className="bg-[#F5F3EF]" aria-label="Brand Philosophy">
-        <LuxuryTravelExperts />
-      </section>
+      {introSection.isVisible && <LuxuryTravelExperts content={introSection.content} />}
 
       {/* Our Story — alternating edge-to-edge image and text rows */}
-      <HomepageOurStory />
+      {ourStorySection.isVisible && <HomepageOurStory content={ourStorySection.content} />}
 
       {/* What We're Exploring - native DOM scrollLeft, zero jank */}
-      <div
+      {exploreSection.isVisible && <div
         className="w-full relative flex flex-col lg:flex-row lg:items-center"
         style={{
           minHeight: '680px',
           paddingTop: '50px',
           paddingBottom: '50px',
-          backgroundImage: `url(${activeBanners[0]})`,
+          backgroundImage: `url(${exploreSection.content.backgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: getObjectPosition(activeBanners[0]),
           backgroundAttachment: 'scroll',
         }}
       >
         {/* Dark frosted glass overlay */}
-        <div className="absolute inset-0" style={{ backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)', backgroundColor: 'rgba(10,10,10,0.85)', zIndex: 0 }} />
+        <div className="absolute inset-0" style={{ backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)', backgroundColor: `rgba(10,10,10,${exploreSection.content.overlayOpacity/100})`, zIndex: 0 }} />
 
         {/* Mobile: Title above carousel */}
         <div className="lg:hidden w-full px-6 mb-6 relative z-10">
           <h2 style={{ fontFamily: 'Alternate Gothic No1 D, sans-serif', fontWeight: 400, fontSize: '28px', color: 'white', textTransform: 'uppercase', letterSpacing: '0.10em', marginBottom: '12px', lineHeight: 1.1 }}>
-            What We’re Exploring
+            {exploreSection.content.title}
           </h2>
           <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic', lineHeight: 1.6 }}>
-            Village life, natural landscapes, and the people and cultures that shape rural China.
+            {exploreSection.content.description}
           </p>
         </div>
 
@@ -381,10 +380,10 @@ export default function Home() {
             {isDesktop && (
               <div style={{ width: '260px', flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', paddingTop: '8px' }}>
                 <h2 style={{ fontFamily: 'Alternate Gothic No1 D, sans-serif', fontWeight: '700', fontSize: '32px', color: 'white', textTransform: 'uppercase', letterSpacing: '0.10em', marginBottom: '16px', lineHeight: 1.1 }}>
-                  What We’re Exploring
+                  {exploreSection.content.title}
                 </h2>
                 <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic', lineHeight: 1.6 }}>
-                  Village life, natural landscapes, and the people and cultures that shape rural China.
+                  {exploreSection.content.description}
                 </p>
               </div>
             )}
@@ -458,16 +457,16 @@ export default function Home() {
             <ChevronRight size={20} color="white" strokeWidth={2} />
           </button>
         )}
-      </div>
+      </div>}
 
       {/* Stories */}
-      <HomepageStories />
+      {storiesSection.isVisible && <HomepageStories content={storiesSection.content} />}
 
       {/* A Different Side of China */}
-      <WhyIntoChinaSection />
+      {featuresSection.isVisible && <WhyIntoChinaSection content={featuresSection.content} />}
 
       {/* Ready To Start CTA */}
-      <ReadyToStart />
+      {ctaSection.isVisible && <ReadyToStart content={ctaSection.content} />}
 
       {/* Footer */}
       <Footer />

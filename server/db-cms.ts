@@ -2,12 +2,13 @@ import { eq, desc, and, sql } from "drizzle-orm";
 import { normalizeOurStoryPage } from "../shared/our-story";
 import { defaultExploreSections, normalizeExplorePage } from "../shared/explore";
 import { fallbackStories, inferStoryCategory, normalizeStoryDetail, plainExcerpt, type EditorialStory } from "../shared/story-content";
+import { defaultHomepageSections, normalizeHomepageSection, type HomepageSectionKey } from "../shared/homepage";
 import { getDb, getPool } from "./db";
 import {
   cities, tags, experiences, experienceTags, experienceTypes, experienceDetails, experienceLabels,
   teamMembers, itineraries, itineraryTags, stories, storyTags,
   videos, videoTags, images, cityExperiences, cityWhatToSee,
-  homepageHero, homepageIntro, homepageStories, homepageSponsors, homepageStorySections,
+  homepageHero, homepageIntro, homepageStories, homepageSponsors, homepageStorySections, homepageSections,
   aboutSections, ourStorySections, exploreSections, whyUsSections,
   type InsertCity, type InsertTag, type InsertExperience, type InsertExperienceType,
   type InsertExperienceDetail, type InsertTeamMember,
@@ -15,6 +16,7 @@ import {
   type InsertCityExperience, type InsertCityWhatToSee,
   type HomepageHero, type HomepageIntro, type HomepageStory, type HomepageSponsor,
   type HomepageStorySection,
+  type InsertHomepageSection,
   type InsertHomepageStory, type InsertHomepageSponsor, type InsertHomepageStorySection,
   type AboutSection, type InsertAboutSection,
   type InsertOurStorySection,
@@ -839,6 +841,28 @@ export async function deleteImageRecord(id: number) {
 }
 
 // ─── Homepage Management ──────────────────────────────────────────────────────
+async function ensureHomepageSectionsTable() {
+  const pool=await getPool(); if(!pool)return false;
+  const [tables]=await pool.query("SHOW TABLES LIKE 'homepage_sections'"); const created=(tables as any[]).length===0;
+  await pool.execute(`CREATE TABLE IF NOT EXISTS \`homepage_sections\` (\`id\` int AUTO_INCREMENT NOT NULL,\`sectionKey\` varchar(50) NOT NULL,\`name\` varchar(200) NOT NULL,\`isVisible\` boolean NOT NULL DEFAULT true,\`sortOrder\` int NOT NULL DEFAULT 0,\`content\` json,\`createdAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\`updatedAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,PRIMARY KEY (\`id\`),UNIQUE KEY \`homepage_sections_sectionKey_unique\` (\`sectionKey\`))`);
+  return created;
+}
+export async function listHomepageSections(){
+  const created=await ensureHomepageSectionsTable();const db=await getDb();if(!db)return defaultHomepageSections.map((s,id)=>({...s,id:id+1,createdAt:new Date(),updatedAt:new Date()}));
+  let rows=await db.select().from(homepageSections).orderBy(homepageSections.sortOrder);
+  if(created||rows.length===0){
+    const seed=defaultHomepageSections.map(item=>({...item,content:{...(item.content as any)}}));
+    const [legacyHero,legacyIntro]=await Promise.all([getHomepageHero(),getHomepageIntro()]);
+    const hero=seed.find(item=>item.sectionKey==='hero');
+    if(hero&&legacyHero){let heroImages:string[]=[];try{const parsed=JSON.parse(legacyHero.backgroundImage||'');heroImages=Array.isArray(parsed)?parsed.filter(Boolean):[]}catch{if(legacyHero.backgroundImage)heroImages=[legacyHero.backgroundImage]}hero.content={...(hero.content as any),title:legacyHero.title,subtitle:legacyHero.subtitle,...(heroImages.length?{images:heroImages}:{})};hero.isVisible=legacyHero.isVisible}
+    const intro=seed.find(item=>item.sectionKey==='introduction');if(intro&&legacyIntro){intro.content={...(intro.content as any),title:legacyIntro.title,content:legacyIntro.content};intro.isVisible=legacyIntro.isVisible}
+    try{await db.insert(homepageSections).values(seed)}catch(error:any){if(error?.code!=="ER_DUP_ENTRY")throw error}rows=await db.select().from(homepageSections).orderBy(homepageSections.sortOrder)
+  }
+  return rows.map(row=>({...row,content:normalizeHomepageSection(row.sectionKey as HomepageSectionKey,row.content)}));
+}
+export async function updateHomepageSection(id:number,data:Partial<InsertHomepageSection>){
+  await ensureHomepageSectionsTable();const db=await getDb();if(!db)throw new Error('DB unavailable');await db.update(homepageSections).set({...data,updatedAt:new Date()}).where(eq(homepageSections.id,id));return {success:true};
+}
 
 // Hero
 export async function getHomepageHero() {
