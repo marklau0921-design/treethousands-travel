@@ -43,7 +43,7 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
   const { data: exploreSections } = trpc.explore.listPublicSections.useQuery();
   const logoUrl = homepageAssets?.logo?.url || '';
   const storedLogoScale = Number(homepageAssets?.logo?.opacity);
-  const logoScale = [25, 50, 75, 100].includes(storedLogoScale) ? storedLogoScale : 25;
+  const logoScale = Number.isFinite(storedLogoScale) && storedLogoScale >= 10 && storedLogoScale <= 100 && storedLogoScale !== 28 ? storedLogoScale : 25;
   const logoHeight = Math.round(40 * (logoScale / 25));
   const navItems = NAV_ITEMS.map(item => {
     if (item.key === 'our-story' && ourStorySections?.length) return { ...item, children: ourStorySections.map(section => ({ label: section.title, href: `/our-story/${section.slug}` })) };
