@@ -15,7 +15,7 @@ const fallbackImages = [
   'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1354&h=900&fit=crop',
 ];
 
-const storySections = [
+const defaultStorySections = [
   {
     id: 'why-we-started',
     title: 'Why We Started',
@@ -62,6 +62,7 @@ export default function About() {
   const [location] = useLocation();
   const currentSlug = location.startsWith('/our-story/') ? location.slice('/our-story/'.length) : undefined;
   const { data: homepageData } = trpc.homepage.getPublicData.useQuery();
+  const { data: cmsSections } = trpc.ourStory.listPublicSections.useQuery();
   const getObjectPosition = useMediaObjectPosition();
 
   const storyImages = (homepageData?.imageStories ?? [])
@@ -69,6 +70,9 @@ export default function About() {
     .filter((image): image is string => typeof image === 'string' && image.length > 0);
   const heroImages = normalizeImages(homepageData?.hero?.backgroundImage);
   const imagePool = [...storyImages, ...heroImages, ...fallbackImages];
+  const storySections = cmsSections !== undefined
+    ? cmsSections.map(section => ({ id: section.slug, title: section.title, content: section.content, image: section.image ?? '' }))
+    : defaultStorySections.map(section => ({ ...section, image: '' }));
 
   useEffect(() => {
     const sectionId = currentSlug ?? '';
@@ -79,7 +83,7 @@ export default function About() {
       }
       document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-  }, [currentSlug]);
+  }, [currentSlug, cmsSections]);
 
   return (
     <div className="our-story-page min-h-screen flex flex-col bg-[#F5F3EF]">
@@ -96,7 +100,7 @@ export default function About() {
 
       <main className="tea-body" style={{ paddingBottom: 'clamp(60px, 8vw, 110px)' }}>
         {storySections.map((section, index) => {
-          const image = imagePool[index] || fallbackImages[index % fallbackImages.length];
+          const image = section.image || imagePool[index] || fallbackImages[index % fallbackImages.length];
           const text = (
             <div className="tea-detail-text">
               <div className="tea-detail-text-inner">

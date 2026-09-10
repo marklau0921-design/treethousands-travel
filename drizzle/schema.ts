@@ -407,6 +407,25 @@ export const aboutSections = mysqlTable("about_sections", {
 export type AboutSection = typeof aboutSections.$inferSelect;
 export type InsertAboutSection = typeof aboutSections.$inferInsert;
 
+// Our Story homepage/detail cards (shared by public pages and recommendations)
+export const ourStorySections = mysqlTable("our_story_sections", {
+  id: int("id").autoincrement().primaryKey(),
+  slug: varchar("slug", { length: 100 }).notNull().unique(),
+  eyebrow: varchar("eyebrow", { length: 200 }),
+  title: varchar("title", { length: 300 }).notNull(),
+  content: text("content").notNull(),
+  image: varchar("image", { length: 512 }),
+  ctaLabel: varchar("ctaLabel", { length: 100 }).default("Discover More").notNull(),
+  ctaBgColor: varchar("ctaBgColor", { length: 32 }).default("#000000").notNull(),
+  ctaTextColor: varchar("ctaTextColor", { length: 32 }).default("#ffffff").notNull(),
+  isVisible: boolean("isVisible").default(true).notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type OurStorySection = typeof ourStorySections.$inferSelect;
+export type InsertOurStorySection = typeof ourStorySections.$inferInsert;
+
 // Why Us 板块内容（多行，可增删排序）
 export const whyUsSections = mysqlTable("why_us_sections", {
   id: int("id").autoincrement().primaryKey(),

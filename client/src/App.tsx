@@ -38,6 +38,7 @@ import AdminExperiencesByCity from "./pages/AdminExperiencesByCity";
 import AdminExperienceEdit from "./pages/AdminExperienceEdit";
 import AdminCityEdit from "./pages/AdminCityEdit";
 import AdminHomepage from "./pages/AdminHomepage";
+import AdminOurStory from "./pages/AdminOurStory";
 
 import ExperienceCategoryPage from "./pages/ExperienceCategoryPage";
 import CityPage from "./pages/CityPage";
@@ -113,6 +114,7 @@ function Router() {
       <Route path="/admin/about/our-team" component={AdminAboutOurTeam} />
       <Route path="/admin/about/why-us" component={AdminAboutWhyUs} />
       <Route path="/admin/homepage" component={AdminHomepage} />
+      <Route path="/admin/our-story" component={AdminOurStory} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

@@ -12,7 +12,7 @@ const fallbackImages = [
   'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1354&h=900&fit=crop',
 ];
 
-const sections = [
+const defaultSections = [
   { id: 'why-we-started', title: 'Why We Started', content: 'TreeThousands began with a simple belief: China is best understood slowly, through the people and places that give it life. We wanted to create journeys that move beyond familiar landmarks and make room for genuine encounters, shared meals, and stories that stay with you.' },
   { id: 'what-we-believe', title: 'What We Believe', content: 'We believe meaningful travel begins with curiosity and respect. A journey should feel personal rather than prescribed, connecting travelers with local culture while honoring the communities, traditions, and landscapes that welcome us.' },
   { id: 'our-way-of-travel', title: 'Our Way of Travel', content: 'Our journeys are thoughtfully paced and shaped around real human connection. We listen first, travel in small and considered ways, and work with people who know their home deeply. The result is less about covering ground and more about experiencing a place with attention.' },
@@ -34,9 +34,22 @@ function normalizeImages(value: unknown): string[] {
 export default function HomepageOurStory() {
   const [expanded, setExpanded] = useState(false);
   const { data: homepageData } = trpc.homepage.getPublicData.useQuery();
+  const { data: cmsSections } = trpc.ourStory.listPublicSections.useQuery();
   const getObjectPosition = useMediaObjectPosition();
   const storyImages = (homepageData?.imageStories ?? []).map((story) => story.image).filter((image): image is string => typeof image === 'string' && image.length > 0);
   const imagePool = [...storyImages, ...normalizeImages(homepageData?.hero?.backgroundImage), ...fallbackImages];
+  const sections = cmsSections !== undefined
+    ? cmsSections.map(section => ({
+        id: section.slug,
+        title: section.title,
+        content: section.content,
+        eyebrow: section.eyebrow ?? '',
+        image: section.image ?? '',
+        ctaLabel: section.ctaLabel || 'Discover More',
+        ctaBgColor: section.ctaBgColor || '#000000',
+        ctaTextColor: section.ctaTextColor || '#ffffff',
+      }))
+    : defaultSections.map(section => ({ ...section, eyebrow: '', image: '', ctaLabel: 'Discover More', ctaBgColor: '#000000', ctaTextColor: '#ffffff' }));
   const visibleSections = expanded ? sections : sections.slice(0, 3);
 
   useEffect(() => {
@@ -55,6 +68,8 @@ export default function HomepageOurStory() {
     };
   }, []);
 
+  if (cmsSections && cmsSections.length === 0) return null;
+
   return (
     <section id="our-story" className="our-story-home bg-[#F5F3EF]" style={{ scrollMarginTop: 80, paddingTop: 'clamp(64px, 7vw, 96px)', paddingBottom: 'clamp(50px, 6vw, 80px)' }}>
       <style>{`
@@ -72,7 +87,7 @@ export default function HomepageOurStory() {
         }
       `}</style>
       {visibleSections.map((section, index) => {
-        const image = imagePool[index] || fallbackImages[index % fallbackImages.length];
+        const image = section.image || imagePool[index] || fallbackImages[index % fallbackImages.length];
         const text = (
           <div className="our-story-edge-text">
             <div className="tea-detail-text-inner">
@@ -81,10 +96,12 @@ export default function HomepageOurStory() {
               <Link href={`/our-story/${section.id}`}>
                 <button
                   type="button"
-                  style={{ fontFamily: BODY_FONT, marginTop: 28 }}
-                  className="px-8 py-3 bg-black text-white text-sm font-normal tracking-wider uppercase rounded border-2 border-black hover:bg-[#F5F3EF] hover:text-black transition-all duration-300 active:scale-95"
+                  style={{ fontFamily: BODY_FONT, marginTop: 28, backgroundColor: section.ctaBgColor, color: section.ctaTextColor, borderColor: section.ctaBgColor }}
+                  className="px-8 py-3 text-sm font-normal tracking-wider uppercase rounded border-2 transition-all duration-300 active:scale-95"
+                  onMouseEnter={event => { event.currentTarget.style.backgroundColor = 'transparent'; event.currentTarget.style.color = section.ctaBgColor; }}
+                  onMouseLeave={event => { event.currentTarget.style.backgroundColor = section.ctaBgColor; event.currentTarget.style.color = section.ctaTextColor; }}
                 >
-                  Discover More
+                  {section.ctaLabel}
                 </button>
               </Link>
             </div>

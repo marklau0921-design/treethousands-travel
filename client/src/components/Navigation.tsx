@@ -39,8 +39,12 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
   const lastScrollY = useRef(0);
   const [location, setLocation] = useLocation();
   const { data: homepageAssets } = trpc.media.getHomepageAssets.useQuery();
+  const { data: ourStorySections } = trpc.ourStory.listPublicSections.useQuery();
   const logoUrl = homepageAssets?.logo?.url || '';
-  const activeItem = NAV_ITEMS.find(item => item.key === activeMenu);
+  const navItems = NAV_ITEMS.map(item => item.key === 'our-story' && ourStorySections?.length
+    ? { ...item, children: ourStorySections.map(section => ({ label: section.title, href: `/our-story/${section.slug}` })) }
+    : item);
+  const activeItem = navItems.find(item => item.key === activeMenu);
   const anyOverlayOpen = activeMenu !== null;
 
   useEffect(() => setLogoLoaded(false), [logoUrl]);
@@ -102,10 +106,10 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
           {logoUrl && <img src={logoUrl} alt="TreeThousands" className="group-hover:opacity-70 transition-opacity" style={{ height: 40, width: 'auto', objectFit: 'contain', visibility: logoLoaded ? 'visible' : 'hidden' }} onLoad={() => setLogoLoaded(true)} onError={() => setLogoLoaded(false)} />}
         </Link>
         <div className="hidden md:flex items-center gap-7 absolute left-1/2" style={{ transform: 'translateX(-50%)' }}>
-          {NAV_ITEMS.map(item => item.key ? <button key={item.href} onClick={() => setActiveMenu(activeMenu === item.key ? null : item.key!)} style={{ color: anyOverlayOpen ? '#111' : '#fff', fontFamily: NAV_SANS, fontSize: 12, fontWeight: 700, letterSpacing: '.065em', textTransform: 'uppercase', background: 'none', border: 0, cursor: 'pointer', padding: 0 }}><span className={`tt-nav-link${isActive(item.href) || activeMenu === item.key ? ' active' : ''}`}>{item.label}</span></button> : <Link key={item.href} href={item.href} style={{ color: anyOverlayOpen ? '#111' : '#fff', fontFamily: NAV_SANS, fontSize: 12, fontWeight: 700, letterSpacing: '.065em', textTransform: 'uppercase', textDecoration: 'none' }}><span className={`tt-nav-link${isActive(item.href) ? ' active' : ''}`}>{item.label}</span></Link>)}
+          {navItems.map(item => item.key ? <button key={item.href} onClick={() => setActiveMenu(activeMenu === item.key ? null : item.key!)} style={{ color: anyOverlayOpen ? '#111' : '#fff', fontFamily: NAV_SANS, fontSize: 12, fontWeight: 700, letterSpacing: '.065em', textTransform: 'uppercase', background: 'none', border: 0, cursor: 'pointer', padding: 0 }}><span className={`tt-nav-link${isActive(item.href) || activeMenu === item.key ? ' active' : ''}`}>{item.label}</span></button> : <Link key={item.href} href={item.href} style={{ color: anyOverlayOpen ? '#111' : '#fff', fontFamily: NAV_SANS, fontSize: 12, fontWeight: 700, letterSpacing: '.065em', textTransform: 'uppercase', textDecoration: 'none' }}><span className={`tt-nav-link${isActive(item.href) ? ' active' : ''}`}>{item.label}</span></Link>)}
         </div>
         <div className="md:hidden flex items-center ml-auto pr-3"><button onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" style={{ background: 'none', border: 0, cursor: 'pointer', padding: '8px 6px' }}><div className={`flex flex-col gap-[5px] ${isOpen ? 'tt-hamburger-open' : ''}`}><span className="tt-hamburger-line top"/><span className="tt-hamburger-line middle"/><span className="tt-hamburger-line bottom"/></div></button></div>
-        {isOpen && <div className="md:hidden absolute right-0 top-[55px] min-w-[240px] py-3 px-6" style={{ background: 'linear-gradient(to bottom,rgba(20,20,20,.9),rgba(20,20,20,.75))' }}>{NAV_ITEMS.map(item => <button key={item.href} onClick={() => item.key ? (setActiveMenu(item.key),setIsOpen(false)) : navigate(item.href)} style={{ display: 'block', width: '100%', color: '#fff', fontFamily: NAV_SANS, fontSize: 13, fontWeight: 700, letterSpacing: '.065em', textTransform: 'uppercase', textAlign: 'left', background: 'none', border: 0, padding: '12px 0', cursor: 'pointer' }}>{item.label}</button>)}</div>}
+        {isOpen && <div className="md:hidden absolute right-0 top-[55px] min-w-[240px] py-3 px-6" style={{ background: 'linear-gradient(to bottom,rgba(20,20,20,.9),rgba(20,20,20,.75))' }}>{navItems.map(item => <button key={item.href} onClick={() => item.key ? (setActiveMenu(item.key),setIsOpen(false)) : navigate(item.href)} style={{ display: 'block', width: '100%', color: '#fff', fontFamily: NAV_SANS, fontSize: 13, fontWeight: 700, letterSpacing: '.065em', textTransform: 'uppercase', textAlign: 'left', background: 'none', border: 0, padding: '12px 0', cursor: 'pointer' }}>{item.label}</button>)}</div>}
       </div>
     </nav>
     {activeItem && <div style={{ position: 'fixed', inset: '55px 0 0', background: '#fff', zIndex: 49, overflow: 'auto' }}>

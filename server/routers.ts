@@ -46,6 +46,7 @@ import {
   listHomepageSponsors, createHomepageSponsor, updateHomepageSponsor, deleteHomepageSponsor,
   getHomepageStorySection, upsertHomepageStorySection,
   listAboutSections, createAboutSection, updateAboutSection, deleteAboutSection,
+  listOurStorySections, createOurStorySection, updateOurStorySection, deleteOurStorySection,
   listWhyUsSections, createWhyUsSection, updateWhyUsSection, deleteWhyUsSection,
   getWhyUsHomeSettings, updateWhyUsHomeSettings,
 } from "./db-cms";
@@ -1585,6 +1586,64 @@ export const appRouter = router({
   }),
 
   // ─── About Page Management ───────────────────────────────────────────────────
+  ourStory: router({
+    listPublicSections: publicProcedure.query(async () => {
+      const sections = await listOurStorySections();
+      return sections.filter(section => section.isVisible);
+    }),
+
+    listSections: publicProcedure.query(async ({ ctx }) => {
+      await requireAdmin(ctx);
+      return listOurStorySections();
+    }),
+
+    createSection: publicProcedure
+      .input(z.object({
+        slug: z.string().min(1),
+        eyebrow: z.string().optional(),
+        title: z.string().min(1),
+        content: z.string().min(1),
+        image: z.string().optional(),
+        ctaLabel: z.string().default("Discover More"),
+        ctaBgColor: z.string().default("#000000"),
+        ctaTextColor: z.string().default("#ffffff"),
+        isVisible: z.boolean().default(true),
+        sortOrder: z.number().default(0),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await requireAdmin(ctx);
+        return createOurStorySection(input);
+      }),
+
+    updateSection: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        slug: z.string().min(1).optional(),
+        eyebrow: z.string().optional(),
+        title: z.string().min(1).optional(),
+        content: z.string().min(1).optional(),
+        image: z.string().optional(),
+        ctaLabel: z.string().optional(),
+        ctaBgColor: z.string().optional(),
+        ctaTextColor: z.string().optional(),
+        isVisible: z.boolean().optional(),
+        sortOrder: z.number().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await requireAdmin(ctx);
+        const { id, ...data } = input;
+        return updateOurStorySection(id, data);
+      }),
+
+    deleteSection: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        await requireAdmin(ctx);
+        await deleteOurStorySection(input.id);
+        return { success: true };
+      }),
+  }),
+
   about: router({
     // Public: list visible sections for frontend
     listPublicSections: publicProcedure.query(async () => {

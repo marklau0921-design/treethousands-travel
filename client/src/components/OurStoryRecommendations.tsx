@@ -14,7 +14,7 @@ const fallbackImages = [
   'https://images.unsplash.com/photo-1511497584788-876760111969?w=1200&h=900&fit=crop',
 ];
 
-const stories = [
+const defaultStories = [
   { slug: 'why-we-started', title: 'Why We Started', eyebrow: 'Our Beginning' },
   { slug: 'what-we-believe', title: 'What We Believe', eyebrow: 'Our Values' },
   { slug: 'our-way-of-travel', title: 'Our Way of Travel', eyebrow: 'Our Approach' },
@@ -35,16 +35,22 @@ function normalizeImages(value: unknown): string[] {
 
 export default function OurStoryRecommendations({ currentSlug }: { currentSlug?: string }) {
   const { data: homepageData } = trpc.homepage.getPublicData.useQuery();
+  const { data: cmsSections } = trpc.ourStory.listPublicSections.useQuery();
   const getObjectPosition = useMediaObjectPosition();
   const storyImages = (homepageData?.imageStories ?? [])
     .map((story) => story.image)
     .filter((image): image is string => typeof image === 'string' && image.length > 0);
   const imagePool = [...storyImages, ...normalizeImages(homepageData?.hero?.backgroundImage), ...fallbackImages];
+  const stories = cmsSections !== undefined
+    ? cmsSections.map(section => ({ slug: section.slug, title: section.title, eyebrow: section.eyebrow || 'Our Story', image: section.image ?? '' }))
+    : defaultStories.map(story => ({ ...story, image: '' }));
   const currentIndex = stories.findIndex((story) => story.slug === currentSlug);
   const orderedStories = currentIndex < 0
     ? stories
     : [...stories.slice(currentIndex + 1), ...stories.slice(0, currentIndex)];
   const recommendations = orderedStories.slice(0, 3);
+
+  if (stories.length === 0) return null;
 
   return (
     <section className="our-story-recommendations" style={{ background: '#e8e1d5', padding: 'clamp(78px,9vw,130px) 0' }}>
@@ -84,7 +90,7 @@ export default function OurStoryRecommendations({ currentSlug }: { currentSlug?:
         <div className="recommendations-grid">
           {recommendations.map((story) => {
             const originalIndex = stories.findIndex((item) => item.slug === story.slug);
-            const image = imagePool[originalIndex] || fallbackImages[originalIndex];
+            const image = story.image || imagePool[originalIndex] || fallbackImages[originalIndex % fallbackImages.length];
             return (
               <Link key={story.slug} href={`/our-story/${story.slug}`} className="recommendation-card">
                 <div className="recommendation-image">

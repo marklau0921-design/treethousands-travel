@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { label: "Media Library", path: "/admin/media",        icon: Images },
   { label: "Dashboard",    path: "/admin",              icon: LayoutDashboard },
   { label: "Homepage",     path: "/admin/homepage",     icon: Home },
+  { label: "Our Story",    path: "/admin/our-story",    icon: BookOpen },
   { label: "Enquiries",    path: "/admin/enquiries",    icon: Mail },
   { label: "Cities",       path: "/admin/cities",       icon: MapPin },
   { label: "Experiences",  path: "/admin/experiences",  icon: Compass },

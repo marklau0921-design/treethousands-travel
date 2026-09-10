@@ -5,7 +5,7 @@ import {
   teamMembers, itineraries, itineraryTags, stories, storyTags,
   videos, videoTags, images, cityExperiences, cityWhatToSee,
   homepageHero, homepageIntro, homepageStories, homepageSponsors, homepageStorySections,
-  aboutSections, whyUsSections,
+  aboutSections, ourStorySections, whyUsSections,
   type InsertCity, type InsertTag, type InsertExperience, type InsertExperienceType,
   type InsertExperienceDetail, type InsertTeamMember,
   type InsertItinerary, type InsertStory, type InsertVideo, type InsertImage,
@@ -14,6 +14,7 @@ import {
   type HomepageStorySection,
   type InsertHomepageStory, type InsertHomepageSponsor, type InsertHomepageStorySection,
   type AboutSection, type InsertAboutSection,
+  type InsertOurStorySection,
   type WhyUsSection, type InsertWhyUsSection,
 } from "../drizzle/schema";
 
@@ -1136,6 +1137,137 @@ export async function deleteAboutSection(id: number) {
   const db = await getDb();
   if (!db) throw new Error("DB unavailable");
   await db.delete(aboutSections).where(eq(aboutSections.id, id));
+}
+
+// ─── Our Story Sections ─────────────────────────────────────────────────────
+const defaultOurStorySections: Array<Omit<InsertOurStorySection, "id" | "createdAt" | "updatedAt">> = [
+  {
+    slug: "why-we-started",
+    eyebrow: "Our Beginning",
+    title: "Why We Started",
+    content: "TreeThousands began with a simple belief: China is best understood slowly, through the people and places that give it life. We wanted to create journeys that move beyond familiar landmarks and make room for genuine encounters, shared meals, and stories that stay with you.",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1354&h=900&fit=crop",
+    ctaLabel: "Discover More",
+    ctaBgColor: "#000000",
+    ctaTextColor: "#ffffff",
+    isVisible: true,
+    sortOrder: 0,
+  },
+  {
+    slug: "what-we-believe",
+    eyebrow: "Our Values",
+    title: "What We Believe",
+    content: "We believe meaningful travel begins with curiosity and respect. A journey should feel personal rather than prescribed, connecting travelers with local culture while honoring the communities, traditions, and landscapes that welcome us.",
+    image: "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1354&h=900&fit=crop",
+    ctaLabel: "Discover More",
+    ctaBgColor: "#000000",
+    ctaTextColor: "#ffffff",
+    isVisible: true,
+    sortOrder: 1,
+  },
+  {
+    slug: "our-way-of-travel",
+    eyebrow: "Our Approach",
+    title: "Our Way of Travel",
+    content: "Our journeys are thoughtfully paced and shaped around real human connection. We listen first, travel in small and considered ways, and work with people who know their home deeply. The result is less about covering ground and more about experiencing a place with attention.",
+    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1354&h=900&fit=crop",
+    ctaLabel: "Discover More",
+    ctaBgColor: "#000000",
+    ctaTextColor: "#ffffff",
+    isVisible: true,
+    sortOrder: 2,
+  },
+  {
+    slug: "why-rural-china",
+    eyebrow: "Our Focus",
+    title: "Why Rural China",
+    content: "Beyond the cities is a China of mountain paths, working villages, living traditions, and extraordinary everyday knowledge. Rural China offers a different rhythm and perspective—one that reveals how culture, land, and community remain closely connected.",
+    image: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1354&h=900&fit=crop",
+    ctaLabel: "Discover More",
+    ctaBgColor: "#000000",
+    ctaTextColor: "#ffffff",
+    isVisible: true,
+    sortOrder: 3,
+  },
+  {
+    slug: "growing-together",
+    eyebrow: "Our Commitment",
+    title: "Growing Together",
+    content: "Travel can create value in both directions. We aim to build long-term relationships with local partners, support community-led experiences, and keep learning from every journey. As TreeThousands grows, we want the people and places around us to grow with us.",
+    image: "https://images.unsplash.com/photo-1511497584788-876760111969?w=1354&h=900&fit=crop",
+    ctaLabel: "Discover More",
+    ctaBgColor: "#000000",
+    ctaTextColor: "#ffffff",
+    isVisible: true,
+    sortOrder: 4,
+  },
+];
+
+async function ensureOurStorySectionsTable() {
+  const pool = await getPool();
+  if (!pool) return false;
+  const [existingTables] = await pool.query("SHOW TABLES LIKE 'our_story_sections'");
+  const wasCreated = (existingTables as any[]).length === 0;
+  await pool.execute(`
+    CREATE TABLE IF NOT EXISTS \`our_story_sections\` (
+      \`id\` int AUTO_INCREMENT NOT NULL,
+      \`slug\` varchar(100) NOT NULL,
+      \`eyebrow\` varchar(200),
+      \`title\` varchar(300) NOT NULL,
+      \`content\` text NOT NULL,
+      \`image\` varchar(512),
+      \`ctaLabel\` varchar(100) NOT NULL DEFAULT 'Discover More',
+      \`ctaBgColor\` varchar(32) NOT NULL DEFAULT '#000000',
+      \`ctaTextColor\` varchar(32) NOT NULL DEFAULT '#ffffff',
+      \`isVisible\` boolean NOT NULL DEFAULT true,
+      \`sortOrder\` int NOT NULL DEFAULT 0,
+      \`createdAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      \`updatedAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (\`id\`),
+      UNIQUE KEY \`our_story_sections_slug_unique\` (\`slug\`)
+    )
+  `);
+  return wasCreated;
+}
+
+export async function listOurStorySections() {
+  const wasCreated = await ensureOurStorySectionsTable();
+  const db = await getDb();
+  if (!db) return [];
+  let rows = await db.select().from(ourStorySections).orderBy(ourStorySections.sortOrder);
+  if (wasCreated) {
+    try {
+      await db.insert(ourStorySections).values(defaultOurStorySections);
+    } catch (error: any) {
+      if (error?.code !== "ER_DUP_ENTRY") throw error;
+    }
+    rows = await db.select().from(ourStorySections).orderBy(ourStorySections.sortOrder);
+  }
+  return rows;
+}
+
+export async function createOurStorySection(data: Omit<InsertOurStorySection, "id" | "createdAt" | "updatedAt">) {
+  await ensureOurStorySectionsTable();
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  const [result] = await db.insert(ourStorySections).values(data);
+  return { id: (result as any).insertId };
+}
+
+export async function updateOurStorySection(id: number, data: Partial<InsertOurStorySection>) {
+  await ensureOurStorySectionsTable();
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  await db.update(ourStorySections).set({ ...data, updatedAt: new Date() }).where(eq(ourStorySections.id, id));
+  const rows = await db.select().from(ourStorySections).where(eq(ourStorySections.id, id)).limit(1);
+  return rows[0] ?? null;
+}
+
+export async function deleteOurStorySection(id: number) {
+  await ensureOurStorySectionsTable();
+  const db = await getDb();
+  if (!db) throw new Error("DB unavailable");
+  await db.delete(ourStorySections).where(eq(ourStorySections.id, id));
 }
 
 // ─── Why Us Sections ─────────────────────────────────────────────────────────
