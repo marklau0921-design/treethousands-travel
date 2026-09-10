@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { trpc } from '@/lib/trpc';
 import { Link, useLocation } from 'wouter';
-import { X } from 'lucide-react';
+import { Mail, MessageCircle, X } from 'lucide-react';
 
 type MenuKey = 'our-story' | 'explore' | 'stories' | 'join-us';
 const NAV_SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
@@ -41,6 +41,7 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
   const { data: homepageAssets } = trpc.media.getHomepageAssets.useQuery();
   const { data: ourStorySections } = trpc.ourStory.listPublicSections.useQuery();
   const { data: exploreSections } = trpc.explore.listPublicSections.useQuery();
+  const { data: contactSettings } = trpc.contactSettings.get.useQuery();
   const logoUrl = homepageAssets?.logo?.url || '';
   const storedLogoScale = Number(homepageAssets?.logo?.opacity);
   const logoScale = Number.isFinite(storedLogoScale) && storedLogoScale >= 10 && storedLogoScale <= 100 && storedLogoScale !== 28 ? storedLogoScale : 25;
@@ -52,6 +53,7 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
   });
   const activeItem = navItems.find(item => item.key === activeMenu);
   const anyOverlayOpen = activeMenu !== null;
+  const whatsappNumber = (contactSettings?.whatsappNumber || '').replace(/\D/g, '');
 
   useEffect(() => setLogoLoaded(false), [logoUrl]);
   useEffect(() => {
@@ -105,6 +107,7 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
       .tt-nav-link{position:relative;padding-bottom:2px}.tt-nav-link:after{content:'';position:absolute;left:0;bottom:0;width:0;height:2px;background:#F5569B;transition:width .25s ease}.tt-nav-link:hover:after,.tt-nav-link.active:after{width:100%}
       .tt-menu-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;color:#111;font-family:${NAV_DISPLAY};font-size:25px;font-weight:400;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:color .15s}.tt-menu-row:hover{color:#F5569B}.tt-menu-row span:last-child{opacity:.4;transition:transform .2s,opacity .2s}.tt-menu-row:hover span:last-child{opacity:1;transform:translateX(4px)}
       .tt-hamburger-line{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:transform .3s ease,opacity .3s ease}.tt-hamburger-open .top{transform:translateY(7px) rotate(45deg)}.tt-hamburger-open .middle{opacity:0}.tt-hamburger-open .bottom{transform:translateY(-7px) rotate(-45deg)}
+      .tt-contact-grid{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 55px)}.tt-contact-choice{display:flex;flex-direction:column;justify-content:center;padding:clamp(50px,8vw,125px);color:#17251f;text-decoration:none;transition:background .2s,color .2s}.tt-contact-choice:first-child{background:#f5f1e8}.tt-contact-choice:last-child{background:#e5ddce}.tt-contact-choice:hover{background:#17352d;color:#fff}@media(max-width:767px){.tt-contact-grid{grid-template-columns:1fr;min-height:calc(100vh - 55px)}.tt-contact-choice{min-height:45vh;padding:48px 28px}}
     `}</style>
     <nav className="fixed top-0 left-0 right-0 z-50" style={{ display: navVisible && !forceHide ? 'block' : 'none', background: anyOverlayOpen ? '#fff' : 'linear-gradient(to bottom,rgba(20,20,20,.55),rgba(20,20,20,0))', transition: 'background .25s ease' }}>
       <div className="flex items-center relative" style={{ height: 55 }}>
@@ -120,9 +123,9 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
     </nav>
     {activeItem && <div style={{ position: 'fixed', inset: '55px 0 0', background: '#fff', zIndex: 49, overflow: 'auto' }}>
       <button onClick={() => setActiveMenu(null)} aria-label="Close menu" style={{ position: 'absolute', top: 12, right: 'clamp(28px,calc(-645px + 49.82vw),305px)', background: 'none', border: 0, cursor: 'pointer', color: '#222', padding: 4 }}><X size={24}/></button>
-      <div style={{ paddingTop: 60, paddingBottom: 40, paddingLeft: 'clamp(28px,calc(-645px + 49.82vw),305px)', paddingRight: 64, maxWidth: 760 }}>
+      {activeMenu === 'join-us' ? <div className="tt-contact-grid"><a className="tt-contact-choice" href={contactSettings?.email ? `mailto:${contactSettings.email}` : '/make-an-enquiry'} onClick={() => setActiveMenu(null)}><Mail size={30} strokeWidth={1.5}/><p style={{fontFamily:NAV_SANS,fontSize:11,fontWeight:700,letterSpacing:'.18em',textTransform:'uppercase',margin:'28px 0 16px'}}>Write to us</p><h2 style={{fontFamily:NAV_DISPLAY,fontSize:'clamp(48px,6vw,86px)',fontWeight:400,letterSpacing:'.04em',lineHeight:.95,textTransform:'uppercase',margin:'0 0 20px'}}>Email</h2><p style={{fontFamily:NAV_SANS,fontSize:15,lineHeight:1.7,maxWidth:430,opacity:.72,margin:0}}>Share your ideas and travel questions in your own time. We’ll reply personally.</p>{contactSettings?.email&&<span style={{fontFamily:NAV_SANS,fontSize:13,marginTop:24,textDecoration:'underline'}}>{contactSettings.email}</span>}</a><a className="tt-contact-choice" href={whatsappNumber?`https://wa.me/${whatsappNumber}`:'/make-an-enquiry'} target={whatsappNumber?'_blank':undefined} rel={whatsappNumber?'noreferrer':undefined} onClick={() => setActiveMenu(null)}><MessageCircle size={30} strokeWidth={1.5}/><p style={{fontFamily:NAV_SANS,fontSize:11,fontWeight:700,letterSpacing:'.18em',textTransform:'uppercase',margin:'28px 0 16px'}}>Talk with us</p><h2 style={{fontFamily:NAV_DISPLAY,fontSize:'clamp(48px,6vw,86px)',fontWeight:400,letterSpacing:'.04em',lineHeight:.95,textTransform:'uppercase',margin:'0 0 20px'}}>WhatsApp</h2><p style={{fontFamily:NAV_SANS,fontSize:15,lineHeight:1.7,maxWidth:430,opacity:.72,margin:0}}>Start a direct conversation for quick questions, introductions, or early journey ideas.</p></a></div> : <div style={{ paddingTop: 60, paddingBottom: 40, paddingLeft: 'clamp(28px,calc(-645px + 49.82vw),305px)', paddingRight: 64, maxWidth: 760 }}>
         {activeItem.children?.map(child => <button key={child.href} onClick={() => navigate(child.href)} className="tt-menu-row" style={{ width: '100%', background: 'none', border: 0 }}><span>{child.label}</span><span>›</span></button>)}
-      </div>
+      </div>}
     </div>}
   </>;
 }
