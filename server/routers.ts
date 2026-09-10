@@ -1607,6 +1607,7 @@ export const appRouter = router({
         ctaLabel: z.string().default("Discover More"),
         ctaBgColor: z.string().default("#000000"),
         ctaTextColor: z.string().default("#ffffff"),
+        pageContent: z.unknown().optional(),
         isVisible: z.boolean().default(true),
         sortOrder: z.number().default(0),
       }))
@@ -1626,6 +1627,7 @@ export const appRouter = router({
         ctaLabel: z.string().optional(),
         ctaBgColor: z.string().optional(),
         ctaTextColor: z.string().optional(),
+        pageContent: z.unknown().optional(),
         isVisible: z.boolean().optional(),
         sortOrder: z.number().optional(),
       }))

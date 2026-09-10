@@ -1,4 +1,5 @@
 import { eq, desc, and, sql } from "drizzle-orm";
+import { normalizeOurStoryPage } from "../shared/our-story";
 import { getDb, getPool } from "./db";
 import {
   cities, tags, experiences, experienceTags, experienceTypes, experienceDetails, experienceLabels,
@@ -1219,6 +1220,7 @@ async function ensureOurStorySectionsTable() {
       \`ctaLabel\` varchar(100) NOT NULL DEFAULT 'Discover More',
       \`ctaBgColor\` varchar(32) NOT NULL DEFAULT '#000000',
       \`ctaTextColor\` varchar(32) NOT NULL DEFAULT '#ffffff',
+      \`pageContent\` json,
       \`isVisible\` boolean NOT NULL DEFAULT true,
       \`sortOrder\` int NOT NULL DEFAULT 0,
       \`createdAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1227,6 +1229,10 @@ async function ensureOurStorySectionsTable() {
       UNIQUE KEY \`our_story_sections_slug_unique\` (\`slug\`)
     )
   `);
+  const columns = await getTableColumns(pool, "our_story_sections");
+  if (!columns.has("pageContent")) {
+    await pool.execute("ALTER TABLE `our_story_sections` ADD COLUMN `pageContent` json");
+  }
   return wasCreated;
 }
 
@@ -1243,7 +1249,10 @@ export async function listOurStorySections() {
     }
     rows = await db.select().from(ourStorySections).orderBy(ourStorySections.sortOrder);
   }
-  return rows;
+  return rows.map(row => ({
+    ...row,
+    pageContent: normalizeOurStoryPage(row.pageContent, row.title, row.content, row.image ?? ''),
+  }));
 }
 
 export async function createOurStorySection(data: Omit<InsertOurStorySection, "id" | "createdAt" | "updatedAt">) {

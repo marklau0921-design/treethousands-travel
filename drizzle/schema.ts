@@ -418,6 +418,7 @@ export const ourStorySections = mysqlTable("our_story_sections", {
   ctaLabel: varchar("ctaLabel", { length: 100 }).default("Discover More").notNull(),
   ctaBgColor: varchar("ctaBgColor", { length: 32 }).default("#000000").notNull(),
   ctaTextColor: varchar("ctaTextColor", { length: 32 }).default("#ffffff").notNull(),
+  pageContent: json("pageContent"),
   isVisible: boolean("isVisible").default(true).notNull(),
   sortOrder: int("sortOrder").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

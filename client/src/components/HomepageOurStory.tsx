@@ -45,9 +45,9 @@ export default function HomepageOurStory() {
         content: section.content,
         eyebrow: section.eyebrow ?? '',
         image: section.image ?? '',
-        ctaLabel: section.ctaLabel || 'Discover More',
-        ctaBgColor: section.ctaBgColor || '#000000',
-        ctaTextColor: section.ctaTextColor || '#ffffff',
+        ctaLabel: 'Discover More',
+        ctaBgColor: '#000000',
+        ctaTextColor: '#ffffff',
       }))
     : defaultSections.map(section => ({ ...section, eyebrow: '', image: '', ctaLabel: 'Discover More', ctaBgColor: '#000000', ctaTextColor: '#ffffff' }));
   const visibleSections = expanded ? sections : sections.slice(0, 3);

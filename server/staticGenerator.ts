@@ -15,6 +15,7 @@ import puppeteer from "puppeteer-core";
 import {
   listCities,
   listExperienceTypesWithNav,
+  listOurStorySections,
   toSlug,
 } from "./db-cms";
 
@@ -106,7 +107,7 @@ async function buildPageList(baseUrl: string): Promise<{ url: string; filePath: 
     { route: "/destinations", file: "destinations/index.html" },
     { route: "/experiences", file: "experiences/index.html" },
     { route: "/about", file: "about/index.html" },
-    { route: "/about/our-story", file: "about/our-story/index.html" },
+    { route: "/our-story", file: "our-story/index.html" },
     { route: "/about/our-team", file: "about/our-team/index.html" },
     { route: "/about/why-us", file: "about/why-us/index.html" },
     { route: "/make-an-enquiry", file: "make-an-enquiry/index.html" },
@@ -118,6 +119,19 @@ async function buildPageList(baseUrl: string): Promise<{ url: string; filePath: 
       url: `${baseUrl}${route}`,
       filePath: path.join(STATIC_CACHE_DIR, file),
     });
+  }
+
+  // Dynamic Our Story pages
+  try {
+    const storyPages = await listOurStorySections();
+    for (const story of storyPages.filter(item => item.isVisible)) {
+      pages.push({
+        url: `${baseUrl}/our-story/${story.slug}`,
+        filePath: path.join(STATIC_CACHE_DIR, `our-story/${story.slug}/index.html`),
+      });
+    }
+  } catch (err) {
+    console.error("[StaticGen] Failed to load Our Story pages:", err);
   }
 
   // Dynamic city pages

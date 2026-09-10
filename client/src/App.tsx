@@ -66,8 +66,7 @@ function Router() {
       <Route path="/" component={Home} />
       {/* First structure migration: reuse existing content and styling while
           the new TreeThousands routes are established. */}
-      <Route path="/our-story/why-we-started" component={WhyWeStarted} />
-      <Route path="/our-story/:section" component={About} />
+      <Route path="/our-story/:slug" component={WhyWeStarted} />
       <Route path="/our-story" component={About} />
       <Route path="/explore/village-life" component={VillageLife} />
       <Route path="/explore" component={Experiences} />

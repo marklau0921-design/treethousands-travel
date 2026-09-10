@@ -2,6 +2,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'wouter';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
+import type { OurStoryPageContent } from '@shared/our-story';
 
 const DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
@@ -33,7 +34,7 @@ function normalizeImages(value: unknown): string[] {
   }
 }
 
-export default function OurStoryRecommendations({ currentSlug }: { currentSlug?: string }) {
+export default function OurStoryRecommendations({ currentSlug, settings }: { currentSlug?: string; settings?: OurStoryPageContent['recommendations'] }) {
   const { data: homepageData } = trpc.homepage.getPublicData.useQuery();
   const { data: cmsSections } = trpc.ourStory.listPublicSections.useQuery();
   const getObjectPosition = useMediaObjectPosition();
@@ -53,7 +54,7 @@ export default function OurStoryRecommendations({ currentSlug }: { currentSlug?:
   if (stories.length === 0) return null;
 
   return (
-    <section className="our-story-recommendations" style={{ background: '#e8e1d5', padding: 'clamp(78px,9vw,130px) 0' }}>
+    <section className="our-story-recommendations" style={{ background: settings?.backgroundColor || '#e8e1d5', padding: 'clamp(78px,9vw,130px) 0' }}>
       <style>{`
         .our-story-recommendations .recommendations-wrap{width:min(1320px,calc(100% - 64px));margin:0 auto}
         .our-story-recommendations .recommendations-heading{display:flex;align-items:end;justify-content:space-between;gap:32px;margin-bottom:clamp(38px,5vw,62px)}
@@ -76,14 +77,14 @@ export default function OurStoryRecommendations({ currentSlug }: { currentSlug?:
         <div className="recommendations-heading">
           <div>
             <p style={{ fontFamily: SANS, color: '#9b5e3d', fontSize: 11, fontWeight: 700, letterSpacing: '.19em', textTransform: 'uppercase', margin: '0 0 17px' }}>
-              Continue exploring
+              {settings?.eyebrow || 'Continue exploring'}
             </p>
             <h2 style={{ fontFamily: DISPLAY, color: '#17352d', fontSize: 'clamp(48px,6vw,82px)', fontWeight: 400, letterSpacing: '.045em', lineHeight: .92, textTransform: 'uppercase', margin: 0 }}>
-              More of Our Story
+              {settings?.title || 'More of Our Story'}
             </h2>
           </div>
           <p style={{ fontFamily: SANS, color: '#59615b', fontSize: 16, lineHeight: 1.65, letterSpacing: '.025em', maxWidth: 390, margin: 0 }}>
-            Discover the ideas, people, and places that shape the way we travel.
+            {settings?.description || 'Discover the ideas, people, and places that shape the way we travel.'}
           </p>
         </div>
 
