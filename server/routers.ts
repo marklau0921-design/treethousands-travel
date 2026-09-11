@@ -229,7 +229,7 @@ const videoInput = z.object({
 export const appRouter = router({
   contactSettings: router({
     get: publicProcedure.query(() => getContactSettings()),
-    update: publicProcedure.input(z.object({ email: z.string().email(), whatsappNumber: z.string().min(6).max(40) })).mutation(async ({ ctx, input }) => { await requireAdmin(ctx); return updateContactSettings(input); }),
+    update: publicProcedure.input(z.object({ email: z.string().email(), whatsappNumber: z.string().max(40), emailBackgroundColor: z.string().regex(/^#[0-9a-fA-F]{6}$/), emailTextColor: z.string().regex(/^#[0-9a-fA-F]{6}$/), whatsappBackgroundColor: z.string().regex(/^#[0-9a-fA-F]{6}$/), whatsappTextColor: z.string().regex(/^#[0-9a-fA-F]{6}$/) })).mutation(async ({ ctx, input }) => { await requireAdmin(ctx); return updateContactSettings(input); }),
   }),
   system: systemRouter,
   auth: router({
