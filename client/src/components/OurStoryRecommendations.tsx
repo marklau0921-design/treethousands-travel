@@ -7,22 +7,6 @@ import type { OurStoryPageContent } from '@shared/our-story';
 const DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
 
-const fallbackImages = [
-  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=900&fit=crop',
-  'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1200&h=900&fit=crop',
-  'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&h=900&fit=crop',
-  'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1200&h=900&fit=crop',
-  'https://images.unsplash.com/photo-1511497584788-876760111969?w=1200&h=900&fit=crop',
-];
-
-const defaultStories = [
-  { slug: 'why-we-started', title: 'Why We Started', eyebrow: 'Our Beginning' },
-  { slug: 'what-we-believe', title: 'What We Believe', eyebrow: 'Our Values' },
-  { slug: 'our-way-of-travel', title: 'Our Way of Travel', eyebrow: 'Our Approach' },
-  { slug: 'why-rural-china', title: 'Why Rural China', eyebrow: 'Our Focus' },
-  { slug: 'growing-together', title: 'Growing Together', eyebrow: 'Our Commitment' },
-];
-
 function normalizeImages(value: unknown): string[] {
   if (Array.isArray(value)) return value.filter((url): url is string => typeof url === 'string' && url.length > 0);
   if (typeof value !== 'string' || !value) return [];
@@ -41,10 +25,10 @@ export default function OurStoryRecommendations({ currentSlug, settings }: { cur
   const storyImages = (homepageData?.imageStories ?? [])
     .map((story) => story.image)
     .filter((image): image is string => typeof image === 'string' && image.length > 0);
-  const imagePool = [...storyImages, ...normalizeImages(homepageData?.hero?.backgroundImage), ...fallbackImages];
+  const imagePool = [...storyImages, ...normalizeImages(homepageData?.hero?.backgroundImage)];
   const stories = cmsSections !== undefined
     ? cmsSections.map(section => ({ slug: section.slug, title: section.title, eyebrow: section.eyebrow || 'Our Story', image: section.image ?? '' }))
-    : defaultStories.map(story => ({ ...story, image: '' }));
+    : [];
   const currentIndex = stories.findIndex((story) => story.slug === currentSlug);
   const orderedStories = currentIndex < 0
     ? stories
@@ -91,11 +75,11 @@ export default function OurStoryRecommendations({ currentSlug, settings }: { cur
         <div className="recommendations-grid">
           {recommendations.map((story) => {
             const originalIndex = stories.findIndex((item) => item.slug === story.slug);
-            const image = story.image || imagePool[originalIndex] || fallbackImages[originalIndex % fallbackImages.length];
+            const image = story.image || imagePool[originalIndex] || '';
             return (
               <Link key={story.slug} href={`/our-story/${story.slug}`} className="recommendation-card">
                 <div className="recommendation-image">
-                  <img src={image} alt={story.title} style={{ objectPosition: getObjectPosition(image) }} />
+                  {image && <img src={image} alt={story.title} style={{ objectPosition: getObjectPosition(image) }} />}
                 </div>
                 <div className="recommendation-link">
                   <div>

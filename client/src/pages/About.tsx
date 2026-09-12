@@ -9,40 +9,6 @@ import { useMediaObjectPosition } from '@/lib/media-position';
 const DISPLAY_FONT = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const BODY_FONT = "var(--font-travel-sans, 'Cabin', 'Josefin Sans', 'Helvetica Neue', Arial, sans-serif)";
 
-const fallbackImages = [
-  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1354&h=900&fit=crop',
-  'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1354&h=900&fit=crop',
-  'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1354&h=900&fit=crop',
-];
-
-const defaultStorySections = [
-  {
-    id: 'why-we-started',
-    title: 'Why We Started',
-    content: 'TreeThousands began with a simple belief: China is best understood slowly, through the people and places that give it life. We wanted to create journeys that move beyond familiar landmarks and make room for genuine encounters, shared meals, and stories that stay with you.',
-  },
-  {
-    id: 'what-we-believe',
-    title: 'What We Believe',
-    content: 'We believe meaningful travel begins with curiosity and respect. A journey should feel personal rather than prescribed, connecting travelers with local culture while honoring the communities, traditions, and landscapes that welcome us.',
-  },
-  {
-    id: 'our-way-of-travel',
-    title: 'Our Way of Travel',
-    content: 'Our journeys are thoughtfully paced and shaped around real human connection. We listen first, travel in small and considered ways, and work with people who know their home deeply. The result is less about covering ground and more about experiencing a place with attention.',
-  },
-  {
-    id: 'why-rural-china',
-    title: 'Why Rural China',
-    content: 'Beyond the cities is a China of mountain paths, working villages, living traditions, and extraordinary everyday knowledge. Rural China offers a different rhythm and perspective—one that reveals how culture, land, and community remain closely connected.',
-  },
-  {
-    id: 'growing-together',
-    title: 'Growing Together',
-    content: 'Travel can create value in both directions. We aim to build long-term relationships with local partners, support community-led experiences, and keep learning from every journey. As TreeThousands grows, we want the people and places around us to grow with us.',
-  },
-];
-
 function normalizeImages(value: unknown): string[] {
   if (Array.isArray(value)) {
     return value.filter((url): url is string => typeof url === 'string' && url.length > 0);
@@ -69,10 +35,10 @@ export default function About() {
     .map((story) => story.image)
     .filter((image): image is string => typeof image === 'string' && image.length > 0);
   const heroImages = normalizeImages(homepageData?.hero?.backgroundImage);
-  const imagePool = [...storyImages, ...heroImages, ...fallbackImages];
+  const imagePool = [...storyImages, ...heroImages];
   const storySections = cmsSections !== undefined
     ? cmsSections.map(section => ({ id: section.slug, title: section.title, content: section.content, image: section.image ?? '' }))
-    : defaultStorySections.map(section => ({ ...section, image: '' }));
+    : [];
 
   useEffect(() => {
     const sectionId = currentSlug ?? '';
@@ -84,6 +50,8 @@ export default function About() {
       document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }, [currentSlug, cmsSections]);
+
+  if (cmsSections === undefined || homepageData === undefined) return <div className="min-h-screen bg-[#F5F3EF]" />;
 
   return (
     <div className="our-story-page min-h-screen flex flex-col bg-[#F5F3EF]">
@@ -100,7 +68,7 @@ export default function About() {
 
       <main className="tea-body" style={{ paddingBottom: 'clamp(60px, 8vw, 110px)' }}>
         {storySections.map((section, index) => {
-          const image = section.image || imagePool[index] || fallbackImages[index % fallbackImages.length];
+          const image = section.image || imagePool[index] || '';
           const text = (
             <div className="tea-detail-text">
               <div className="tea-detail-text-inner">
@@ -113,11 +81,11 @@ export default function About() {
               </div>
             </div>
           );
-          const visual = (
+          const visual = image ? (
             <div className="tea-detail-img-wrap">
               <img src={image} alt={section.title} className="tea-detail-img" style={{ objectPosition: getObjectPosition(image) }} />
             </div>
-          );
+          ) : null;
 
           return (
             <section

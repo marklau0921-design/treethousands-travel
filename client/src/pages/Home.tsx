@@ -89,15 +89,13 @@ export default function Home() {
     return {isVisible:live?.isVisible??fallback.isVisible,content:(live?.content??fallback.content) as T};
   };
   const heroSection=section<HomepageHeroContent>('hero'),introSection=section<HomepageIntroContent>('introduction'),ourStorySection=section<HomepageOurStoryContent>('our-story'),exploreSection=section<HomepageExploreContent>('explore'),storiesSection=section<HomepageStoriesContent>('stories'),featuresSection=section<HomepageFeaturesContent>('features'),ctaSection=section<HomepageCtaContent>('cta');
-  // 始终使用静态图片作为 fallback，只有 API 返回且有数据时才替换
-  const FALLBACK_BANNER = '';
   const apiBanners = homepageAssets?.banners as Array<{ url: string; id: number }> | undefined;
   const activeLogo = '';
   // 若 homepage_hero 有 backgroundImage，优先使用；否则回退到 media assets banners
   const heroBackgroundImages = heroSection.content.images.length?heroSection.content.images:normalizeHeroImages(homepageData?.hero?.backgroundImage);
   const activeBanners = heroBackgroundImages.length > 0
     ? heroBackgroundImages
-    : (apiBanners && apiBanners.length > 0) ? apiBanners.map((b) => b.url) : [FALLBACK_BANNER];
+    : (apiBanners && apiBanners.length > 0) ? apiBanners.map((b) => b.url) : [];
   const explorationCategories: Trip[] = explorePages?.length
     ? explorePages.map((item,index)=>{const card=normalizeExplorePage(item.pageContent,item.slug).homepageCard;return{id:item.id,title:card.title,buttonText:'Explore',image:card.image,href:`/explore/${item.slug}`}})
     : exploreSection.content.cards.map((card,index)=>({id:index,title:card.title,buttonText:card.buttonLabel,image:card.image,href:card.href}));
@@ -229,6 +227,8 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [activeBanners.length]);
 
+  if (homepageData === undefined || homepageAssets === undefined || explorePages === undefined) return <div className="min-h-screen bg-black" />;
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navigation />
@@ -238,7 +238,7 @@ export default function Home() {
         {/* Image Background */}
         <div className="relative w-full h-full">
           <div className="w-full h-full">
-            {heroBannerLoaded && (
+            {activeBanners.length > 0 && heroBannerLoaded && (
               <img
                 src={activeBanners[currentSlide % activeBanners.length]}
                 alt="China countryside landscape"
@@ -248,7 +248,7 @@ export default function Home() {
                 onError={() => setHeroBannerLoaded(false)}
               />
             )}
-            {!heroBannerLoaded && (
+            {activeBanners.length > 0 && !heroBannerLoaded && (
               <img
                 src={activeBanners[currentSlide % activeBanners.length]}
                 alt="China countryside landscape"

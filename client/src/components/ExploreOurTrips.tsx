@@ -13,63 +13,6 @@ interface Trip {
   slug?: string;
 }
 
-const defaultTrips: Trip[] = [
-  {
-    id: '1',
-    nights: 12,
-    destination: 'Sichuan',
-    title: 'Ancient Wonders & Modern Marvels',
-    description: 'Explore the mystical temples and natural beauty of Sichuan Province, from the Giant Panda sanctuaries to the breathtaking landscapes of Jiuzhaigou.',
-    price: 'From £8,500 per person',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop',
-  },
-  {
-    id: '2',
-    nights: 10,
-    destination: 'Yunnan',
-    title: 'Ethnic Cultures & Mountain Trails',
-    description: 'Journey through Yunnan\'s diverse ethnic communities, ancient tea plantations, and stunning karst mountains in this immersive cultural adventure.',
-    price: 'From £7,200 per person',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop',
-  },
-  {
-    id: '3',
-    nights: 8,
-    destination: 'Xi\'an',
-    title: 'Imperial Legacy & Terracotta Treasures',
-    description: 'Stand before the iconic Terracotta Army and explore the ancient capital\'s rich history, from the City Walls to the Pagodas of Buddhist temples.',
-    price: 'From £6,800 per person',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop',
-  },
-  {
-    id: '4',
-    nights: 9,
-    destination: 'Hangzhou',
-    title: 'West Lake Serenity & Silk Heritage',
-    description: 'Experience the poetic beauty of West Lake, traditional tea plantations, and the vibrant culture of this enchanting city that inspired poets for centuries.',
-    price: 'From £6,500 per person',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop',
-  },
-  {
-    id: '5',
-    nights: 11,
-    destination: 'Beijing',
-    title: 'The Great Wall & Forbidden City',
-    description: 'Walk along the iconic Great Wall, explore the grandeur of the Forbidden City, and immerse yourself in Beijing\'s blend of ancient tradition and modern energy.',
-    price: 'From £7,500 per person',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop',
-  },
-  {
-    id: '6',
-    nights: 7,
-    destination: 'Guilin',
-    title: 'Karst Mountains & River Cruises',
-    description: 'Cruise along the Li River surrounded by dramatic karst peaks, visit traditional villages, and experience the timeless beauty that has inspired artists for generations.',
-    price: 'From £5,800 per person',
-    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop',
-  },
-];
-
 export default function ExploreOurTrips() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -86,7 +29,7 @@ export default function ExploreOurTrips() {
     title: itin.name,
     description: itin.shortDescription || itin.description || '',
     price: itin.price || 'Contact for pricing',
-    image: itin.coverImage || itin.bannerImage || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop',
+    image: itin.coverImage || itin.bannerImage || '',
     slug: itin.slug,
   })).slice(0, 6); // Limit to 6 items
 
@@ -107,7 +50,6 @@ export default function ExploreOurTrips() {
     return (
       <section className="w-full py-16 md:py-24 relative overflow-hidden" style={{ minHeight: '700px', backgroundColor: '#0a0a0a' }}>
         <div className="w-full h-full relative flex items-center justify-center">
-          <div className="text-white">Loading trips...</div>
         </div>
       </section>
     );

@@ -51,6 +51,38 @@ import StoryDetail from "./pages/StoryDetail";
 import AdminContactInformation from "./pages/AdminContactInformation";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
 
+function ImageVisibilityGuard() {
+  React.useEffect(() => {
+    const prepare = (image: HTMLImageElement) => {
+      if (image.dataset.imageGuarded) return;
+      image.dataset.imageGuarded = 'true';
+      const reveal = () => { if (image.naturalWidth > 0) image.dataset.imageReady = 'true'; };
+      const hide = () => { image.style.display = 'none'; image.removeAttribute('data-image-ready'); };
+      image.addEventListener('load', reveal);
+      image.addEventListener('error', hide);
+      if (image.complete) image.naturalWidth > 0 ? reveal() : hide();
+    };
+    document.querySelectorAll('img').forEach(node => prepare(node as HTMLImageElement));
+    const observer = new MutationObserver(records => records.forEach(record => {
+      if (record.type === 'attributes' && record.target instanceof HTMLImageElement) {
+        const image = record.target;
+        image.style.display = '';
+        image.removeAttribute('data-image-ready');
+        if (image.complete && image.naturalWidth > 0) image.dataset.imageReady = 'true';
+        return;
+      }
+      record.addedNodes.forEach(node => {
+        if (!(node instanceof HTMLElement)) return;
+        if (node instanceof HTMLImageElement) prepare(node);
+        node.querySelectorAll?.('img').forEach(image => prepare(image as HTMLImageElement));
+      });
+    }));
+    observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['src', 'srcset'] });
+    return () => observer.disconnect();
+  }, []);
+  return <style>{`img:not([data-image-ready="true"]){opacity:0!important}img[data-image-ready="true"]{opacity:1}`}</style>;
+}
+
 /**
  * App Router & Layout
  * Design: Light theme with elegant luxury travel aesthetic
@@ -131,6 +163,7 @@ function App() {
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
+          <ImageVisibilityGuard />
           <Router />
           <FloatingWhatsApp />
           </TooltipProvider>

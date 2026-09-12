@@ -1,7 +1,7 @@
 import { eq, desc, and, sql } from "drizzle-orm";
 import { normalizeOurStoryPage } from "../shared/our-story";
 import { defaultExploreSections, normalizeExplorePage } from "../shared/explore";
-import { fallbackStories, inferStoryCategory, normalizeStoryDetail, plainExcerpt, type EditorialStory } from "../shared/story-content";
+import { inferStoryCategory, normalizeStoryDetail, plainExcerpt, type EditorialStory } from "../shared/story-content";
 import { defaultHomepageSections, normalizeHomepageSection, type HomepageSectionKey } from "../shared/homepage";
 import { getDb, getPool } from "./db";
 import {
@@ -682,23 +682,10 @@ async function ensureStoryDetailContent() {
   if (!pool) return;
   const columns = await getTableColumns(pool, "stories");
   if (!columns.has("pageContent")) await pool.execute("ALTER TABLE `stories` ADD COLUMN `pageContent` json");
-  await pool.execute("CREATE TABLE IF NOT EXISTS `story_detail_seed_state` (`id` tinyint NOT NULL PRIMARY KEY, `seededAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP)");
-  const [seedRows] = await pool.query("SELECT `id` FROM `story_detail_seed_state` WHERE `id` = 1 LIMIT 1");
-  if ((seedRows as any[]).length) return;
-  const db = await getDb(); if (!db) return;
-  const existing = await db.select({ slug: stories.slug }).from(stories);
-  const slugs = new Set(existing.map(item => item.slug));
-  const missing = fallbackStories.filter(item => !slugs.has(item.slug));
-  if (missing.length) await db.insert(stories).values(missing.map((item, sortOrder) => ({
-    title: item.title, slug: item.slug, content: item.content, coverImage: item.coverImage,
-    pageContent: normalizeStoryDetail(undefined, item), isActive: true, sortOrder: sortOrder + 100,
-    createdAt: new Date(item.date), updatedAt: new Date(item.date),
-  })));
-  await pool.execute("INSERT IGNORE INTO `story_detail_seed_state` (`id`) VALUES (1)");
 }
 
 function withStoryDetail<T extends typeof stories.$inferSelect>(row: T, index = 0) {
-  const base: EditorialStory = { id: row.id, slug: row.slug, title: row.title, category: inferStoryCategory(row.title, index), date: row.createdAt.toISOString(), location: 'Rural China', excerpt: plainExcerpt(row.content), content: row.content || '', coverImage: row.coverImage || fallbackStories[index % fallbackStories.length].coverImage };
+  const base: EditorialStory = { id: row.id, slug: row.slug, title: row.title, category: inferStoryCategory(row.title, index), date: row.createdAt.toISOString(), location: 'Rural China', excerpt: plainExcerpt(row.content), content: row.content || '', coverImage: row.coverImage || '' };
   return { ...row, pageContent: normalizeStoryDetail(row.pageContent, base) };
 }
 

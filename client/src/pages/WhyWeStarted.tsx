@@ -4,18 +4,10 @@ import Footer from '@/components/Footer';
 import OurStoryRecommendations from '@/components/OurStoryRecommendations';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
-import { createDefaultOurStoryPage, normalizeOurStoryPage } from '@shared/our-story';
+import { normalizeOurStoryPage } from '@shared/our-story';
 
 const DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
-
-const fallbackMeta: Record<string, { title: string; content: string; image: string }> = {
-  'why-we-started': { title: 'Why We Started', content: 'TreeThousands began with a simple belief: China is best understood slowly, through the people and places that give it life.', image: '' },
-  'what-we-believe': { title: 'What We Believe', content: 'We believe meaningful travel begins with curiosity and respect.', image: '' },
-  'our-way-of-travel': { title: 'Our Way of Travel', content: 'Our journeys are thoughtfully paced and shaped around real human connection.', image: '' },
-  'why-rural-china': { title: 'Why Rural China', content: 'Beyond the cities is a China of mountain paths, working villages, and living traditions.', image: '' },
-  'growing-together': { title: 'Growing Together', content: 'Travel can create value in both directions.', image: '' },
-};
 
 export default function WhyWeStarted() {
   const { slug = 'why-we-started' } = useParams<{ slug: string }>();
@@ -23,16 +15,14 @@ export default function WhyWeStarted() {
   const { data: homepageAssets } = trpc.media.getHomepageAssets.useQuery();
   const getObjectPosition = useMediaObjectPosition();
   const section = sections?.find(item => item.slug === slug);
-  const meta = section ?? fallbackMeta[slug];
+  const meta = section;
 
   if (!meta && !isLoading) {
     return <div style={{ minHeight: '100vh', background: '#f4f0e7', paddingTop: 180, textAlign: 'center' }}><Navigation /><h1 style={{ fontFamily: DISPLAY, fontSize: 72, textTransform: 'uppercase' }}>Page not found</h1><Link href="/our-story">Return to Our Story</Link></div>;
   }
 
-  const safeMeta = meta ?? { title: slug.replace(/-/g, ' '), content: '', image: '' };
-  const page = section
-    ? normalizeOurStoryPage(section.pageContent, section.title, section.content, section.image ?? '')
-    : createDefaultOurStoryPage(safeMeta.title, safeMeta.content, safeMeta.image ?? '');
+  if (!section) return <div className="min-h-screen bg-[#f4f0e7]" />;
+  const page = normalizeOurStoryPage(section.pageContent, section.title, section.content, section.image ?? '');
   const ctaTexture = homepageAssets?.cta?.url || '';
   const ctaTextureOpacity = Math.max(0, Math.min(1, Number(homepageAssets?.cta?.opacity ?? 28) / 100));
 

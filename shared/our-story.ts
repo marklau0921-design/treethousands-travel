@@ -60,12 +60,7 @@ export interface OurStoryPageContent {
 }
 
 const fallbackImages = [
-  'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1800&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1400&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1400&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1400&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1511497584788-876760111969?w=1400&h=1200&fit=crop',
+  '', '', '', '', '', '',
 ];
 
 export function createDefaultOurStoryPage(title: string, summary: string, image = ''): OurStoryPageContent {

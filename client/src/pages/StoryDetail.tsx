@@ -4,7 +4,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
-import { fallbackStories, inferStoryCategory, normalizeStoryDetail, plainExcerpt, type EditorialStory } from '@/lib/story-content';
+import { inferStoryCategory, normalizeStoryDetail, plainExcerpt, type EditorialStory } from '@/lib/story-content';
 
 const DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
@@ -24,7 +24,7 @@ export default function StoryDetail() {
   const { data: homepageAssets } = trpc.media.getHomepageAssets.useQuery();
   const getObjectPosition = useMediaObjectPosition();
   const stories = useMemo<EditorialStory[]>(() => {
-    const databaseStories = data.map((item, index) => { const detail = item.pageContent; return { id: item.id, slug: item.slug, title: item.title, category: detail.meta.category || inferStoryCategory(item.title, index), date: detail.meta.publishedDate || new Date(item.createdAt).toISOString(), location: detail.meta.location, excerpt: detail.meta.excerpt || plainExcerpt(item.content), content: item.content || '', coverImage: item.coverImage || fallbackStories[index % fallbackStories.length].coverImage, pageContent: detail }; });
+    const databaseStories = data.map((item, index) => { const detail = item.pageContent; return { id: item.id, slug: item.slug, title: item.title, category: detail.meta.category || inferStoryCategory(item.title, index), date: detail.meta.publishedDate || new Date(item.createdAt).toISOString(), location: detail.meta.location, excerpt: detail.meta.excerpt || plainExcerpt(item.content), content: item.content || '', coverImage: item.coverImage || '', pageContent: detail }; });
     return databaseStories;
   }, [data]);
   const story = stories.find((item) => item.slug === params?.slug);

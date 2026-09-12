@@ -4,7 +4,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
-import { fallbackStories, inferStoryCategory, plainExcerpt, STORY_CATEGORIES, type EditorialStory, type StoryCategory } from '@/lib/story-content';
+import { inferStoryCategory, plainExcerpt, STORY_CATEGORIES, type EditorialStory, type StoryCategory } from '@/lib/story-content';
 
 const DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
@@ -25,7 +25,7 @@ function formatDate(value: string | Date) {
 
 export default function Stories() {
   const [location] = useLocation();
-  const { data = [] } = trpc.cms.listStories.useQuery();
+  const { data, isLoading } = trpc.cms.listStories.useQuery();
   const getObjectPosition = useMediaObjectPosition();
   const selectedCategory = slugCategory[location.split('/')[2] || ''];
   const isOverview = !selectedCategory;
@@ -33,8 +33,7 @@ export default function Stories() {
   const [page, setPage] = useState(1);
 
   const stories = useMemo<EditorialStory[]>(() => {
-    const databaseStories = data.map((story, index) => ({ id: story.id, slug: story.slug, title: story.title, category: inferStoryCategory(story.title, index), date: new Date(story.createdAt).toISOString(), location: 'Rural China', excerpt: plainExcerpt(story.content) || 'A story from the people and places that shape rural China.', content: story.content || '', coverImage: story.coverImage || fallbackStories[index % fallbackStories.length].coverImage }));
-    return [...databaseStories, ...fallbackStories.filter((fallback) => !databaseStories.some((story) => story.slug === fallback.slug))];
+    return (data ?? []).map((story, index) => ({ id: story.id, slug: story.slug, title: story.title, category: inferStoryCategory(story.title, index), date: new Date(story.createdAt).toISOString(), location: 'Rural China', excerpt: plainExcerpt(story.content), content: story.content || '', coverImage: story.coverImage || '' }));
   }, [data]);
 
   useEffect(() => {
@@ -60,6 +59,8 @@ export default function Stories() {
     setCurrentSection(category);
     document.getElementById(categorySlug[category])?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+
+  if (isLoading) return <div className="min-h-screen bg-[#f5f1e8]" />;
 
   return <div className="stories-page min-h-screen bg-[#f5f1e8] text-[#17251f]" style={{ fontFamily: SANS }}>
     <style>{`

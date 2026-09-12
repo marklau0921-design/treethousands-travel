@@ -15,12 +15,7 @@ export interface ExplorePageContent {
 }
 
 const images = [
-  'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1900&h=1200&fit=crop',
-  'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1500&h=1000&fit=crop',
-  'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1000&h=1400&fit=crop',
-  'https://images.unsplash.com/photo-1511497584788-876760111969?w=1000&h=1400&fit=crop',
-  'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1300&h=1000&fit=crop',
-  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1000&h=1300&fit=crop',
+  '', '', '', '', '', '',
 ];
 
 const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction: string; statement: string; details: string[] }> = {

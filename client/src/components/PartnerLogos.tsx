@@ -1,22 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { trpc } from '@/lib/trpc';
 
-const fallbackLogos = [
-  { src: '', alt: 'Virtuoso', invert: true },
-  { src: '', alt: 'Fan Club', invert: true },
-  { src: '', alt: 'Pen Club', invert: true },
-  { src: '', alt: 'Forbes', invert: false },
-  { src: '', alt: 'Ensemble', invert: true },
-  { src: '', alt: 'EF Education First', invert: false, height: 80 },
-  { src: '', alt: 'Coveteur', invert: false },
-  { src: '', alt: 'CNBC', invert: false },
-  { src: '', alt: 'Travel + Leisure A-List 2026', invert: false },
-];
-
 export default function PartnerLogos() {
   const { data: homepageData } = trpc.homepage.getPublicData.useQuery();
 
-  // 使用 DB sponsors，若无数据则 fallback
+  // Only render logos returned by the CMS.
   const logos = (homepageData?.sponsors && homepageData.sponsors.length > 0)
     ? homepageData.sponsors.flatMap(sp => {
         // logoUrls 是 JSON 数组字符串，需要解析
@@ -28,7 +16,7 @@ export default function PartnerLogos() {
           url: sp.websiteUrl || undefined
         }));
       })
-    : fallbackLogos;
+    : [];
 
   const trackRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);

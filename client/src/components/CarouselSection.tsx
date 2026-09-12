@@ -264,11 +264,10 @@ export default function CarouselSection() {
       }))
     : [];
 
-  // Section titles/subtitles from DB, fallback to defaults
-  const imageSectionTitle = homepageData?.imageSection?.title ?? 'Stories From the Road';
-  const imageSectionSubtitle = homepageData?.imageSection?.subtitle ?? 'Real stories. Meaningful journeys.';
-  const videoSectionTitle = homepageData?.videoSection?.title ?? 'Stories From the Road';
-  const videoSectionSubtitle = homepageData?.videoSection?.subtitle ?? 'Real stories. Meaningful journeys.';
+  const imageSectionTitle = homepageData?.imageSection?.title ?? '';
+  const imageSectionSubtitle = homepageData?.imageSection?.subtitle ?? '';
+  const videoSectionTitle = homepageData?.videoSection?.title ?? '';
+  const videoSectionSubtitle = homepageData?.videoSection?.subtitle ?? '';
 
   // Section visibility: hide if no items or explicitly hidden in DB
   const showImageSection = imageItems.length > 0 && (homepageData ? (homepageData.imageSection?.isVisible !== false) : false);

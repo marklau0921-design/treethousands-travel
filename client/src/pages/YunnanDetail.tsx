@@ -613,7 +613,7 @@ function SimilarExperiencesSection() {
     nights: itin.days,
     title: itin.name,
     buttonText: 'Explore Trip',
-    image: itin.coverImage || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
+    image: itin.coverImage || '',
   }));
   const FALLBACK_BANNER = '';
   const apiBanners = homepageAssets?.banners as Array<{ url: string; id: number }> | undefined;
