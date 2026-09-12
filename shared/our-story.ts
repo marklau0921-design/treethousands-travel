@@ -2,6 +2,7 @@ export interface OurStoryPillar {
   title: string;
   text: string;
   image: string;
+  layout?: 1 | 2 | 3 | 4;
 }
 
 export interface OurStoryPageContent {
@@ -92,22 +93,22 @@ export const whyWeStartedPageContent: OurStoryPageContent = {
       {
         title: 'A Different Side of China',
         text: 'Away from the fast routes are quieter places shaped by weather, seasonal work, family memory, and small routines. Rural China is not a backdrop. It is lived in, changing, and full of stories that deserve time.',
-        image: '/images/why-we-started/rural-details.jpg',
+        image: '/images/why-we-started/rural-details.jpg', layout: 1,
       },
       {
         title: 'Before There Was a Plan',
         text: 'We enter on foot, ask questions, take photographs, measure spaces, and listen to the people who use them. A plan only begins after the village has had the chance to speak.',
-        image: '/images/why-we-started/people-and-stories.jpg',
+        image: '/images/why-we-started/people-and-stories.jpg', layout: 2,
       },
       {
         title: 'Working With What Is Already Here',
         text: 'An old house carries more than timber and brick. We look at what can stay, what needs careful repair, what may change, and what local people want to see grow—reusing spaces without erasing their character.',
-        image: '/images/why-we-started/what-is-already-here.jpg',
+        image: '/images/why-we-started/what-is-already-here.jpg', layout: 3,
       },
       {
         title: 'More Than a Place to Visit',
         text: 'We imagine experiences built around participation: learning from residents, helping with considered projects, sharing skills, and spending enough time for exchange to feel genuine. The aim is not simply to pass through, but to take part with care.',
-        image: '/images/why-we-started/rooms-and-memory.jpg',
+        image: '/images/why-we-started/rooms-and-memory.jpg', layout: 4,
       },
     ],
   },
@@ -176,10 +177,10 @@ export function createDefaultOurStoryPage(title: string, summary: string, image 
       intro: 'Four threads guide the way we explore, listen, and tell stories about rural China.',
       backgroundColor: '#f7f3eb',
       items: [
-        { title: 'Village', text: 'Places shaped by generations of memory, work, and belonging.', image: fallbackImages[3] },
-        { title: 'People', text: 'The makers, farmers, hosts, and storytellers we meet along the way.', image: fallbackImages[4] },
-        { title: 'Nature', text: 'Landscapes that invite us to slow down, listen, and look more closely.', image: fallbackImages[5] },
-        { title: 'Culture', text: 'Living traditions found in food, craft, ritual, language, and daily life.', image: fallbackImages[1] },
+        { title: 'Village', text: 'Places shaped by generations of memory, work, and belonging.', image: fallbackImages[3], layout: 1 },
+        { title: 'People', text: 'The makers, farmers, hosts, and storytellers we meet along the way.', image: fallbackImages[4], layout: 2 },
+        { title: 'Nature', text: 'Landscapes that invite us to slow down, listen, and look more closely.', image: fallbackImages[5], layout: 3 },
+        { title: 'Culture', text: 'Living traditions found in food, craft, ritual, language, and daily life.', image: fallbackImages[1], layout: 4 },
       ],
     },
     closing: {
@@ -227,7 +228,12 @@ export function normalizeOurStoryPage(value: unknown, title: string, summary: st
     hero: { ...defaults.hero, ...(page.hero ?? {}) },
     introduction: { ...defaults.introduction, ...(page.introduction ?? {}), paragraphs: page.introduction?.paragraphs ?? defaults.introduction.paragraphs },
     quote: { ...defaults.quote, ...(page.quote ?? {}) },
-    pillars: { ...defaults.pillars, ...(page.pillars ?? {}), items: page.pillars?.items?.length ? page.pillars.items : defaults.pillars.items },
+    pillars: {
+      ...defaults.pillars,
+      ...(page.pillars ?? {}),
+      items: (page.pillars?.items?.length ? page.pillars.items : defaults.pillars.items)
+        .map((item, index) => ({ ...item, layout: item.layout ?? ((index % 4) + 1) as 1 | 2 | 3 | 4 })),
+    },
     closing: { ...defaults.closing, ...(page.closing ?? {}), paragraphs: page.closing?.paragraphs ?? defaults.closing.paragraphs },
     cta: { ...defaults.cta, ...(page.cta ?? {}) },
     recommendations: { ...defaults.recommendations, ...(page.recommendations ?? {}) },
