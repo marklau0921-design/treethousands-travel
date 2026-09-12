@@ -59,6 +59,88 @@ export interface OurStoryPageContent {
   };
 }
 
+export const whyWeStartedPageContent: OurStoryPageContent = {
+  hero: {
+    eyebrow: 'Our Story / The Beginning',
+    title: 'Why We Started',
+    subtitle: 'We began by walking into villages, listening to the people who live there, and asking what might grow from what is already here.',
+    image: '/images/why-we-started/entering-the-village.jpg',
+  },
+  introduction: {
+    eyebrow: '01 — The Place Before the Project',
+    title: 'We first noticed what was already there.',
+    paragraphs: [
+      'Many introductions to China begin with its cities and landmarks. Beyond those familiar routes, we found another rhythm: tiled roofs darkened by rain, paths between fields, open doorways, and neighbours who still know the history of a room by the marks left on its walls.',
+      'These places were not empty, and they were not waiting to be rescued. They already held memory, knowledge, work, and everyday life. What they needed from us first was attention—the patience to look closely before deciding what a place could become.',
+    ],
+    image: '/images/why-we-started/life-already-here.jpg',
+    backgroundColor: '#ebe5d9',
+  },
+  quote: {
+    eyebrow: '02 — Before There Was a Plan',
+    quote: 'We started by listening.',
+    body: 'There was no finished itinerary and no ready-made answer. We walked the village lanes with local residents, stepped into old houses, looked carefully at unused rooms and public spaces, and sat down for conversations about what had changed—and what should remain. The first work was not to design. It was to understand.',
+    image: '/images/why-we-started/before-the-plan.jpg',
+    backgroundColor: '#17352d',
+  },
+  pillars: {
+    eyebrow: '03 — What We Found',
+    title: 'A different side of China',
+    intro: 'The story became clearer through real places, real conversations, and the practical work of caring for what a village already holds.',
+    backgroundColor: '#f7f3eb',
+    items: [
+      {
+        title: 'A Different Side of China',
+        text: 'Away from the fast routes are quieter places shaped by weather, seasonal work, family memory, and small routines. Rural China is not a backdrop. It is lived in, changing, and full of stories that deserve time.',
+        image: '/images/why-we-started/rural-details.jpg',
+      },
+      {
+        title: 'Before There Was a Plan',
+        text: 'We enter on foot, ask questions, take photographs, measure spaces, and listen to the people who use them. A plan only begins after the village has had the chance to speak.',
+        image: '/images/why-we-started/people-and-stories.jpg',
+      },
+      {
+        title: 'Working With What Is Already Here',
+        text: 'An old house carries more than timber and brick. We look at what can stay, what needs careful repair, what may change, and what local people want to see grow—reusing spaces without erasing their character.',
+        image: '/images/why-we-started/what-is-already-here.jpg',
+      },
+      {
+        title: 'More Than a Place to Visit',
+        text: 'We imagine experiences built around participation: learning from residents, helping with considered projects, sharing skills, and spending enough time for exchange to feel genuine. The aim is not simply to pass through, but to take part with care.',
+        image: '/images/why-we-started/rooms-and-memory.jpg',
+      },
+    ],
+  },
+  closing: {
+    eyebrow: '04 — Still at the Beginning',
+    title: 'This story is still being built.',
+    paragraphs: [
+      'TreeThousands is still at an early stage. There are rooms to assess, paths to walk again, and many more conversations to have. We do not arrive with a finished answer; we keep learning with the people and places involved.',
+      'Over time, we hope residents, young people, visitors, schools, volunteers, and thoughtful partners can become part of this process—not to consume a completed village, but to contribute to a living one. Come closer. Take part. Grow together.',
+    ],
+    image: '/images/why-we-started/still-at-the-beginning.jpg',
+    backgroundColor: '#d8c5aa',
+  },
+  cta: {
+    eyebrow: '',
+    title: 'Come closer. Take part. Grow together.',
+    buttonLabel: 'Join the Story',
+    buttonHref: '/make-an-enquiry',
+    backgroundColor: '#a84900',
+    textColor: '#ffffff',
+    buttonBackgroundColor: '#111111',
+    buttonTextColor: '#ffffff',
+    textureImage: '',
+    textureOpacity: 28,
+  },
+  recommendations: {
+    eyebrow: 'Continue exploring',
+    title: 'More of Our Story',
+    description: 'Discover the ideas, people, and places that shape the way we work.',
+    backgroundColor: '#e8e1d5',
+  },
+};
+
 const fallbackImages = [
   '', '', '', '', '', '',
 ];
