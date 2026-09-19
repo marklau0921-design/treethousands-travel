@@ -1290,7 +1290,7 @@ async function ensureOurStorySectionsTable() {
 }
 
 const WHY_WE_STARTED_CONTENT_SEED = "why-we-started-editorial-v1";
-const WHAT_WE_BELIEVE_CONTENT_SEED = "what-we-believe-editorial-v2";
+const WHAT_WE_BELIEVE_CONTENT_SEED = "what-we-believe-editorial-v3";
 
 async function seedWhyWeStartedContent() {
   const pool = await getPool();

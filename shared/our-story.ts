@@ -207,7 +207,7 @@ export const whatWeBelievePageContent: OurStoryPageContent = {
     ],
   },
   closing: {
-    eyebrow: '04 — Growing Together',
+    eyebrow: '07 — Growing Together',
     title: 'The work stays open.',
     paragraphs: [
       'TreeThousands is still learning how these ideas can take form in real places. Some days involve walking through old houses. Others are spent talking around a table, clearing a room, recording local life, or reconsidering what should happen next.',
@@ -240,15 +240,12 @@ export const whatWeBelievePageContent: OurStoryPageContent = {
     },
     {
       id: 'participation-changes-the-journey',
-      type: 'closing',
+      type: 'quote',
       eyebrow: '06 — Participation Changes the Journey',
-      title: 'More than observing from the edge.',
-      paragraphs: [
-        'A visit becomes different when someone is invited to do more than observe. They might learn from a resident, help prepare a shared space, join seasonal work, contribute a skill, or simply stay long enough for a real conversation.',
-        'Participation should be thoughtful, useful, and connected to what is actually happening in the village.',
-      ],
+      quote: 'More than observing from the edge.',
+      body: 'A visit becomes different when someone is invited to do more than observe. They might learn from a resident, help prepare a shared space, join seasonal work, contribute a skill, or simply stay long enough for a real conversation. Participation should be thoughtful, useful, and connected to what is actually happening in the village.',
       image: '/images/what-we-believe/taking-part.jpg',
-      backgroundColor: '#c7aa88',
+      backgroundColor: '#31453d',
     },
   ],
   cta: {
