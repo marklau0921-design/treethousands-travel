@@ -240,12 +240,37 @@ export const whatWeBelievePageContent: OurStoryPageContent = {
     },
     {
       id: 'participation-changes-the-journey',
-      type: 'quote',
+      type: 'pillars',
       eyebrow: '06 — Participation Changes the Journey',
-      quote: 'More than observing from the edge.',
-      body: 'A visit becomes different when someone is invited to do more than observe. They might learn from a resident, help prepare a shared space, join seasonal work, contribute a skill, or simply stay long enough for a real conversation. Participation should be thoughtful, useful, and connected to what is actually happening in the village.',
-      image: '/images/what-we-believe/taking-part.jpg',
-      backgroundColor: '#31453d',
+      title: 'More than observing from the edge',
+      intro: 'A visit changes when there is time to learn, contribute, work alongside others, and remain present for the ordinary moments in between.',
+      backgroundColor: '#eee7db',
+      items: [
+        {
+          title: 'Learn From a Resident',
+          text: 'Understanding begins with direct conversation and with listening to the people who know the place through everyday life.',
+          image: '/images/what-we-believe/at-the-doorway.jpg',
+          layout: 1,
+        },
+        {
+          title: 'Prepare a Shared Space',
+          text: 'Participation can be practical: looking closely at an existing room, preparing it carefully, and considering how it may be used again.',
+          image: '/images/what-we-believe/already-here.jpg',
+          layout: 2,
+        },
+        {
+          title: 'Work Alongside Others',
+          text: 'Shared work makes room for different skills and perspectives without placing one group above another.',
+          image: '/images/what-we-believe/preparing-together.jpg',
+          layout: 3,
+        },
+        {
+          title: 'Stay for the Conversation',
+          text: 'Sometimes taking part simply means staying long enough for an ordinary conversation to become part of the experience.',
+          image: '/images/what-we-believe/everyday-company.jpg',
+          layout: 4,
+        },
+      ],
     },
   ],
   cta: {
