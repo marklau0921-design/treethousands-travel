@@ -1,5 +1,5 @@
 import { eq, desc, and, sql } from "drizzle-orm";
-import { normalizeOurStoryPage, whyWeStartedPageContent } from "../shared/our-story";
+import { normalizeOurStoryPage, whatWeBelievePageContent, whyWeStartedPageContent } from "../shared/our-story";
 import { defaultExploreSections, normalizeExplorePage } from "../shared/explore";
 import { inferStoryCategory, normalizeStoryDetail, plainExcerpt, type EditorialStory } from "../shared/story-content";
 import { defaultHomepageSections, normalizeHomepageSection, type HomepageSectionKey } from "../shared/homepage";
@@ -1290,6 +1290,7 @@ async function ensureOurStorySectionsTable() {
 }
 
 const WHY_WE_STARTED_CONTENT_SEED = "why-we-started-editorial-v1";
+const WHAT_WE_BELIEVE_CONTENT_SEED = "what-we-believe-editorial-v1";
 
 async function seedWhyWeStartedContent() {
   const pool = await getPool();
@@ -1328,6 +1329,43 @@ async function seedWhyWeStartedContent() {
   await pool.execute("INSERT INTO `site_content_seeds` (`seedKey`) VALUES (?)", [WHY_WE_STARTED_CONTENT_SEED]);
 }
 
+async function seedWhatWeBelieveContent() {
+  const pool = await getPool();
+  const db = await getDb();
+  if (!pool || !db) return;
+
+  await pool.execute(`
+    CREATE TABLE IF NOT EXISTS \`site_content_seeds\` (
+      \`seedKey\` varchar(160) NOT NULL,
+      \`appliedAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (\`seedKey\`)
+    )
+  `);
+  const [applied] = await pool.query(
+    "SELECT `seedKey` FROM `site_content_seeds` WHERE `seedKey` = ? LIMIT 1",
+    [WHAT_WE_BELIEVE_CONTENT_SEED],
+  );
+  if ((applied as any[]).length > 0) return;
+
+  const existing = await db.select({ id: ourStorySections.id })
+    .from(ourStorySections)
+    .where(eq(ourStorySections.slug, "what-we-believe"))
+    .limit(1);
+  if (existing.length === 0) {
+    await db.insert(ourStorySections).values(defaultOurStorySections[1]);
+  }
+
+  await db.update(ourStorySections).set({
+    eyebrow: "Our Values",
+    title: "What We Believe",
+    content: whatWeBelievePageContent.introduction.paragraphs.join("\n\n"),
+    image: whatWeBelievePageContent.hero.image,
+    pageContent: whatWeBelievePageContent,
+    updatedAt: new Date(),
+  }).where(eq(ourStorySections.slug, "what-we-believe"));
+  await pool.execute("INSERT INTO `site_content_seeds` (`seedKey`) VALUES (?)", [WHAT_WE_BELIEVE_CONTENT_SEED]);
+}
+
 export async function listOurStorySections() {
   const wasCreated = await ensureOurStorySectionsTable();
   const db = await getDb();
@@ -1342,6 +1380,7 @@ export async function listOurStorySections() {
     rows = await db.select().from(ourStorySections).orderBy(ourStorySections.sortOrder);
   }
   await seedWhyWeStartedContent();
+  await seedWhatWeBelieveContent();
   rows = await db.select().from(ourStorySections).orderBy(ourStorySections.sortOrder);
   return rows.map(row => ({
     ...row,
