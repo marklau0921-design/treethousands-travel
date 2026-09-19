@@ -5,6 +5,12 @@ export interface OurStoryPillar {
   layout?: 1 | 2 | 3 | 4;
 }
 
+export type OurStoryExtraSection =
+  | ({ id: string; type: 'introduction' } & OurStoryPageContent['introduction'])
+  | ({ id: string; type: 'quote' } & OurStoryPageContent['quote'])
+  | ({ id: string; type: 'pillars' } & OurStoryPageContent['pillars'])
+  | ({ id: string; type: 'closing' } & OurStoryPageContent['closing']);
+
 export interface OurStoryPageContent {
   hero: {
     eyebrow: string;
@@ -40,6 +46,7 @@ export interface OurStoryPageContent {
     image: string;
     backgroundColor: string;
   };
+  extraSections: OurStoryExtraSection[];
   cta: {
     eyebrow: string;
     title: string;
@@ -122,6 +129,7 @@ export const whyWeStartedPageContent: OurStoryPageContent = {
     image: '/images/why-we-started/still-at-the-beginning.jpg',
     backgroundColor: '#d8c5aa',
   },
+  extraSections: [],
   cta: {
     eyebrow: '',
     title: 'Come closer. Take part. Grow together.',
@@ -157,20 +165,20 @@ export const whatWeBelievePageContent: OurStoryPageContent = {
       'We do not begin by deciding what a village should become. We begin by walking through it, meeting the people who live there, and learning how the place works from day to day. Only then can we ask what should stay, what could change, and what might grow from here.',
     ],
     image: '/images/what-we-believe/at-the-doorway.jpg',
-    backgroundColor: '#ebe5d9',
+    backgroundColor: '#e4ddd1',
   },
   quote: {
     eyebrow: '02 — Come Closer',
     quote: 'You are not simply visiting the village. You become part of its story.',
     body: 'To come closer means spending enough time to notice the ordinary things: how a room is used, where neighbours stop to talk, what changes after the rain, and which parts of village life matter to the people who call it home. Participation begins with observation, conversation, and respect.',
     image: '/images/what-we-believe/everyday-company.jpg',
-    backgroundColor: '#17352d',
+    backgroundColor: '#203a32',
   },
   pillars: {
     eyebrow: '03 — The Principles We Work By',
     title: 'Seven ways of working with a place',
     intro: 'These principles guide how we enter a village, work alongside local people, document what happens, and invite others to participate.',
-    backgroundColor: '#f7f3eb',
+    backgroundColor: '#f3eee5',
     items: [
       {
         title: 'The Place Is More Than a View',
@@ -196,24 +204,6 @@ export const whatWeBelievePageContent: OurStoryPageContent = {
         image: '/images/what-we-believe/already-here.jpg',
         layout: 4,
       },
-      {
-        title: 'Document the Process',
-        text: 'The work does not begin when a space is finished. It is already happening while people clear a room, measure a wall, discuss an idea, prepare a meal, or change a plan after another conversation. These unfinished moments show how a project is really made, and they deserve to be recorded.',
-        image: '/images/what-we-believe/documenting-the-process.jpg',
-        layout: 1,
-      },
-      {
-        title: 'Build Alongside, Not For',
-        text: 'We are not arriving to save a village or decide its future from the outside. Local residents, young participants, visitors, and partners bring different experience to the same process. The most useful possibilities are built through shared decisions, practical work, and learning from one another.',
-        image: '/images/what-we-believe/preparing-together.jpg',
-        layout: 2,
-      },
-      {
-        title: 'Participation Changes the Journey',
-        text: 'A visit becomes different when someone is invited to do more than observe. They might learn from a resident, help prepare a shared space, join seasonal work, contribute a skill, or simply stay long enough for a real conversation. Participation should be thoughtful, useful, and connected to what is actually happening in the village.',
-        image: '/images/what-we-believe/taking-part.jpg',
-        layout: 4,
-      },
     ],
   },
   closing: {
@@ -224,14 +214,49 @@ export const whatWeBelievePageContent: OurStoryPageContent = {
       'We want the project to grow through these real encounters—not through a fixed idea imposed from outside. As more people take part, the story can hold more perspectives, more practical work, and more possibilities for the places involved.',
     ],
     image: '/images/what-we-believe/the-work-stays-open.jpg',
-    backgroundColor: '#d8c5aa',
+    backgroundColor: '#d6cabe',
   },
+  extraSections: [
+    {
+      id: 'document-the-process',
+      type: 'quote',
+      eyebrow: '04 — Document the Process',
+      quote: 'The unfinished moments are part of the story.',
+      body: 'The work does not begin when a space is finished. It is already happening while people clear a room, measure a wall, discuss an idea, prepare a meal, or change a plan after another conversation. These unfinished moments show how a project is really made, and they deserve to be recorded.',
+      image: '/images/what-we-believe/documenting-the-process.jpg',
+      backgroundColor: '#5b463b',
+    },
+    {
+      id: 'build-alongside',
+      type: 'introduction',
+      eyebrow: '05 — Build Alongside, Not For',
+      title: 'Different experience, shared decisions.',
+      paragraphs: [
+        'We are not arriving to save a village or decide its future from the outside. Local residents, young participants, visitors, and partners bring different experience to the same process.',
+        'The most useful possibilities are built through practical work, shared decisions, and learning from one another. Working alongside people changes both the result and the relationships behind it.',
+      ],
+      image: '/images/what-we-believe/preparing-together.jpg',
+      backgroundColor: '#dfe3d7',
+    },
+    {
+      id: 'participation-changes-the-journey',
+      type: 'closing',
+      eyebrow: '06 — Participation Changes the Journey',
+      title: 'More than observing from the edge.',
+      paragraphs: [
+        'A visit becomes different when someone is invited to do more than observe. They might learn from a resident, help prepare a shared space, join seasonal work, contribute a skill, or simply stay long enough for a real conversation.',
+        'Participation should be thoughtful, useful, and connected to what is actually happening in the village.',
+      ],
+      image: '/images/what-we-believe/taking-part.jpg',
+      backgroundColor: '#c7aa88',
+    },
+  ],
   cta: {
     eyebrow: '',
     title: 'Come closer. Take part. Grow together.',
     buttonLabel: 'Join the Story',
     buttonHref: '/make-an-enquiry',
-    backgroundColor: '#a84900',
+    backgroundColor: '#93482f',
     textColor: '#ffffff',
     buttonBackgroundColor: '#111111',
     buttonTextColor: '#ffffff',
@@ -242,7 +267,7 @@ export const whatWeBelievePageContent: OurStoryPageContent = {
     eyebrow: 'Continue exploring',
     title: 'More of Our Story',
     description: 'Discover the ideas, people, and places that shape the way we work.',
-    backgroundColor: '#e8e1d5',
+    backgroundColor: '#e6dfd4',
   },
 };
 
@@ -296,6 +321,7 @@ export function createDefaultOurStoryPage(title: string, summary: string, image 
       image: fallbackImages[0],
       backgroundColor: '#d8c5aa',
     },
+    extraSections: [],
     cta: {
       eyebrow: '',
       title: 'So, ready to start?',
@@ -339,6 +365,7 @@ export function normalizeOurStoryPage(value: unknown, title: string, summary: st
         .map((item, index) => ({ ...item, layout: item.layout ?? ((index % 4) + 1) as 1 | 2 | 3 | 4 })),
     },
     closing: { ...defaults.closing, ...(page.closing ?? {}), paragraphs: page.closing?.paragraphs ?? defaults.closing.paragraphs },
+    extraSections: Array.isArray(page.extraSections) ? page.extraSections : defaults.extraSections,
     cta: { ...defaults.cta, ...(page.cta ?? {}) },
     recommendations: { ...defaults.recommendations, ...(page.recommendations ?? {}) },
   };
