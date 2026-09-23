@@ -25,6 +25,84 @@ export interface StoryDetailPageContent {
   page: { backgroundColor: string; textColor: string; accentColor: string };
 }
 
+const patternStoryImages = {
+  hero: '/images/stories/a-pattern-made-together/hero.jpg',
+  leaf: '/images/stories/a-pattern-made-together/leaf-detail.jpg',
+  table: '/images/stories/a-pattern-made-together/table-work.jpg',
+  hands: '/images/stories/a-pattern-made-together/hands-at-work.jpg',
+  together: '/images/stories/a-pattern-made-together/working-together.jpg',
+  closing: '/images/stories/a-pattern-made-together/closing.jpg',
+};
+
+export const publishedEditorialStories: EditorialStory[] = [{
+  id: 'a-pattern-made-together',
+  slug: 'a-pattern-made-together',
+  title: 'A Pattern Made Together',
+  category: 'Local Life',
+  date: '2026-09-23',
+  location: 'Rural China',
+  excerpt: 'Around a long wooden table, leaves, flowers, cloth bags and small mallets became the materials for an afternoon made together.',
+  coverImage: patternStoryImages.hero,
+  content: `The table was already covered when everyone sat down. Plain cloth bags lay beside green leaves and red flowers. Small dark mallets were passed from one pair of hands to another, and the first marks began to appear on the fabric.
+
+At first, each person worked on a separate bag. Someone adjusted the position of a leaf. Someone else held the cloth steady. Before long, the table had become one shared working surface: people watched, compared, tried again and helped one another decide where the next mark should go.
+
+The room did not need a formal stage. Its long table, open windows and old timber structure were enough. What gave the afternoon its shape was the activity happening inside it.`,
+  pageContent: {
+    meta: {
+      category: 'Local Life',
+      location: 'Rural China',
+      publishedDate: '2026-09-23',
+      excerpt: 'Around a long wooden table, leaves, flowers, cloth bags and small mallets became the materials for an afternoon made together.',
+    },
+    opening: {
+      contextLabel: 'Story Context',
+      placeLabel: 'Place',
+      chapterLabel: 'Chapter',
+      recordedLabel: 'Published',
+      paragraphs: [
+        'The table was already covered when everyone sat down. Plain cloth bags lay beside green leaves and red flowers. Small dark mallets were passed from one pair of hands to another, and the first marks began to appear on the fabric.',
+        'At first, each person worked on a separate bag. Someone adjusted the position of a leaf. Someone else held the cloth steady. Before long, the table had become one shared working surface: people watched, compared, tried again and helped one another decide where the next mark should go.',
+        'The room did not need a formal stage. Its long table, open windows and old timber structure were enough. What gave the afternoon its shape was the activity happening inside it.',
+      ],
+    },
+    inside: {
+      eyebrow: 'Inside the Story',
+      title: 'What the hands discover',
+      context: 'The process was simple to follow. A leaf or flower was placed on the cloth, covered and pressed with a mallet. Repeated strikes slowly transferred colour and shape onto the bag. No two impressions arrived in exactly the same way.',
+      body: 'The differences were part of the pleasure. A leaf could leave a clear network of veins or only a soft field of green. A flower might hold its shape, spread beyond its edges or produce a mark no one expected. Each result prompted another look across the table, another small adjustment and another attempt.',
+      images: [patternStoryImages.leaf, patternStoryImages.table],
+      backgroundColor: '#ded8c9',
+    },
+    quote: {
+      eyebrow: 'Around the Table',
+      quote: 'The finished pattern belonged to one bag. The afternoon that produced it belonged to the whole table.',
+      body: 'Hands moved constantly between individual work and shared attention. One person demonstrated a motion; another noticed where a flower had shifted. People could join by watching, by trying a single mark or by completing an entire design. Participation did not depend on arriving with specialist knowledge.',
+      images: [patternStoryImages.hands, patternStoryImages.together],
+      backgroundColor: '#f7f3ea',
+    },
+    closing: {
+      eyebrow: 'Closing Reflection',
+      title: 'An ordinary room, used together',
+      paragraphs: [
+        'By the end of the session, the table held a collection of different patterns. The same leaves, flowers and tools had produced results that carried the choices and movements of each person who made them.',
+        'For TreeThousands, moments like this matter because they show what participation can look like at a human scale. It does not always begin with a large plan. Sometimes it begins with a table, a few materials and enough time for people to make something alongside one another.',
+        'The bags could be taken away. The more important record was the room in use: neighbours seated together, knowledge moving across the table, and an existing village space holding a new shared activity.',
+      ],
+      image: patternStoryImages.closing,
+      backgroundColor: '#cfd4c4',
+    },
+    related: { eyebrow: 'Continue Reading', title: 'Related Stories', backgroundColor: '#e8dfd0' },
+    navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#985e42', textColor: '#ffffff' },
+    page: { backgroundColor: '#f4f0e7', textColor: '#1c2822', accentColor: '#985e42' },
+  },
+}];
+
+export function mergePublishedStories(databaseStories: EditorialStory[]) {
+  const databaseSlugs = new Set(databaseStories.map((story) => story.slug));
+  return [...publishedEditorialStories.filter((story) => !databaseSlugs.has(story.slug)), ...databaseStories];
+}
+
 export const fallbackStories: EditorialStory[] = [
   {
     id: 'field-kitchen', slug: 'a-table-set-between-the-fields', title: 'A Table Set Between the Fields', category: 'Village Notes', date: '2026-07-18', location: 'Western Sichuan',

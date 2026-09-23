@@ -4,7 +4,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
-import { inferStoryCategory, plainExcerpt, STORY_CATEGORIES, type EditorialStory, type StoryCategory } from '@/lib/story-content';
+import { inferStoryCategory, mergePublishedStories, normalizeStoryDetail, plainExcerpt, STORY_CATEGORIES, type EditorialStory, type StoryCategory } from '@/lib/story-content';
 
 const DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
@@ -33,7 +33,12 @@ export default function Stories() {
   const [page, setPage] = useState(1);
 
   const stories = useMemo<EditorialStory[]>(() => {
-    return (data ?? []).map((story, index) => ({ id: story.id, slug: story.slug, title: story.title, category: inferStoryCategory(story.title, index), date: new Date(story.createdAt).toISOString(), location: 'Rural China', excerpt: plainExcerpt(story.content), content: story.content || '', coverImage: story.coverImage || '' }));
+    const databaseStories = (data ?? []).map((story, index) => {
+      const base = { id: story.id, slug: story.slug, title: story.title, category: inferStoryCategory(story.title, index), date: new Date(story.createdAt).toISOString(), location: 'Rural China', excerpt: plainExcerpt(story.content), content: story.content || '', coverImage: story.coverImage || '' };
+      const pageContent = normalizeStoryDetail(story.pageContent, base);
+      return { ...base, category: pageContent.meta.category, date: pageContent.meta.publishedDate, location: pageContent.meta.location, excerpt: pageContent.meta.excerpt || base.excerpt, pageContent };
+    });
+    return mergePublishedStories(databaseStories);
   }, [data]);
 
   useEffect(() => {
