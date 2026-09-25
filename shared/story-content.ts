@@ -34,6 +34,15 @@ const patternStoryImages = {
   closing: '/images/stories/a-pattern-made-together/closing.jpg',
 };
 
+const beyondVisitingImages = {
+  hero: '/images/why-we-started/before-the-plan.jpg',
+  arriving: '/images/why-we-started/entering-the-village.jpg',
+  listening: '/images/what-we-believe/listening-first.jpg',
+  doorway: '/images/what-we-believe/at-the-doorway.jpg',
+  villageRhythm: '/images/what-we-believe/preparing-together.jpg',
+  closing: '/images/what-we-believe/everyday-company.jpg',
+};
+
 export const publishedEditorialStories: EditorialStory[] = [{
   id: 'a-pattern-made-together',
   slug: 'a-pattern-made-together',
@@ -95,6 +104,68 @@ The room did not need a formal stage. Its long table, open windows and old timbe
     related: { eyebrow: 'Continue Reading', title: 'Related Stories', backgroundColor: '#e8dfd0' },
     navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#985e42', textColor: '#ffffff' },
     page: { backgroundColor: '#f4f0e7', textColor: '#1c2822', accentColor: '#985e42' },
+  },
+}, {
+  id: 'beyond-visiting',
+  slug: 'beyond-visiting',
+  title: 'Beyond Visiting',
+  category: 'Brand Stories',
+  date: '2026-09-25',
+  location: 'TreeThousands Field Notes',
+  excerpt: 'For TreeThousands, immersive travel begins with time, attention and a willingness to take part—not simply passing through a place.',
+  coverImage: beyondVisitingImages.hero,
+  content: `There is a difference between arriving somewhere and beginning to understand it. The first can happen in a moment. The second asks for time.
+
+For TreeThousands, immersive travel does not mean travelling farther or searching for somewhere untouched. It means becoming more present: walking without rushing, listening before explaining, and allowing everyday life to set the pace.
+
+You remain a visitor, but not a distant observer. You begin to notice how a place is held together by people, work, weather, memory and the small routines that rarely appear on an itinerary.`,
+  pageContent: {
+    meta: {
+      category: 'Brand Stories',
+      location: 'TreeThousands Field Notes',
+      publishedDate: '2026-09-25',
+      excerpt: 'For TreeThousands, immersive travel begins with time, attention and a willingness to take part—not simply passing through a place.',
+    },
+    opening: {
+      contextLabel: 'Travel Philosophy',
+      placeLabel: 'Perspective',
+      chapterLabel: 'Brand Story',
+      recordedLabel: 'Published',
+      paragraphs: [
+        'There is a difference between arriving somewhere and beginning to understand it. The first can happen in a moment. The second asks for time.',
+        'For TreeThousands, immersive travel does not mean travelling farther or searching for somewhere untouched. It means becoming more present: walking without rushing, listening before explaining, and allowing everyday life to set the pace.',
+        'We do not travel deeper by going farther. We travel deeper by becoming more present.',
+      ],
+    },
+    inside: {
+      eyebrow: 'Arriving with Time',
+      title: 'Life is not a performance',
+      context: 'A village does not begin when a visitor arrives. Meals are prepared, work continues, doors open and close, neighbours speak, children move between homes, and weather changes the shape of the day. Local life is not something arranged for us. It is something we are invited to approach with care.',
+      body: 'That care affects how we travel. Sometimes it means asking a question and staying long enough to hear the answer. Sometimes it means joining a task after being invited. At other times, it means standing back, putting the camera away and recognising that not every moment needs to become content. Immersion is not access without limits. It is attention guided by respect.',
+      images: [beyondVisitingImages.arriving, beyondVisitingImages.listening],
+      backgroundColor: '#ded7c8',
+    },
+    quote: {
+      eyebrow: 'Taking Part',
+      quote: 'You remain a visitor, but not a distant observer.',
+      body: 'Participation changes the question from “What can I see here?” to “What is happening here, and how can I take part respectfully?” The answer may be found in a walk through the village, a conversation at a doorway, time shared around a table or practical work carried out alongside others. None of these moments needs to be made extraordinary. Their value comes from paying attention to what is already there.',
+      images: [beyondVisitingImages.doorway, beyondVisitingImages.villageRhythm],
+      backgroundColor: '#eee5d8',
+    },
+    closing: {
+      eyebrow: 'What Stays',
+      title: 'Learning through people',
+      paragraphs: [
+        'A village is never one story. It is many lives sharing the same place. To understand even a small part of it, we need to listen to different people and notice how their routines, knowledge and relationships shape the world around them.',
+        'This is the kind of travel TreeThousands wants to create: not a performance of local life and not a promise that a short visit makes anyone an insider. It is a chance to come closer, to take part where participation is welcomed, and to leave with fewer assumptions than we brought with us.',
+        'The value of an immersive journey is not how much of a place we can claim to know, but how carefully we learn to see it. Come closer. Take part. Leave with a deeper understanding—not a simplified story.',
+      ],
+      image: beyondVisitingImages.closing,
+      backgroundColor: '#cbd1c1',
+    },
+    related: { eyebrow: 'Continue Reading', title: 'More from the Field', backgroundColor: '#e6ddcf' },
+    navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#17352d', textColor: '#ffffff' },
+    page: { backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#8d5b3f' },
   },
 }];
 
