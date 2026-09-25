@@ -1,3 +1,5 @@
+import { normalizeEditorialBlocks, type EditorialBlock } from './editorial-blocks';
+
 export interface ExploreLinkCard { title: string; description: string; href: string; image: string }
 export interface ExploreStoryCard { category: string; title: string; href: string; image: string }
 export interface ExploreDetailCard { title: string; image: string }
@@ -12,6 +14,7 @@ export interface ExplorePageContent {
   perspectives: { eyebrow: string; title: string; backgroundColor: string; selectedStoryIds: number[]; items: ExploreLinkCard[] };
   stories: { eyebrow: string; title: string; viewAllLabel: string; viewAllHref: string; backgroundColor: string; selectedStoryIds: number[]; items: ExploreStoryCard[] };
   cta: { eyebrow: string; title: string; buttonLabel: string; buttonHref: string; backgroundColor: string; textColor: string; buttonBackgroundColor: string; buttonTextColor: string; textureImage: string; textureOpacity: number };
+  contentBlocks: EditorialBlock[];
 }
 
 const images = [
@@ -59,6 +62,7 @@ export function createDefaultExplorePage(slug: string): ExplorePageContent {
       { category: 'Journal', title: 'Following the path home', href: '/stories', image: images[5] },
     ] },
     cta: { eyebrow: 'Continue the journey', title: 'There is always another side to discover.', buttonLabel: 'Explore More Stories', buttonHref: '/stories', backgroundColor: '#a16140', textColor: '#ffffff', buttonBackgroundColor: '#111111', buttonTextColor: '#ffffff', textureImage: '', textureOpacity: 25 },
+    contentBlocks: [],
   };
 }
 
@@ -77,6 +81,7 @@ export function normalizeExplorePage(value: unknown, slug: string): ExplorePageC
     perspectives: { ...defaults.perspectives, ...(page.perspectives ?? {}), selectedStoryIds: page.perspectives?.selectedStoryIds ?? [], items: page.perspectives?.items?.length ? page.perspectives.items : defaults.perspectives.items },
     stories: { ...defaults.stories, ...(page.stories ?? {}), selectedStoryIds: page.stories?.selectedStoryIds ?? [], items: page.stories?.items?.length ? page.stories.items : defaults.stories.items },
     cta: { ...defaults.cta, ...(page.cta ?? {}) },
+    contentBlocks: normalizeEditorialBlocks(page.contentBlocks),
   };
 }
 

@@ -1,3 +1,5 @@
+import { normalizeEditorialBlocks, type EditorialBlock } from './editorial-blocks';
+
 export interface OurStoryPillar {
   title: string;
   text: string;
@@ -65,6 +67,7 @@ export interface OurStoryPageContent {
     description: string;
     backgroundColor: string;
   };
+  contentBlocks: EditorialBlock[];
 }
 
 export const whyWeStartedPageContent: OurStoryPageContent = {
@@ -148,6 +151,7 @@ export const whyWeStartedPageContent: OurStoryPageContent = {
     description: 'Discover the ideas, people, and places that shape the way we work.',
     backgroundColor: '#e8e1d5',
   },
+  contentBlocks: [],
 };
 
 export const whatWeBelievePageContent: OurStoryPageContent = {
@@ -291,6 +295,7 @@ export const whatWeBelievePageContent: OurStoryPageContent = {
     description: 'Discover the ideas, people, and places that shape the way we work.',
     backgroundColor: '#e6dfd4',
   },
+  contentBlocks: [],
 };
 
 const fallbackImages = [
@@ -362,6 +367,7 @@ export function createDefaultOurStoryPage(title: string, summary: string, image 
       description: 'Discover the ideas, people, and places that shape the way we travel.',
       backgroundColor: '#e8e1d5',
     },
+    contentBlocks: [],
   };
 }
 
@@ -390,5 +396,6 @@ export function normalizeOurStoryPage(value: unknown, title: string, summary: st
     extraSections: Array.isArray(page.extraSections) ? page.extraSections : defaults.extraSections,
     cta: { ...defaults.cta, ...(page.cta ?? {}) },
     recommendations: { ...defaults.recommendations, ...(page.recommendations ?? {}) },
+    contentBlocks: normalizeEditorialBlocks(page.contentBlocks),
   };
 }

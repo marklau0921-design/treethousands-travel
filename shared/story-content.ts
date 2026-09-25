@@ -1,3 +1,5 @@
+import { normalizeEditorialBlocks, type EditorialBlock } from './editorial-blocks';
+
 export const STORY_CATEGORIES = ['All Stories', 'Brand Stories', 'Village Notes', 'Local Life', 'Journal'] as const;
 export type StoryCategory = Exclude<(typeof STORY_CATEGORIES)[number], 'All Stories'>;
 
@@ -23,6 +25,7 @@ export interface StoryDetailPageContent {
   related: { eyebrow: string; title: string; backgroundColor: string };
   navigation: { previousLabel: string; nextLabel: string; backgroundColor: string; textColor: string };
   page: { backgroundColor: string; textColor: string; accentColor: string };
+  contentBlocks: EditorialBlock[];
 }
 
 const patternStoryImages = {
@@ -104,6 +107,7 @@ The room did not need a formal stage. Its long table, open windows and old timbe
     related: { eyebrow: 'Continue Reading', title: 'Related Stories', backgroundColor: '#e8dfd0' },
     navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#985e42', textColor: '#ffffff' },
     page: { backgroundColor: '#f4f0e7', textColor: '#1c2822', accentColor: '#985e42' },
+    contentBlocks: [],
   },
 }, {
   id: 'beyond-visiting',
@@ -166,6 +170,7 @@ You remain a visitor, but not a distant observer. You begin to notice how a plac
     related: { eyebrow: 'Continue Reading', title: 'More from the Field', backgroundColor: '#e6ddcf' },
     navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#17352d', textColor: '#ffffff' },
     page: { backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#8d5b3f' },
+    contentBlocks: [],
   },
 }];
 
@@ -357,6 +362,7 @@ export function createDefaultStoryDetail(story: Pick<EditorialStory, 'title'|'ca
     related: { eyebrow: 'Continue reading', title: 'Related Stories', backgroundColor: '#e5ddce' },
     navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#9b5e3d', textColor: '#ffffff' },
     page: { backgroundColor: '#f5f1e8', textColor: '#17251f', accentColor: '#9b5e3d' },
+    contentBlocks: [],
   };
 }
 
@@ -369,6 +375,6 @@ export function normalizeStoryDetail(value: unknown, story: Pick<EditorialStory,
     meta: { ...defaults.meta, ...(page.meta ?? {}) }, opening: { ...defaults.opening, ...(page.opening ?? {}), paragraphs: page.opening?.paragraphs ?? defaults.opening.paragraphs },
     inside: { ...defaults.inside, ...(page.inside ?? {}), images: page.inside?.images ?? defaults.inside.images }, quote: { ...defaults.quote, ...(page.quote ?? {}), images: page.quote?.images ?? defaults.quote.images },
     closing: { ...defaults.closing, ...(page.closing ?? {}), paragraphs: page.closing?.paragraphs ?? defaults.closing.paragraphs }, related: { ...defaults.related, ...(page.related ?? {}) },
-    navigation: { ...defaults.navigation, ...(page.navigation ?? {}) }, page: { ...defaults.page, ...(page.page ?? {}) },
+    navigation: { ...defaults.navigation, ...(page.navigation ?? {}) }, page: { ...defaults.page, ...(page.page ?? {}) }, contentBlocks: normalizeEditorialBlocks(page.contentBlocks),
   };
 }
