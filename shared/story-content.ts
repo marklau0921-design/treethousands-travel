@@ -170,7 +170,65 @@ You remain a visitor, but not a distant observer. You begin to notice how a plac
     related: { eyebrow: 'Continue Reading', title: 'More from the Field', backgroundColor: '#e6ddcf' },
     navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#17352d', textColor: '#ffffff' },
     page: { backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#8d5b3f' },
-    contentBlocks: [],
+    contentBlocks: [
+      {
+        id: 'beyond-arriving-with-time', type: 'image-text', eyebrow: '01 — Arriving with Time', title: 'Understanding begins after arrival.',
+        body: [
+          'There is a difference between reaching a place and beginning to understand it. Arrival can be measured by distance and time. Understanding grows more slowly, through attention to the road, the weather, the work of the day, and the people who already know this place as home.',
+          'For TreeThousands, immersive travel does not mean travelling farther in search of somewhere untouched. It means giving a place enough time to become more than a view. We walk without rushing, listen before explaining, and allow everyday life to set the pace.',
+        ], quote: '', images: ['/images/why-we-started/entering-the-village.jpg'], captions: ['Entering the village on foot'], backgroundColor: '#e3ddd0', textColor: '#1b2822', accentColor: '#8d5b3f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'beyond-itinerary', type: 'split', eyebrow: '02 — Beyond the Itinerary', title: 'A route can guide us. It cannot tell the whole story.',
+        body: [
+          'An itinerary can name the next stop, but it cannot predict which details will make a place memorable. A change in weather may slow the walk. A doorway may become the beginning of a conversation. A road that appears ordinary on a map may reveal how homes, fields and forests belong to one another.',
+          'Travelling deeply means leaving room for these moments. The aim is not to collect more places in a day, but to notice what a faster journey would have passed without seeing.',
+        ], quote: '', images: ['/images/what-we-believe/documenting-the-process.jpg'], captions: ['Walking and recording along the road'], backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#8d5b3f', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'beyond-not-performance', type: 'double-image', eyebrow: '03 — Life Is Not a Performance', title: 'The village continues before and after we pass through.',
+        body: [
+          'Meals are prepared, work continues, neighbours speak, animals cross the road, and doors open and close throughout the day. None of this begins for the benefit of a visitor. Local life is not something arranged for us. It is something we are invited to approach with care.',
+          'That distinction matters. We are not looking for a staged version of rural China. We are learning to notice the place as it is already being lived, without turning every ordinary moment into a spectacle.',
+        ], quote: '', images: ['/images/what-we-believe/preparing-together.jpg', '/images/what-we-believe/place-and-life.jpg'], captions: ['', ''], backgroundColor: '#d7d8cc', textColor: '#1b2822', accentColor: '#74482f', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'beyond-listening', type: 'image-text', eyebrow: '04 — Listening Before Photographing', title: 'Attention comes before the record.',
+        body: [
+          'A camera can preserve a scene, but it cannot replace the conversation around it. Before photographing, we need to understand whether a moment is ours to record and how the people within it wish to be seen.',
+          'Sometimes care means asking a question and staying long enough to hear the answer. Sometimes it means waiting for an invitation. At other times, it means putting the camera away. Immersion is not access without limits; it is attention guided by respect.',
+        ], quote: '', images: ['/images/what-we-believe/listening-first.jpg'], captions: ['A roadside conversation'], backgroundColor: '#eee5d8', textColor: '#1b2822', accentColor: '#8d5b3f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'beyond-taking-part', type: 'collage', eyebrow: '05 — Taking Part', title: 'From seeing what is here to understanding what is happening.',
+        body: [
+          'Participation changes the question from “What can I see here?” to “What is happening here, and how can I take part respectfully?” The answer might be found in a walk through the village, a conversation at a doorway, time shared around a table, or practical work carried out alongside others.',
+          'Taking part does not mean pretending to become local. We remain visitors. The difference is that we are no longer satisfied with observing from a distance when there is an appropriate way to listen, contribute and learn.',
+        ], quote: '', images: ['/images/what-we-believe/taking-part.jpg', '/images/what-we-believe/at-the-doorway.jpg', '/images/what-we-believe/already-here.jpg'], captions: ['', '', ''], backgroundColor: '#f4f0e7', textColor: '#1b2822', accentColor: '#8d5b3f', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'beyond-ordinary-story', type: 'gallery', eyebrow: '06 — The Ordinary Holds the Story', title: 'Meaning gathers in the moments between destinations.',
+        body: [
+          'A meaningful day does not require a dramatic event. It may be held in the time spent at a doorway, in people gathering inside a familiar room, or in the changing relationship between a road, a house and the landscape around them.',
+          'These moments are easy to overlook because they are ordinary. Seen together, they reveal how a place is used, remembered and shared. They also remind us that travelling deeply is less about seeking spectacle than learning how to pay attention.',
+        ], quote: '', images: ['/images/what-we-believe/everyday-company.jpg', '/images/what-we-believe/people-not-background.jpg', '/images/what-we-believe/the-work-stays-open.jpg', '/images/what-we-believe/preparing-together.jpg'], captions: ['', '', '', ''], backgroundColor: '#ddd3c4', textColor: '#1b2822', accentColor: '#74482f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'beyond-learning-through-people', type: 'quote-image', eyebrow: '07 — Learning Through People', title: 'Many lives share the same place.',
+        body: [
+          'No village can be reduced to a single image or a single explanation. Different generations, households and experiences meet within the same landscape. Listening to people does not give us ownership of their stories; it helps us recognise how partial our own view has been.',
+          'The goal is not to leave believing that a short visit has explained everything. It is to understand more carefully, hold several perspectives at once, and resist replacing a complex place with one convenient story.',
+        ], quote: 'A village is never one story. It is many lives sharing the same place.', images: ['/images/what-we-believe/at-the-doorway.jpg'], captions: ['Conversation at a village doorway'], backgroundColor: '#20392f', textColor: '#f4f0e7', accentColor: '#d3aa86', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'beyond-what-stays', type: 'split', eyebrow: '08 — What Stays After the Journey', title: 'Leave with a deeper understanding—not a simplified story.',
+        body: [
+          'The value of an immersive journey is not how much of a place we can claim to know, but how carefully we learn to see it. A thoughtful visit should leave us with more detail, more respect and fewer assumptions than we brought with us.',
+          'This is the kind of travel TreeThousands wants to make possible: coming closer without claiming ownership, taking part where participation is welcomed, and allowing what we learn to change the way we understand rural China.',
+          'Come closer. Take part. Carry the complexity of the place with you.',
+        ], quote: '', images: ['/images/what-we-believe/everyday-company.jpg'], captions: ['Everyday life continuing in a familiar room'], backgroundColor: '#cbd1c1', textColor: '#1b2822', accentColor: '#74482f', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+    ],
   },
 }];
 
