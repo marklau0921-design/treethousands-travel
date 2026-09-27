@@ -46,7 +46,137 @@ const beyondVisitingImages = {
   closing: '/images/what-we-believe/everyday-company.jpg',
 };
 
+const forestTogetherImages = {
+  hero: '/images/stories/into-the-forest-together/group-in-forest.jpg',
+  arriving: '/images/stories/into-the-forest-together/arriving.jpg',
+  bambooPath: '/images/stories/into-the-forest-together/bamboo-path.jpg',
+  bird: '/images/stories/into-the-forest-together/bird.jpg',
+  handsAtWork: '/images/stories/into-the-forest-together/hands-at-work.jpg',
+  forestDevice: '/images/stories/into-the-forest-together/forest-device.jpg',
+  lookingClosely: '/images/stories/into-the-forest-together/looking-closely.jpg',
+  toolsInForest: '/images/stories/into-the-forest-together/tools-in-forest.jpg',
+  together: '/images/stories/into-the-forest-together/together.jpg',
+  landscape: '/images/stories/into-the-forest-together/forest-landscape.jpg',
+};
+
 export const publishedEditorialStories: EditorialStory[] = [{
+  id: 'into-the-forest-together',
+  slug: 'into-the-forest-together',
+  title: 'Into the Forest, Together',
+  category: 'Journal',
+  date: '2026-09-27',
+  location: 'Rural China',
+  excerpt: 'A group of young people move beyond observation and take part in the patient, practical work of caring for a local forest.',
+  coverImage: forestTogetherImages.hero,
+  content: `The forest received the group with wet ground, close-growing bamboo and a canopy that softened the daylight. Before any work began, there was time to gather, listen and understand how to move through the landscape with care.
+
+Tools and gloves changed the nature of the visit. The young participants were no longer walking through the forest only to admire it. They were joining practical work already taking place there—learning by watching, asking and working alongside one another.
+
+The day did not promise a dramatic transformation. Its value was found in smaller actions: looking closely, handling the forest carefully and discovering that protection depends on attention repeated over time.`,
+  pageContent: {
+    meta: {
+      category: 'Journal',
+      location: 'Rural China',
+      publishedDate: '2026-09-27',
+      excerpt: 'A group of young people move beyond observation and take part in the patient, practical work of caring for a local forest.',
+    },
+    opening: {
+      contextLabel: 'Field Journal',
+      placeLabel: 'Place',
+      chapterLabel: 'Chapter',
+      recordedLabel: 'Published',
+      paragraphs: [
+        'The forest received the group with wet ground, close-growing bamboo and a canopy that softened the daylight. Before any work began, there was time to gather, listen and understand how to move through the landscape with care.',
+        'Tools and gloves changed the nature of the visit. The young participants were no longer walking through the forest only to admire it. They were joining practical work already taking place there—learning by watching, asking and working alongside one another.',
+        'The day did not promise a dramatic transformation. Its value was found in smaller actions: looking closely, handling the forest carefully and discovering that protection depends on attention repeated over time.',
+      ],
+    },
+    inside: {
+      eyebrow: 'Inside the Forest',
+      title: 'Learning begins with attention',
+      context: 'A forest is not simply a view. It is a living system of trees, bamboo, ground plants, birds, insects, weather and countless relationships that are not immediately visible.',
+      body: 'Moving carefully through it means learning to notice before deciding what to do. The work begins with listening to people who know the place and understanding that every action belongs to a much longer process.',
+      images: [forestTogetherImages.arriving, forestTogetherImages.handsAtWork],
+      backgroundColor: '#d9ddcf',
+    },
+    quote: {
+      eyebrow: 'Taking Part',
+      quote: 'Care becomes real when attention turns into participation.',
+      body: 'The day was shaped by shared work rather than spectacle. Each person contributed through simple, practical actions and learned that caring for a landscape is rarely a single heroic gesture.',
+      images: [forestTogetherImages.forestDevice, forestTogetherImages.toolsInForest],
+      backgroundColor: '#e7dfd1',
+    },
+    closing: {
+      eyebrow: 'What We Carry Back',
+      title: 'Leaving with a different way of seeing',
+      paragraphs: [
+        'The forest did not become a finished story by the end of the day. It remained complex, living and larger than any one visit.',
+        'What changed was the relationship of the participants to the place. Observation had become involvement, and a distant idea of conservation had become a series of real actions carried out together.',
+        'For TreeThousands, this is what it means to come closer: not to claim a place, but to understand more of what it asks from us.',
+      ],
+      image: forestTogetherImages.landscape,
+      backgroundColor: '#cbd2c2',
+    },
+    related: { eyebrow: 'Continue Reading', title: 'More from the Field', backgroundColor: '#e5ddcf' },
+    navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#17352d', textColor: '#ffffff' },
+    page: { backgroundColor: '#f2eee5', textColor: '#1b2822', accentColor: '#7d583e' },
+    contentBlocks: [
+      {
+        id: 'forest-entering', type: 'our-story-sheet', eyebrow: '01 — Entering the Forest', title: 'The day begins by slowing down.',
+        body: [
+          'The group arrived beneath a dense canopy after rain. Bamboo leaned over the narrow route, moss held moisture against the trunks, and the uneven ground asked everyone to pay attention to each step.',
+          'Before tools were lifted, there was time to gather and listen. Entering the forest was not treated as an arrival at an attraction. It was the beginning of learning how to be present in a living place without assuming that it existed for us.',
+        ], quote: '', images: [forestTogetherImages.arriving], captions: ['Gathering at the edge of the forest'], backgroundColor: '#dde0d3', textColor: '#1b2822', accentColor: '#76543b', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'forest-looking-closely', type: 'story-spread', eyebrow: '02 — Learning to Look More Closely', title: 'A forest reveals itself through relationships.',
+        body: [
+          'At first, the landscape seemed to be made almost entirely of green. Looking longer brought out its many layers: slender bamboo above the path, ferns close to the soil, moss on the trunks and brief movements among the leaves.',
+          'The bird in the undergrowth was a reminder that human activity is only one part of the forest. Caring for this place begins with recognising the lives already moving through it, including those we may notice for only a moment.',
+        ], quote: '', images: [forestTogetherImages.bambooPath, forestTogetherImages.bird], captions: ['Bamboo and ground plants along the route', 'A small forest resident among the leaves'], backgroundColor: '#f2eee5', textColor: '#1b2822', accentColor: '#7d583e', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'forest-participants', type: 'home-edge-rows', eyebrow: '03 — From Visitors to Participants', title: 'Gloves and tools change the meaning of the visit.',
+        body: [
+          'It is possible to walk through a forest and remain outside its story. Participation begins when observation is joined by responsibility: listening to instructions, handling plants carefully and contributing to the work that the day requires.',
+          'No one needed to arrive as an expert. The group learned through demonstration and repetition, watching how others worked and finding a useful place within the shared task.',
+        ], quote: '', images: [forestTogetherImages.handsAtWork], captions: ['Young participants working together on the forest floor'], backgroundColor: '#d4d8ca', textColor: '#1b2822', accentColor: '#76543b', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'forest-work-details', type: 'magazine-contact-sheet', eyebrow: '04 — The Work Is in the Details', title: 'Small actions, repeated with care.',
+        body: [
+          'Forest care is not a single dramatic gesture. It is made from practical movements: holding, clearing, carrying, checking and pausing to make sure the work is being done carefully.',
+          'Seen up close, these actions show another side of environmental participation. Progress depends less on speed than on attention, cooperation and a willingness to keep learning from the place and from one another.',
+        ], quote: '', images: [forestTogetherImages.handsAtWork, forestTogetherImages.lookingClosely, forestTogetherImages.forestDevice, forestTogetherImages.toolsInForest, forestTogetherImages.arriving, forestTogetherImages.bambooPath], captions: ['Working close to the ground', 'Reading the condition of the forest', 'Careful work around an existing tree', 'Tools carried into the forest', 'Gathering before the work', 'The landscape around the activity'], backgroundColor: '#ddd4c5', textColor: '#1b2822', accentColor: '#74482f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'forest-what-belongs', type: 'our-story-quote', eyebrow: '05 — Working with What Is Here', title: 'Care begins before change.',
+        body: [
+          'The purpose of entering a forest is not to make it look tidier for a photograph. A healthy landscape has its own complexity, and meaningful work must begin by understanding what should remain, what requires attention and why.',
+          'That is why participation needs guidance. The group followed the work already taking place rather than imposing a new plan on the forest. The day became an exercise in restraint as much as action.',
+        ], quote: 'To care for a place, we first have to notice what already belongs there.', images: [forestTogetherImages.lookingClosely], captions: ['Looking closely before acting'], backgroundColor: '#1f382f', textColor: '#f3efe6', accentColor: '#d3aa86', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'forest-presence', type: 'our-story-closing', eyebrow: '06 — Protection Through Presence', title: 'Some work is quiet and meant to continue.',
+        body: [
+          'One small device fixed carefully to a tree suggested another part of caring for the forest: observation over time. Protection depends on returning, recording change and paying attention beyond the span of a single visit.',
+          'The most visible part of the day was the group at work. The deeper lesson was that the forest will continue after everyone leaves. Responsible participation respects that longer timeline.',
+        ], quote: '', images: [forestTogetherImages.forestDevice], captions: ['A device placed carefully against a forest tree'], backgroundColor: '#e8e1d5', textColor: '#1b2822', accentColor: '#7d583e', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'forest-shared-day', type: 'story-photo-quote', eyebrow: '07 — A Day Shared in the Forest', title: 'Work creates its own kind of connection.',
+        body: [
+          'Between instructions and practical tasks, the group found time to talk, laugh and encourage one another. These lighter moments did not sit outside the work; they helped make continued participation possible.',
+          'A shared day in the forest allowed people to know the landscape through one another. Questions could be asked, uncertainty could be admitted, and unfamiliar work became something learned collectively rather than performed alone.',
+        ], quote: 'Participation is not only what we do for a place. It is also how we learn to work alongside others.', images: [forestTogetherImages.together, forestTogetherImages.toolsInForest], captions: ['A pause between tasks', 'The group together among the trees'], backgroundColor: '#263a31', textColor: '#f4f0e7', accentColor: '#d3aa86', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'forest-carry-back', type: 'magazine-full-bleed', eyebrow: '08 — What We Carry Back', title: 'The forest remains larger than a single day.',
+        body: [], quote: '', images: [forestTogetherImages.landscape], captions: ['The wider forest beyond the day’s work'], backgroundColor: '#cbd2c2', textColor: '#f4f0e7', accentColor: '#d3aa86', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+    ],
+  },
+}, {
   id: 'a-pattern-made-together',
   slug: 'a-pattern-made-together',
   title: 'A Pattern Made Together',
