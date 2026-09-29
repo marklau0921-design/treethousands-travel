@@ -59,7 +59,134 @@ const forestTogetherImages = {
   landscape: '/images/stories/into-the-forest-together/forest-landscape.jpg',
 };
 
+const workingWithWhatExistsImages = {
+  hero: '/images/stories/working-with-what-is-already-here/before-exterior.jpg',
+  roofWide: '/images/stories/working-with-what-is-already-here/roof-wide.jpg',
+  roofCheck: '/images/stories/working-with-what-is-already-here/roof-check.jpg',
+  roofLadder: '/images/stories/working-with-what-is-already-here/roof-ladder.jpg',
+  roofMountains: '/images/stories/working-with-what-is-already-here/roof-mountains.jpg',
+  roofTogether: '/images/stories/working-with-what-is-already-here/roof-together.jpg',
+  interiorLit: '/images/stories/working-with-what-is-already-here/interior-lit.jpg',
+  worktable: '/images/stories/working-with-what-is-already-here/worktable.jpg',
+  carpenterWindow: '/images/stories/working-with-what-is-already-here/carpenter-window.jpg',
+  carpenterMachine: '/images/stories/working-with-what-is-already-here/carpenter-machine.jpg',
+  transitionWall: '/images/stories/working-with-what-is-already-here/transition-wall.jpg',
+  sandingWall: '/images/stories/working-with-what-is-already-here/sanding-wall.jpg',
+};
+
 export const publishedEditorialStories: EditorialStory[] = [{
+  id: 'working-with-what-is-already-here',
+  slug: 'working-with-what-is-already-here',
+  title: 'Working With What Is Already Here',
+  category: 'Journal',
+  date: '2026-09-29',
+  location: 'Rural China',
+  excerpt: 'A field journal about repairing an old village house by first asking what should remain, what needs attention, and what might grow from here.',
+  coverImage: workingWithWhatExistsImages.hero,
+  content: `The house stood close to the village lane, its timber, plaster, windows and tiled roof carrying the marks of long use. Before thinking about what it might become, the first task was to look carefully at what was already there.
+
+Repair began with practical questions. Which parts of the roof needed attention? Which timbers could continue to serve? How could new work meet the existing structure without making the house feel disconnected from its surroundings?
+
+The answers emerged through work: tiles lifted and returned, timber measured and cut, old surfaces cleaned, and decisions made inside the space itself. The process was not about making the house appear untouched by time. It was about allowing its next use to grow from the life and materials it already held.`,
+  pageContent: {
+    meta: {
+      category: 'Journal',
+      location: 'Rural China',
+      publishedDate: '2026-09-29',
+      excerpt: 'A field journal about repairing an old village house by first asking what should remain, what needs attention, and what might grow from here.',
+    },
+    opening: {
+      contextLabel: 'Field Journal', placeLabel: 'Place', chapterLabel: 'Chapter', recordedLabel: 'Published',
+      paragraphs: [
+        'The house stood close to the village lane, its timber, plaster, windows and tiled roof carrying the marks of long use. Before thinking about what it might become, the first task was to look carefully at what was already there.',
+        'Repair began with practical questions. Which parts of the roof needed attention? Which timbers could continue to serve? How could new work meet the existing structure without making the house feel disconnected from its surroundings?',
+        'The answers emerged through work: tiles lifted and returned, timber measured and cut, old surfaces cleaned, and decisions made inside the space itself.',
+      ],
+    },
+    inside: {
+      eyebrow: 'Inside the Work', title: 'Repair begins with attention',
+      context: 'An existing house is not an empty surface. Its proportions, materials, marks of use and relationship with the lane already give it a character that new work must learn to meet.',
+      body: 'The aim was not to erase the age of the building. It was to understand where careful repair could allow the house to remain useful without losing the qualities that made it part of this place.',
+      images: [workingWithWhatExistsImages.roofWide, workingWithWhatExistsImages.worktable], backgroundColor: '#ded7c9',
+    },
+    quote: {
+      eyebrow: 'A Working Question', quote: 'What should stay? What needs to change? What could grow from here?',
+      body: 'These questions kept the work grounded in the house itself. Every decision had to respond to something already present: a roof line, a timber joint, a window opening or the way light entered the room.',
+      images: [workingWithWhatExistsImages.carpenterWindow, workingWithWhatExistsImages.sandingWall], backgroundColor: '#ede4d7',
+    },
+    closing: {
+      eyebrow: 'Still Taking Shape', title: 'Another use can begin without erasing the first',
+      paragraphs: [
+        'The work shown here is a process rather than a finished reveal. Materials remain on the floor, tools remain within reach, and the next decision is still connected to the one before it.',
+        'For TreeThousands, this unfinished stage matters. It makes visible the people, judgement and labour that a polished final image can easily hide.',
+        'A repaired house does not need to deny its age. Its future can grow from the structure, knowledge and relationships that have allowed it to remain here.',
+      ],
+      image: workingWithWhatExistsImages.transitionWall, backgroundColor: '#cbd1c2',
+    },
+    related: { eyebrow: 'Continue Reading', title: 'More from the Field', backgroundColor: '#e5ddcf' },
+    navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#17352d', textColor: '#ffffff' },
+    page: { backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#8a5b3f' },
+    contentBlocks: [
+      {
+        id: 'house-before-change', type: 'our-story-sheet', eyebrow: '01 — Before Any Change', title: 'The first step was to see the house as it was.',
+        body: [
+          'The house faced a narrow lane, held between neighbouring buildings, stone edges and the slope of the village. Its plaster, wooden windows and dark tiled roof showed the effects of weather and continued use.',
+          'Nothing in this first view asked to be romanticised. It asked to be read carefully. Before plans and materials entered the space, the existing building was the most important source of information.',
+        ], quote: '', images: [workingWithWhatExistsImages.hero], captions: ['The house before repair work began'], backgroundColor: '#e2ddd2', textColor: '#1b2822', accentColor: '#8a5b3f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'house-reading-existing', type: 'magazine-columns', eyebrow: '02 — Reading the Existing House', title: 'The building itself became the first set of plans.',
+        body: [
+          'An old house contains decisions made over many years. Roof tiles overlap in a particular rhythm. Openings follow the needs of the rooms behind them. Beams, boards and plaster meet where different stages of work have left their trace.',
+          'Reading these details does not mean preserving every part without question. It means understanding the consequences of change before making it. The task was to distinguish between what could continue, what required repair and what needed a careful new response.',
+        ], quote: 'Working with an existing house begins by listening to what its materials can still do.', images: [workingWithWhatExistsImages.interiorLit], captions: ['Examining the existing doorway and interior structure'], backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#76503a', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'house-what-stays', type: 'story-spread', eyebrow: '03 — What Should Stay', title: 'Keeping something requires judgement, not nostalgia.',
+        body: [
+          'The dark timber surfaces, familiar window proportions and heavy roof line gave the house its presence within the village. Repair did not need to make those things disappear in order to prove that work had taken place.',
+          'New plaster and prepared timber appeared beside older surfaces. The contrast made the process visible: not a return to an imagined past, and not a complete replacement, but a meeting between what remained sound and what had to be renewed.',
+        ], quote: '', images: [workingWithWhatExistsImages.transitionWall, workingWithWhatExistsImages.sandingWall], captions: ['New work meeting the existing structure', 'Preparing an old timber wall for continued use'], backgroundColor: '#d5d2c6', textColor: '#1b2822', accentColor: '#7e5138', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'house-roof', type: 'our-story-mosaic', eyebrow: '04 — Beginning from the Roof', title: 'The most practical work came first.',
+        body: [
+          'A roof determines whether the rooms below can continue to be used. The repair began above the house, where workers moved across the slope, lifted old tiles and attended to the places that could no longer be left as they were.',
+          'The photographs show the physical reality of the work: ladders against the eaves, stacks of tiles within reach, bodies balanced carefully on the roof and the mountain landscape rising beyond the village.',
+        ], quote: '', images: [workingWithWhatExistsImages.roofWide, workingWithWhatExistsImages.roofCheck, workingWithWhatExistsImages.roofLadder, workingWithWhatExistsImages.roofMountains], captions: ['Repair across the tiled roof', 'Checking the existing tiles', 'Working from the ladder and roof line', 'The house within the mountain landscape'], backgroundColor: '#e7dece', textColor: '#1b2822', accentColor: '#8a5b3f', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'house-knowledge-hands', type: 'story-photo-quote', eyebrow: '05 — Knowledge in the Hands', title: 'Craft becomes visible through movement.',
+        body: [
+          'Inside the house, timber was measured, carried and worked in response to the dimensions of the existing rooms. The knowledge involved was practical: how to hold a long board, how to read its grain and how to shape it for the place where it would be used.',
+          'This kind of experience is easy to overlook when a project is described only through drawings and finished photographs. Here, the carpenter and the material remain at the centre of the story.',
+        ], quote: 'A plan can describe a dimension. A practiced hand knows how the material will answer.', images: [workingWithWhatExistsImages.carpenterWindow, workingWithWhatExistsImages.carpenterMachine], captions: ['Timber carried through the renewed window opening', 'Local carpentry underway inside the house'], backgroundColor: '#21372f', textColor: '#f4f0e7', accentColor: '#d4ad87', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'house-workshop', type: 'explore-visual', eyebrow: '06 — The House as a Workshop', title: 'Before it could hold a new use, the room held the work itself.',
+        body: [
+          'Boards rested across temporary supports. Measuring tools, clamps and machines stayed close to the place where they were needed. The room was not presented as a clean interior waiting for decoration; it was an active workshop.',
+          'This stage reveals how change actually happens. A space is tested through labour before it is ready to receive daily life again. The unfinished room records choices in progress and the many hands required to carry them out.',
+        ], quote: '', images: [workingWithWhatExistsImages.worktable, workingWithWhatExistsImages.interiorLit, workingWithWhatExistsImages.carpenterMachine], captions: ['Tools and timber across the worktable', 'Work continuing inside the old structure', 'Wood shavings on the floor of the temporary workshop'], backgroundColor: '#d9d2c5', textColor: '#1b2822', accentColor: '#7d5038', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'house-building-alongside', type: 'home-edge-rows', eyebrow: '07 — Building Alongside', title: 'The work belonged to more than one kind of knowledge.',
+        body: [
+          'Repair brought different forms of experience into the same place. Craftspeople understood the behaviour of timber and tile. Workers knew how to move safely through a difficult structure. Others documented, discussed and responded to what the work revealed.',
+          'This was not a story about arriving with every answer. It was a process of building alongside people who already understood the materials, the house and the conditions of working here.',
+        ], quote: '', images: [workingWithWhatExistsImages.roofTogether], captions: ['People working together across the existing roof'], backgroundColor: '#ece5d9', textColor: '#1b2822', accentColor: '#8a5b3f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'house-next-use', type: 'our-story-closing', eyebrow: '08 — Still Taking Shape', title: 'A new use can grow from an existing place.',
+        body: [
+          'There is no finished reveal at the centre of this story. The house remains in progress, with tools nearby and further decisions still to be made. That unfinished condition is part of the record rather than something to hide.',
+          'For TreeThousands, rural building is not about replacing everything that came before. It is about working with what is already here, allowing useful structures and local knowledge to remain part of whatever comes next.',
+          'The measure of the work will not be how new the house appears. It will be whether the space can be used again while still belonging to the place around it.',
+        ], quote: '', images: [workingWithWhatExistsImages.worktable], captions: ['The interior continuing to take shape'], backgroundColor: '#cbd1c2', textColor: '#1b2822', accentColor: '#76503a', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+    ],
+  },
+}, {
   id: 'into-the-forest-together',
   slug: 'into-the-forest-together',
   title: 'Into the Forest, Together',
