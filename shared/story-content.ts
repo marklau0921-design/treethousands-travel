@@ -74,7 +74,132 @@ const workingWithWhatExistsImages = {
   sandingWall: '/images/stories/working-with-what-is-already-here/sanding-wall.jpg',
 };
 
+const rhythmOfClayImages = {
+  hero: '/images/stories/the-rhythm-of-clay/craftsman-with-lids.jpg',
+  workshopStorage: '/images/stories/the-rhythm-of-clay/workshop-storage.jpg',
+  preparingClay: '/images/stories/the-rhythm-of-clay/preparing-clay.jpg',
+  clayDetail: '/images/stories/the-rhythm-of-clay/clay-detail.jpg',
+  finishingByHand: '/images/stories/the-rhythm-of-clay/finishing-by-hand.jpg',
+  teapots: '/images/stories/the-rhythm-of-clay/teapots.jpg',
+  cupsInSunlight: '/images/stories/the-rhythm-of-clay/cups-in-sunlight.jpg',
+  animalDetail: '/images/stories/the-rhythm-of-clay/animal-detail.jpg',
+  cupsOnRacks: '/images/stories/the-rhythm-of-clay/cups-on-racks.jpg',
+  cupsOnCarts: '/images/stories/the-rhythm-of-clay/cups-on-carts.jpg',
+  workshopSign: '/images/stories/the-rhythm-of-clay/workshop-sign.jpg',
+  workshopCourtyard: '/images/stories/the-rhythm-of-clay/workshop-courtyard.jpg',
+};
+
 export const publishedEditorialStories: EditorialStory[] = [{
+  id: 'the-rhythm-of-clay',
+  slug: 'the-rhythm-of-clay',
+  title: 'The Rhythm of Clay',
+  category: 'Local Life',
+  date: '2026-10-01',
+  location: 'Rural China',
+  excerpt: 'Inside a rural pottery workshop, clay moves through repeated gestures into cups, teapots and vessels made for everyday use.',
+  coverImage: rhythmOfClayImages.hero,
+  content: `The workshop was already in motion when we entered. Shelves held rows of cups and lids, clay dust softened the floor, and finished forms waited beside objects that were still being worked by hand.
+
+Nothing here was arranged as a demonstration. One person prepared clay while another refined the edge of a lid. Vessels moved between worktables, racks and carts according to the condition of the material rather than the pace of a visitor.
+
+The objects shared recognisable forms, but no two carried the process in exactly the same way. Small differences remained in a handle, a rim, a surface or the mark of the hand that completed it.`,
+  pageContent: {
+    meta: {
+      category: 'Local Life', location: 'Rural China', publishedDate: '2026-10-01',
+      excerpt: 'Inside a rural pottery workshop, clay moves through repeated gestures into cups, teapots and vessels made for everyday use.',
+    },
+    opening: {
+      contextLabel: 'Local Life', placeLabel: 'Place', chapterLabel: 'Chapter', recordedLabel: 'Published',
+      paragraphs: [
+        'The workshop was already in motion when we entered. Shelves held rows of cups and lids, clay dust softened the floor, and finished forms waited beside objects that were still being worked by hand.',
+        'Nothing here was arranged as a demonstration. One person prepared clay while another refined the edge of a lid. Vessels moved between worktables, racks and carts according to the condition of the material rather than the pace of a visitor.',
+        'The objects shared recognisable forms, but no two carried the process in exactly the same way. Small differences remained in a handle, a rim, a surface or the mark of the hand that completed it.',
+      ],
+    },
+    inside: {
+      eyebrow: 'Inside the Workshop', title: 'Work gives the room its rhythm',
+      context: 'The workshop is organised around materials in different states. Clay is prepared in one area, vessels wait on shelves, and tools remain close to the hands that use them.',
+      body: 'Its order is practical rather than decorative. Every rack, board and open space supports a stage of work that continues throughout the day.',
+      images: [rhythmOfClayImages.workshopStorage, rhythmOfClayImages.preparingClay], backgroundColor: '#dfd5c5',
+    },
+    quote: {
+      eyebrow: 'Knowledge in Repetition', quote: 'The form returns. The hand never makes it in exactly the same way twice.',
+      body: 'Repetition does not remove attention from the work. It concentrates it. Small adjustments of pressure, angle and timing allow a familiar form to emerge again while retaining the evidence of its making.',
+      images: [rhythmOfClayImages.finishingByHand, rhythmOfClayImages.teapots], backgroundColor: '#eee6da',
+    },
+    closing: {
+      eyebrow: 'Made for Everyday Hands', title: 'The work continues through use',
+      paragraphs: [
+        'The vessels leave the workshop to become part of another routine: held, poured from, placed on a table, washed and used again.',
+        'This is where craft remains connected to daily life. Its value is not limited to the story of how an object was made; it continues in the relationship between the object and the person who uses it.',
+        'For TreeThousands, recording a workshop like this means paying attention to the people and practical knowledge behind ordinary things—not turning them into a performance, but recognising the living work already taking place.',
+      ],
+      image: rhythmOfClayImages.workshopCourtyard, backgroundColor: '#cfd1c3',
+    },
+    related: { eyebrow: 'Continue Reading', title: 'More Local Stories', backgroundColor: '#e6ddcf' },
+    navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#17352d', textColor: '#ffffff' },
+    page: { backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#8a5a3f' },
+    contentBlocks: [
+      {
+        id: 'clay-inside-workshop', type: 'our-story-sheet', eyebrow: '01 — Inside the Workshop', title: 'The room was already shaped by work.',
+        body: [
+          'Shelves, carts and boards carried vessels at different stages. Clay dust settled across the floor and tools remained where they could be reached. The workshop did not need to be arranged for the camera; its working order told us how the day moved.',
+          'We entered as observers of a process that had begun long before us. The task was not to turn ordinary labour into a performance, but to look closely at the people, materials and repeated actions that gave the space its rhythm.',
+        ], quote: '', images: [rhythmOfClayImages.hero], captions: ['Work continuing among rows of clay lids and vessels'], backgroundColor: '#dfd6c7', textColor: '#1b2822', accentColor: '#8a5a3f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'clay-before-form', type: 'story-spread', eyebrow: '02 — Clay Before Form', title: 'Every vessel begins before its shape appears.',
+        body: [
+          'Before there is a cup, a teapot or a lid, there is material that has to be prepared for the hand. Its condition matters. Too much resistance, too little structure or an uneven texture will travel into everything that follows.',
+          'The preparation can look repetitive from a distance. Up close, it is a sequence of judgements: when to continue, when to add pressure and when the clay is ready to move into another stage.',
+        ], quote: '', images: [rhythmOfClayImages.preparingClay, rhythmOfClayImages.clayDetail], captions: ['Preparing clay inside the workshop', 'Clay and the traces of heat, dust and handling'], backgroundColor: '#f2ede4', textColor: '#1b2822', accentColor: '#78513d', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'clay-knowledge-repetition', type: 'our-story-quote', eyebrow: '03 — Knowledge in Repetition', title: 'The same movement becomes more precise over time.',
+        body: [
+          'The craftsman worked with rows of similar lids around him, refining one surface before moving to the next. The repetition did not make the action automatic. Each piece still asked for a response from the hand.',
+          'Practical knowledge often lives here: in pressure that is difficult to measure, in the angle of a small tool, and in knowing when another movement would improve the form—or disturb it.',
+        ], quote: 'Experience is visible not only in what the hand does, but in knowing when to stop.', images: [rhythmOfClayImages.finishingByHand], captions: ['A craftsman refining a clay lid by hand'], backgroundColor: '#26382f', textColor: '#f4f0e7', accentColor: '#d4ae89', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'clay-many-differences', type: 'our-story-mosaic', eyebrow: '04 — One Form, Many Differences', title: 'Similarity makes the small variations easier to see.',
+        body: [
+          'Placed together, the cups and teapots form a repeated pattern. Their shared proportions make them recognisable as a family of objects, while the details reveal how each one arrived there.',
+          'A handle sits slightly higher. A rim carries a different pressure. A lid meets its vessel through tiny adjustments. These are not effects added to make the work appear handmade; they are the natural record of the process itself.',
+        ], quote: '', images: [rhythmOfClayImages.teapots, rhythmOfClayImages.cupsInSunlight, rhythmOfClayImages.cupsOnRacks, rhythmOfClayImages.animalDetail], captions: ['A group of teapots after forming', 'Cup forms gathered in sunlight', 'Rows of vessels across the workshop racks', 'A small animal detail formed into the vessel'], backgroundColor: '#ded3c3', textColor: '#1b2822', accentColor: '#7d5139', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'clay-details-remain', type: 'explore-details', eyebrow: '05 — The Details That Remain', title: 'A vessel meets the hand through its smallest decisions.',
+        body: [
+          'The usefulness of an object is carried by details: the curve of a handle, the width of an opening, the way a lid settles and the texture left beneath the fingers. Seen separately, each detail is small. Together, they determine how the object will be held and used.',
+          'Looking closely shifts attention away from decoration alone. Form, touch and daily use are already connected before the vessel leaves the workshop.',
+        ], quote: '', images: [rhythmOfClayImages.animalDetail, rhythmOfClayImages.teapots, rhythmOfClayImages.cupsInSunlight, rhythmOfClayImages.cupsOnRacks, rhythmOfClayImages.clayDetail, rhythmOfClayImages.hero], captions: ['Animal-shaped handle detail', 'Lids, handles and spouts', 'Open rims in sunlight', 'Repeated forms on the racks', 'The material before completion', 'Hands working among the finished forms'], backgroundColor: '#ece4d8', textColor: '#1b2822', accentColor: '#8a5a3f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'clay-workshop-time', type: 'explore-visual', eyebrow: '06 — A Workshop Built Around Time', title: 'Waiting is part of the work.',
+        body: [
+          'Newly formed vessels occupied every available surface. Some sat close together on racks; others were carried outside on carts where air and sunlight changed their condition gradually.',
+          'The workshop followed the pace of the material. Moving too quickly would not make the next stage arrive sooner. Time here was not empty space between tasks—it was one of the conditions the work depended on.',
+        ], quote: '', images: [rhythmOfClayImages.cupsOnRacks, rhythmOfClayImages.cupsOnCarts, rhythmOfClayImages.cupsInSunlight], captions: ['Vessels waiting across the racks', 'Carts carrying rows of new forms', 'Sunlight moving across unfinished cups'], backgroundColor: '#d6d2c6', textColor: '#1b2822', accentColor: '#78513d', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'clay-made-for-use', type: 'home-edge-rows', eyebrow: '07 — Made for Everyday Hands', title: 'The object is completed by the life around it.',
+        body: [
+          'A cup anticipates the hand that will lift it. A teapot is shaped around pouring, holding and sharing. Even before these vessels enter a home or reach a table, their forms already contain a relationship with everyday use.',
+          'This is one way culture remains present without being staged. It lives in useful objects, repeated gestures and the ordinary decisions of how something should feel in the hand.',
+        ], quote: '', images: [rhythmOfClayImages.teapots], captions: ['Teapots formed for handling, pouring and daily use'], backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#8a5a3f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'clay-hands-carry-forward', type: 'story-closing', eyebrow: '08 — What the Hands Carry Forward', title: 'A craft continues because it remains part of life.',
+        body: [
+          'The value of the workshop is not limited to a finished object or a story about the past. It is present in the fact that people are still working here today, making decisions through material and experience.',
+          'We do not need to describe this work as frozen tradition or turn the makers into symbols. It is enough to recognise the living knowledge within an ordinary working day and the objects that will continue into other people’s routines.',
+          'A craft continues not because it remains unchanged, but because it remains useful, practiced and connected to everyday life.',
+        ], quote: '', images: [rhythmOfClayImages.workshopCourtyard], captions: ['The workshop courtyard, where finished forms become part of the surrounding space'], backgroundColor: '#cbd0c1', textColor: '#1b2822', accentColor: '#78513d', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+    ],
+  },
+}, {
   id: 'working-with-what-is-already-here',
   slug: 'working-with-what-is-already-here',
   title: 'Working With What Is Already Here',
