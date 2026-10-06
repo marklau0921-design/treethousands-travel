@@ -89,7 +89,133 @@ const rhythmOfClayImages = {
   workshopCourtyard: '/images/stories/the-rhythm-of-clay/workshop-courtyard.jpg',
 };
 
+const beforeRouteImages = {
+  hero: '/images/stories/before-a-journey-becomes-a-route/forest-road.jpg',
+  bambooStick: '/images/stories/before-a-journey-becomes-a-route/bamboo-stick-detail.jpg',
+  trailPause: '/images/stories/before-a-journey-becomes-a-route/trail-pause.jpg',
+  mountainVegetation: '/images/stories/before-a-journey-becomes-a-route/mountain-vegetation.jpg',
+  documentingVillage: '/images/stories/before-a-journey-becomes-a-route/documenting-village.jpg',
+  walkingTogether: '/images/stories/before-a-journey-becomes-a-route/walking-together.jpg',
+  bambooTrailGroup: '/images/stories/before-a-journey-becomes-a-route/bamboo-trail-group.jpg',
+  roadsideEncounter: '/images/stories/before-a-journey-becomes-a-route/roadside-encounter.jpg',
+  forestSteps: '/images/stories/before-a-journey-becomes-a-route/forest-steps.jpg',
+  waterfall: '/images/stories/before-a-journey-becomes-a-route/waterfall.jpg',
+  trailAscent: '/images/stories/before-a-journey-becomes-a-route/trail-ascent.jpg',
+  lookingClosely: '/images/stories/before-a-journey-becomes-a-route/looking-closely.jpg',
+  enteringVillage: '/images/stories/before-a-journey-becomes-a-route/entering-village.jpg',
+};
+
 export const publishedEditorialStories: EditorialStory[] = [{
+  id: 'before-a-journey-becomes-a-route',
+  slug: 'before-a-journey-becomes-a-route',
+  title: 'Before a Journey Becomes a Route',
+  category: 'Brand Stories',
+  date: '2026-10-06',
+  location: 'Rural China',
+  excerpt: 'Before we share a journey, we walk it ourselves—through forests, village lanes and everyday places—to understand its pace, its people and what deserves closer attention.',
+  coverImage: beforeRouteImages.hero,
+  content: `A route begins long before it appears on an itinerary. We walk it first: along forest roads, through bamboo paths, over uneven ground and into the lanes where everyday village life continues.
+
+The purpose is not simply to confirm that a path can be completed. We pay attention to pace, transitions, places to pause, and the relationship between the landscape and the communities within it.
+
+This fieldwork is part of how TreeThousands builds journeys. We document what is present, listen before deciding what to share, and shape each route around the character of the place rather than adding attractions for their own sake.`,
+  pageContent: {
+    meta: {
+      category: 'Brand Stories', location: 'Rural China', publishedDate: '2026-10-06',
+      excerpt: 'Before we share a journey, we walk it ourselves—through forests, village lanes and everyday places—to understand its pace, its people and what deserves closer attention.',
+    },
+    opening: {
+      contextLabel: 'How We Work', placeLabel: 'Place', chapterLabel: 'Chapter', recordedLabel: 'Published',
+      paragraphs: [
+        'A route begins long before it appears on an itinerary. We walk it first: along forest roads, through bamboo paths, over uneven ground and into the lanes where everyday village life continues.',
+        'The purpose is not simply to confirm that a path can be completed. We pay attention to pace, transitions, places to pause, and the relationship between the landscape and the communities within it.',
+        'This fieldwork is part of how TreeThousands builds journeys. We document what is present, listen before deciding what to share, and shape each route around the character of the place rather than adding attractions for their own sake.',
+      ],
+    },
+    inside: {
+      eyebrow: 'Fieldwork Before Itineraries', title: 'We begin by walking the ground ourselves',
+      context: 'Maps can show distance and direction, but they cannot explain how a route feels beneath the feet, where its pace changes or how the forest meets the village.',
+      body: 'Walking together allows us to notice these relationships directly and to understand what a future traveller would need in order to approach the place with care.',
+      images: [beforeRouteImages.walkingTogether, beforeRouteImages.bambooTrailGroup], backgroundColor: '#d7d6c8',
+    },
+    quote: {
+      eyebrow: 'A Working Principle', quote: 'A meaningful route is discovered through attention, not assembled from a list of attractions.',
+      body: 'Our work is to recognise what is already here: the landscape, the daily rhythms, the practical limits and the encounters that should remain unforced.',
+      images: [beforeRouteImages.documentingVillage, beforeRouteImages.roadsideEncounter], backgroundColor: '#e8e2d7',
+    },
+    closing: {
+      eyebrow: 'From Field Notes to Journey', title: 'The route should remain connected to the place',
+      paragraphs: [
+        'After the walking comes the work of selection. Not everything we see needs to become a stop, and not every encounter should be turned into an activity.',
+        'We consider what can be shared responsibly, how long a journey should take and how visitors can move through the landscape without asking the place to perform for them.',
+        'This is how TreeThousands turns field research into travel: by beginning with what is already here, and by allowing the route to follow the life of the place.',
+      ],
+      image: beforeRouteImages.enteringVillage, backgroundColor: '#c8d0c1',
+    },
+    related: { eyebrow: 'Continue Reading', title: 'More About How We Work', backgroundColor: '#e5ded2' },
+    navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#17352d', textColor: '#ffffff' },
+    page: { backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#7f6543' },
+    contentBlocks: [
+      {
+        id: 'route-begin-on-foot', type: 'our-story-sheet', eyebrow: '01 — We Begin on Foot', title: 'The first version of every route is walked, not written.',
+        body: [
+          'Before distances become timings and places become stops, we move through the landscape ourselves. The road into the forest gives way to narrower paths, shifting light and ground that asks the group to adjust its pace.',
+          'This first walk is not a preview of a finished product. It is research. It tells us where the journey opens, where it becomes demanding and how people naturally move together through the terrain.',
+        ], quote: '', images: [beforeRouteImages.hero], captions: ['Beginning the field walk along a forest road'], backgroundColor: '#ddd8cb', textColor: '#1b2822', accentColor: '#7f6543', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'route-read-landscape', type: 'story-spread', eyebrow: '02 — Reading the Landscape', title: 'A route is shaped by more than its destination.',
+        body: [
+          'Forest edges, dense bamboo, water and changes in elevation each create a different rhythm. We look at how these conditions connect rather than treating the landscape as a backdrop between attractions.',
+          'The details help us understand where attention belongs. A hillside seen through vegetation and water moving through shade may become moments of orientation, rest or quiet observation—without requiring anything to be staged.',
+        ], quote: '', images: [beforeRouteImages.mountainVegetation, beforeRouteImages.waterfall], captions: ['Vegetation opening toward the mountain landscape', 'Water moving through the shaded forest'], backgroundColor: '#f1ece2', textColor: '#1b2822', accentColor: '#6f6b45', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'route-test-pace', type: 'magazine-columns', eyebrow: '03 — Testing the Pace', title: 'Time on the ground changes what a map can tell us.',
+        body: [
+          'An itinerary can reduce a path to a distance. Walking reveals the pauses, steep sections, narrow passages and changes of energy within that distance. The group itself becomes a useful measure: people spread out, regroup and help one another through the path.',
+          'These observations guide practical decisions later. A responsible route needs room for different walking speeds, for weather and for the simple fact that attention cannot be rushed.',
+        ], quote: 'We measure a route not only in kilometres, but in effort, attention and time to pause.', images: [beforeRouteImages.trailAscent], captions: ['Moving at different paces along the bamboo trail'], backgroundColor: '#d5d7c8', textColor: '#1b2822', accentColor: '#77623f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'route-look-beyond-view', type: 'explore-details', eyebrow: '04 — Looking Beyond the View', title: 'Small conditions can change the whole experience.',
+        body: [
+          'Route research depends on close observation. We notice the condition of the ground, the density of the path, where water collects, how sunlight changes the temperature and where a group can stop without blocking the way.',
+          'These are ordinary details, but they shape safety, comfort and the quality of attention. They help us decide how a journey should be paced and what preparation it requires.',
+        ], quote: '', images: [beforeRouteImages.bambooStick, beforeRouteImages.trailPause, beforeRouteImages.mountainVegetation, beforeRouteImages.waterfall, beforeRouteImages.forestSteps, beforeRouteImages.lookingClosely], captions: ['A bamboo walking stick meeting wet ground', 'Pausing together along the path', 'Reading the vegetation and surrounding slopes', 'Water within the forest route', 'Stone steps beneath the trees', 'Stopping to look more closely'], backgroundColor: '#e8e2d6', textColor: '#1b2822', accentColor: '#7f6543', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'route-forest-village', type: 'home-edge-rows', eyebrow: '05 — From Forest to Village', title: 'The journey continues when the trail reaches everyday life.',
+        body: [
+          'The forest path does not exist separately from the settlements around it. As the route moves into village lanes, the scale changes: trees give way to walls, doorways, working spaces and the traces of daily routines.',
+          'We pay attention to this transition because it changes how a visitor should move and look. Entering a lived place requires a different kind of awareness from walking through open landscape.',
+        ], quote: '', images: [beforeRouteImages.enteringVillage], captions: ['Walking from the forest route into a village lane'], backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#805d3e', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'route-document-without-staging', type: 'story-photo-quote', eyebrow: '06 — Documenting Without Staging', title: 'The camera records what is present; it does not ask the place to perform.',
+        body: [
+          'Photography is part of our fieldwork. It helps us remember spatial relationships, materials, light and the details that written notes can miss. It also requires restraint.',
+          'We document the village as we encounter it, without rearranging daily life to produce a cleaner image. The purpose is to understand a place well enough to represent it honestly and to decide what should remain outside the itinerary.',
+        ], quote: 'Good documentation begins with looking carefully and knowing when not to intervene.', images: [beforeRouteImages.documentingVillage, beforeRouteImages.lookingClosely], captions: ['Recording the village lane as it is encountered', 'Participants observing details along the route'], backgroundColor: '#21372f', textColor: '#f4f0e7', accentColor: '#d4ae89', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'route-everyday-encounters', type: 'explore-visual', eyebrow: '07 — Everyday Encounters', title: 'Local life is not scenery added to a route.',
+        body: [
+          'Along the way, we encounter people meeting, exchanging goods and continuing with the practical work of the day. These moments matter because they locate the journey within a living community rather than an empty destination.',
+          'They are not automatically activities for visitors. Our responsibility is to understand the context, avoid assumptions and consider whether any future interaction can happen naturally and respectfully.',
+        ], quote: '', images: [beforeRouteImages.roadsideEncounter, beforeRouteImages.documentingVillage, beforeRouteImages.enteringVillage], captions: ['A roadside gathering encountered during the field visit', 'Looking carefully within the village', 'Walking through a lived village lane'], backgroundColor: '#d7d2c5', textColor: '#1b2822', accentColor: '#795c3e', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'route-build-from-real-places', type: 'story-closing', eyebrow: '08 — Building from Real Places', title: 'The final route should still belong to the place it came from.',
+        body: [
+          'After the field walk, photographs and notes become decisions. We consider where a journey begins and ends, how much time it needs, what support travellers require and which moments are better left unplanned.',
+          'We do not begin by asking how much can be added to an itinerary. We begin by asking what is already here, how it is lived and how others might approach it with care.',
+          'This is the work behind a TreeThousands journey: walking first, observing closely and building a route that helps people understand a place without asking it to become something else.',
+        ], quote: '', images: [beforeRouteImages.forestSteps], captions: ['Continuing through the forest as a group'], backgroundColor: '#c8d0c1', textColor: '#1b2822', accentColor: '#6f5c3e', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+    ],
+  },
+}, {
   id: 'the-rhythm-of-clay',
   slug: 'the-rhythm-of-clay',
   title: 'The Rhythm of Clay',
