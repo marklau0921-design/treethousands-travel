@@ -13,6 +13,7 @@ export interface ExploreActivityDetail {
   purpose: { eyebrow: string; title: string; paragraphs: string[]; image: string };
   currentWork: { eyebrow: string; title: string; paragraphs: string[]; images: string[] };
   participation: { eyebrow: string; title: string; introduction: string; items: Array<{ title: string; description: string }> };
+  fit: { eyebrow: string; title: string; introduction: string; items: string[] };
   flexibility: { eyebrow: string; title: string; paragraphs: string[]; points: string[]; image: string };
   people: { eyebrow: string; title: string; paragraphs: string[]; images: string[] };
   practical: { eyebrow: string; title: string; introduction: string; items: Array<{ title: string; description: string }> };
@@ -90,6 +91,7 @@ const defaultActivityDetail: ExploreActivityDetail = {
   purpose: { eyebrow: 'Why This Work Exists', title: '', paragraphs: [], image: '' },
   currentWork: { eyebrow: 'What Is Happening Here', title: '', paragraphs: [], images: [] },
   participation: { eyebrow: 'Ways to Take Part', title: '', introduction: '', items: [] },
+  fit: { eyebrow: 'Is This for You?', title: '', introduction: '', items: [] },
   flexibility: { eyebrow: 'Shaped Around You', title: '', paragraphs: [], points: [], image: '' },
   people: { eyebrow: 'Working Alongside', title: '', paragraphs: [], images: [] },
   practical: { eyebrow: 'Before You Join', title: '', introduction: '', items: [] },
@@ -127,6 +129,7 @@ export function createDefaultExplorePage(slug: string): ExplorePageContent {
         { title: 'Document the Process', description: 'Support careful visual or written documentation without directing the work for the camera.' },
         { title: 'Share the Day', description: 'Take part in the ordinary rhythm around the work, including pauses, meals and reflection.' },
       ] },
+      fit: { eyebrow: 'Is This for You?', title: 'A good fit begins with the right expectations.', introduction: 'You do not need professional building experience. Curiosity, flexibility and respect for the working environment matter more than arriving with a particular skill.', items: ['You are interested in how existing buildings are repaired and reused.', 'You are comfortable with an active, unfinished work environment.', 'You can accept that the useful task may change with the project stage.', 'You value learning from local knowledge rather than directing the outcome.', 'You are willing to follow practical, safety and privacy boundaries.'] },
       flexibility: { eyebrow: 'Shaped Around Your Needs', title: 'There is no fixed programme to purchase.', paragraphs: ['Registering interest begins a conversation. We learn about your available time, group, interests, physical needs and expectations, then match these with work that is genuinely useful at that moment.', 'The arrangement can place more emphasis on practical contribution, learning, documentation or a balanced combination. Weather, materials and the advice of craftspeople continue to set the pace.'], points: ['Available time', 'Individual or group', 'Interests and experience', 'Physical needs', 'Learning or practical focus', 'Transport, food and other requirements'], image: houseImages.interior },
       people: { eyebrow: 'Working Alongside', title: 'Knowledge remains with the people who practise it.', paragraphs: ['Local craftspeople and project workers bring practical knowledge of timber, tile, tools and the existing building. Participation means working within that knowledge rather than arriving with ready-made solutions.', 'Specialist, structural or machinery-based work remains with experienced people. Building together does not mean everyone performs the same task; it means every role respects what the work requires.'], images: [houseImages.carpenterWindow, houseImages.carpenterMachine] },
       practical: { eyebrow: 'Before You Join', title: 'Preparation protects the place and the people in it.', introduction: 'Specific guidance is agreed for each visit. The following principles apply throughout the activity.', items: [
