@@ -104,6 +104,7 @@ function Router() {
       <Route path="/our-story/:slug" component={WhyWeStarted} />
       <Route path="/our-story" component={About} />
       <Route path="/explore" component={ExplorePage} />
+      <Route path="/explore/activity/:slug" component={ExplorePage} />
       <Route path="/explore/:category" component={ExplorePage} />
       <Route path="/stories/article/:slug" component={StoryDetail} />
       <Route path="/stories" component={Stories} />

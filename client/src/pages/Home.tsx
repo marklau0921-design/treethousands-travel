@@ -97,7 +97,7 @@ export default function Home() {
     ? heroBackgroundImages
     : (apiBanners && apiBanners.length > 0) ? apiBanners.map((b) => b.url) : [];
   const explorationCategories: Trip[] = explorePages?.length
-    ? explorePages.map((item,index)=>{const card=normalizeExplorePage(item.pageContent,item.slug).homepageCard;return{id:item.id,title:card.title,buttonText:'Explore',image:card.image,href:`/explore/${item.slug}`}})
+    ? explorePages.flatMap((item,index)=>{const page=normalizeExplorePage(item.pageContent,item.slug);if(page.activity.enabled)return[];const card=page.homepageCard;return[{id:item.id,title:card.title,buttonText:'Explore',image:card.image,href:`/explore/${item.slug}`}]})
     : exploreSection.content.cards.map((card,index)=>({id:index,title:card.title,buttonText:card.buttonLabel,image:card.image,href:card.href}));
   const heroTitle = heroSection.content.title;
   const heroSubtitle = heroSection.content.subtitle;

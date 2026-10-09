@@ -141,6 +141,7 @@ async function buildPageList(baseUrl: string): Promise<{ url: string; filePath: 
     const explorePages = await listExploreSections();
     for (const page of explorePages.filter(item => item.isVisible)) {
       pages.push({ url: `${baseUrl}/explore/${page.slug}`, filePath: path.join(STATIC_CACHE_DIR, `explore/${page.slug}/index.html`) });
+      if ((page.pageContent as any)?.activity?.enabled) pages.push({ url: `${baseUrl}/explore/activity/${page.slug}`, filePath: path.join(STATIC_CACHE_DIR, `explore/activity/${page.slug}/index.html`) });
     }
   } catch (err) {
     console.error("[StaticGen] Failed to load Explore pages:", err);

@@ -15,11 +15,7 @@ const NAV_ITEMS: Array<{ label: string; href: string; key?: MenuKey; children?: 
     { label: 'Why Rural China', href: '/#why-rural-china' },
     { label: 'Growing Together', href: '/#growing-together' },
   ] },
-  { label: 'Explore', href: '/explore', key: 'explore', children: [
-    { label: 'Village Life', href: '/explore/village-life' },
-    { label: 'Nature & Landscape', href: '/explore/nature-landscape' },
-    { label: 'People & Culture', href: '/explore/people-culture' },
-  ] },
+  { label: 'Explore', href: '/explore' },
   { label: 'Stories', href: '/stories' },
   { label: 'Join Us', href: '/join-us', key: 'join-us', children: [
     { label: 'Individual Travelers', href: '/join-us/individual-travelers' },
@@ -40,7 +36,6 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
   const [location, setLocation] = useLocation();
   const { data: homepageAssets } = trpc.media.getHomepageAssets.useQuery();
   const { data: ourStorySections } = trpc.ourStory.listPublicSections.useQuery();
-  const { data: exploreSections } = trpc.explore.listPublicSections.useQuery();
   const { data: contactSettings } = trpc.contactSettings.get.useQuery();
   const logoUrl = homepageAssets?.logo?.url || '';
   const storedLogoScale = Number(homepageAssets?.logo?.opacity);
@@ -48,7 +43,6 @@ export default function Navigation({ forceHide = false }: NavigationProps) {
   const logoHeight = Math.round(40 * (logoScale / 25));
   const navItems = NAV_ITEMS.map(item => {
     if (item.key === 'our-story' && ourStorySections?.length) return { ...item, children: ourStorySections.map(section => ({ label: section.title, href: `/our-story/${section.slug}` })) };
-    if (item.key === 'explore' && exploreSections?.length) return { ...item, children: exploreSections.map(section => ({ label: section.title, href: `/explore/${section.slug}` })) };
     return item;
   });
   const activeItem = navItems.find(item => item.key === activeMenu);

@@ -3,7 +3,22 @@ import { normalizeEditorialBlocks, type EditorialBlock } from './editorial-block
 export interface ExploreLinkCard { title: string; description: string; href: string; image: string }
 export interface ExploreStoryCard { category: string; title: string; href: string; image: string }
 export interface ExploreDetailCard { title: string; image: string }
+export const EXPLORE_CATEGORIES = ['Village Life', 'Nature & Landscape', 'People & Culture'] as const;
+export type ExploreCategory = (typeof EXPLORE_CATEGORIES)[number];
+export const exploreCategorySlug: Record<ExploreCategory, string> = { 'Village Life': 'village-life', 'Nature & Landscape': 'nature-landscape', 'People & Culture': 'people-culture' };
 export type ExploreActivityStatus = 'planning' | 'open' | 'seasonal' | 'full' | 'completed';
+export interface ExploreActivityDetail {
+  category: ExploreCategory;
+  excerpt: string;
+  purpose: { eyebrow: string; title: string; paragraphs: string[]; image: string };
+  currentWork: { eyebrow: string; title: string; paragraphs: string[]; images: string[] };
+  participation: { eyebrow: string; title: string; introduction: string; items: Array<{ title: string; description: string }> };
+  flexibility: { eyebrow: string; title: string; paragraphs: string[]; points: string[]; image: string };
+  people: { eyebrow: string; title: string; paragraphs: string[]; images: string[] };
+  practical: { eyebrow: string; title: string; introduction: string; items: Array<{ title: string; description: string }> };
+  principles: { eyebrow: string; title: string; items: string[] };
+  closing: { eyebrow: string; title: string; paragraphs: string[]; image: string };
+}
 export interface ExploreActivityInfo {
   enabled: boolean;
   type: string;
@@ -22,6 +37,7 @@ export interface ExploreActivityInfo {
 export interface ExplorePageContent {
   homepageCard: { title: string; image: string };
   activity: ExploreActivityInfo;
+  activityDetail?: ExploreActivityDetail;
   hero: { eyebrow: string; title: string; subtitle: string; image: string; backgroundColor: string; overlayOpacity: number };
   introduction: { eyebrow: string; text: string; backgroundColor: string; textColor: string };
   visual: { eyebrow: string; title: string; paragraphs: string[]; images: string[]; backgroundColor: string };
@@ -69,6 +85,18 @@ const emptyActivity: ExploreActivityInfo = {
   note: 'Participation is arranged according to the current stage of the work and the needs, interests and availability of each group.',
 };
 
+const defaultActivityDetail: ExploreActivityDetail = {
+  category: 'Village Life', excerpt: '',
+  purpose: { eyebrow: 'Why This Work Exists', title: '', paragraphs: [], image: '' },
+  currentWork: { eyebrow: 'What Is Happening Here', title: '', paragraphs: [], images: [] },
+  participation: { eyebrow: 'Ways to Take Part', title: '', introduction: '', items: [] },
+  flexibility: { eyebrow: 'Shaped Around You', title: '', paragraphs: [], points: [], image: '' },
+  people: { eyebrow: 'Working Alongside', title: '', paragraphs: [], images: [] },
+  practical: { eyebrow: 'Before You Join', title: '', introduction: '', items: [] },
+  principles: { eyebrow: 'Our Shared Principles', title: '', items: [] },
+  closing: { eyebrow: 'Begin a Conversation', title: '', paragraphs: [], image: '' },
+};
+
 const houseImages = {
   hero: '/images/stories/working-with-what-is-already-here/before-exterior.jpg',
   roofWide: '/images/stories/working-with-what-is-already-here/roof-wide.jpg',
@@ -88,6 +116,30 @@ export function createDefaultExplorePage(slug: string): ExplorePageContent {
   if (slug === 'build-with-what-is-already-here') return {
     homepageCard: { title: 'Build Together', image: houseImages.hero },
     activity: { ...emptyActivity, enabled: true, type: 'Build Together', status: 'open', statusLabel: 'Ongoing · By Arrangement', location: 'A village in rural China' },
+    activityDetail: {
+      category: 'Village Life',
+      excerpt: 'Take part in the careful repair of an existing village house, with each visit shaped around the work currently underway and the needs of the participating group.',
+      purpose: { eyebrow: 'Why This Work Exists', title: 'Another use can grow from what the house already holds.', paragraphs: ['The house stands within the existing fabric of the village. Its roof, timber, windows and plaster carry the marks of weather, repair and everyday life.', 'The aim is not to erase those layers or impose a finished idea from outside. The work begins by understanding what can remain, what needs attention and how the house might become useful again.'], image: houseImages.hero },
+      currentWork: { eyebrow: 'What Is Happening Here', title: 'Repair follows the condition of the building.', paragraphs: ['The project moves through practical stages: examining the roof and structure, preparing existing surfaces, working with timber and organising the interior as each decision becomes clear.', 'The precise work changes over time. Participants enter a real process already underway; activities are not added merely to create a visitor experience.'], images: [houseImages.roofWide, houseImages.transitionWall] },
+      participation: { eyebrow: 'Ways to Take Part', title: 'Different forms of participation can support the same work.', introduction: 'Appropriate tasks are selected after we understand the project stage, the group and what each participant hopes to learn or contribute.', items: [
+        { title: 'Practical Support', description: 'Help organise reusable materials, prepare simple surfaces or assist with suitable non-specialist tasks.' },
+        { title: 'Observe & Learn', description: 'Follow the decisions of craftspeople and understand how existing materials respond to repair.' },
+        { title: 'Document the Process', description: 'Support careful visual or written documentation without directing the work for the camera.' },
+        { title: 'Share the Day', description: 'Take part in the ordinary rhythm around the work, including pauses, meals and reflection.' },
+      ] },
+      flexibility: { eyebrow: 'Shaped Around Your Needs', title: 'There is no fixed programme to purchase.', paragraphs: ['Registering interest begins a conversation. We learn about your available time, group, interests, physical needs and expectations, then match these with work that is genuinely useful at that moment.', 'The arrangement can place more emphasis on practical contribution, learning, documentation or a balanced combination. Weather, materials and the advice of craftspeople continue to set the pace.'], points: ['Available time', 'Individual or group', 'Interests and experience', 'Physical needs', 'Learning or practical focus', 'Transport, food and other requirements'], image: houseImages.interior },
+      people: { eyebrow: 'Working Alongside', title: 'Knowledge remains with the people who practise it.', paragraphs: ['Local craftspeople and project workers bring practical knowledge of timber, tile, tools and the existing building. Participation means working within that knowledge rather than arriving with ready-made solutions.', 'Specialist, structural or machinery-based work remains with experienced people. Building together does not mean everyone performs the same task; it means every role respects what the work requires.'], images: [houseImages.carpenterWindow, houseImages.carpenterMachine] },
+      practical: { eyebrow: 'Before You Join', title: 'Preparation protects the place and the people in it.', introduction: 'Specific guidance is agreed for each visit. The following principles apply throughout the activity.', items: [
+        { title: 'Working Environment', description: 'Expect uneven surfaces, dust, tools and conditions that change with the weather and project stage.' },
+        { title: 'Clothing & Equipment', description: 'Closed footwear and practical clothing are essential. Any additional equipment will be confirmed beforehand.' },
+        { title: 'Safety Boundaries', description: 'Participants follow the site briefing and do not enter specialist work areas without guidance.' },
+        { title: 'Photography', description: 'People and private spaces are photographed only with permission; the work is not rearranged for an image.' },
+        { title: 'Children & Groups', description: 'Suitability is discussed according to age, supervision, group size and the work underway.' },
+        { title: 'Practical Arrangements', description: 'Transport, meals, duration and any contribution are confirmed after the participation plan is agreed.' },
+      ] },
+      principles: { eyebrow: 'Our Shared Principles', title: 'Contribute without taking over.', items: ['Begin by listening.', 'Work with what is already here.', 'Respect local knowledge and private life.', 'Do not turn ordinary work into a performance.', 'Allow the place and the work to set the pace.'] },
+      closing: { eyebrow: 'Begin a Conversation', title: 'Tell us how you would like to take part.', paragraphs: ['Share your available time, the people you hope to come with, what interests you and any practical needs. We will respond with a participation approach connected to the house’s current stage.', 'Each visit is one moment in a longer process. The work begins before participants arrive and continues after they leave.'], image: houseImages.transitionWall },
+    },
     hero: { eyebrow: 'Explore / Build Together', title: copy.title, subtitle: copy.subtitle, image: houseImages.hero, backgroundColor: '#17352d', overlayOpacity: 48 },
     introduction: { eyebrow: 'An invitation to take part', text: copy.introduction, backgroundColor: '#f3efe6', textColor: '#17251f' },
     visual: { eyebrow: 'The work in context', title: 'Repair begins with attention.', paragraphs: [], images: [], backgroundColor: '#f3efe6' },
@@ -116,6 +168,7 @@ export function createDefaultExplorePage(slug: string): ExplorePageContent {
   return {
     homepageCard: { title: copy.title, image: images[(pageIndex % 3) + 1] },
     activity: { ...emptyActivity },
+    activityDetail: undefined,
     hero: { eyebrow: 'Explore', title: copy.title, subtitle: copy.subtitle, image: images[0], backgroundColor: '#17352d', overlayOpacity: 58 },
     introduction: { eyebrow: `Explore / ${copy.title}`, text: copy.introduction, backgroundColor: '#f5f1e8', textColor: '#17251f' },
     visual: { eyebrow: 'A closer look', title: 'Life happens between the landmarks.', paragraphs: ['A place reveals itself gradually: in footsteps at first light, a meal prepared without hurry, and neighbours stopping to exchange a few words.', 'These moments are small, but together they form the character of a place—and the feeling of being welcomed into it.'], images: [images[1], images[2], images[3]], backgroundColor: '#f5f1e8' },
@@ -144,6 +197,7 @@ export function normalizeExplorePage(value: unknown, slug: string): ExplorePageC
   return {
     homepageCard: { ...defaults.homepageCard, ...(page.homepageCard ?? {}) },
     activity: { ...defaults.activity, ...(page.activity ?? {}) },
+    activityDetail: page.activityDetail ? { ...defaultActivityDetail, ...page.activityDetail } : defaults.activityDetail,
     hero: { ...defaults.hero, ...(page.hero ?? {}) },
     introduction: { ...defaults.introduction, ...(page.introduction ?? {}) },
     visual: { ...defaults.visual, ...(page.visual ?? {}), paragraphs: page.visual?.paragraphs ?? defaults.visual.paragraphs, images: page.visual?.images ?? defaults.visual.images },
