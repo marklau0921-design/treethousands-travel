@@ -1437,6 +1437,13 @@ export async function listExploreSections() {
   if (wasCreated || rows.length === 0) {
     try { await db.insert(exploreSections).values(defaultExploreSections); } catch (error: any) { if (error?.code !== "ER_DUP_ENTRY") throw error; }
     rows = await db.select().from(exploreSections).orderBy(exploreSections.sortOrder);
+  } else {
+    const existingSlugs = new Set(rows.map(row => row.slug));
+    const missingDefaults = defaultExploreSections.filter(section => !existingSlugs.has(section.slug));
+    if (missingDefaults.length) {
+      try { await db.insert(exploreSections).values(missingDefaults); } catch (error: any) { if (error?.code !== "ER_DUP_ENTRY") throw error; }
+      rows = await db.select().from(exploreSections).orderBy(exploreSections.sortOrder);
+    }
   }
   return rows.map(row => ({ ...row, pageContent: normalizeExplorePage(row.pageContent, row.slug) }));
 }
