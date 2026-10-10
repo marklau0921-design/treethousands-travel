@@ -298,11 +298,139 @@ export const whatWeBelievePageContent: OurStoryPageContent = {
   contentBlocks: [],
 };
 
+const wayOfTravelImages = {
+  hero: '/images/stories/before-a-journey-becomes-a-route/forest-road.jpg',
+  walking: '/images/stories/before-a-journey-becomes-a-route/walking-together.jpg',
+  pause: '/images/stories/before-a-journey-becomes-a-route/trail-pause.jpg',
+  village: '/images/stories/before-a-journey-becomes-a-route/documenting-village.jpg',
+  forest: '/images/stories/before-a-journey-becomes-a-route/forest-steps.jpg',
+  encounter: '/images/stories/before-a-journey-becomes-a-route/roadside-encounter.jpg',
+  looking: '/images/stories/before-a-journey-becomes-a-route/looking-closely.jpg',
+  entering: '/images/stories/before-a-journey-becomes-a-route/entering-village.jpg',
+  waterfall: '/images/stories/before-a-journey-becomes-a-route/waterfall.jpg',
+};
+
+export const ourWayOfTravelPageContent: OurStoryPageContent = {
+  hero: {
+    eyebrow: 'Our Story / Our Approach',
+    title: 'Our Way of Travel',
+    subtitle: 'We begin on the ground—walking, listening and learning how a place lives before deciding how a journey should move through it.',
+    image: wayOfTravelImages.hero,
+  },
+  introduction: {
+    eyebrow: '01 — Before the Itinerary',
+    title: 'The journey begins before there is a route.',
+    paragraphs: [
+      'Before we invite anyone to travel with us, we go ourselves. We walk the forest roads, enter the village lanes, notice where the pace changes and listen to the people who understand the place through everyday life.',
+      'This first visit is not a rehearsal for a finished tour. It is fieldwork. It helps us understand what can be shared responsibly, what needs more time and what should remain part of ordinary life rather than becoming an attraction.',
+    ],
+    image: wayOfTravelImages.walking,
+    backgroundColor: '#e4ddd1',
+  },
+  quote: {
+    eyebrow: '02 — Listen First',
+    quote: 'A meaningful journey is shaped with a place, not placed on top of it.',
+    body: 'We do not begin with a list of attractions. We begin with conversations, changing weather, the condition of a path, the rhythm of local work and the practical boundaries people ask us to respect.',
+    image: wayOfTravelImages.pause,
+    backgroundColor: '#17352d',
+  },
+  pillars: {
+    eyebrow: '03 — How We Shape a Journey',
+    title: 'Four ways we travel with attention',
+    intro: 'These principles guide the route, the pace and the relationships behind every TreeThousands journey.',
+    backgroundColor: '#f3eee5',
+    items: [
+      {
+        title: 'Walk the Ground',
+        text: 'Maps tell us distance. Walking reveals effort, shade, weather, places to pause and the transitions between landscape and village life. We test the pace with our own bodies before asking others to follow it.',
+        image: wayOfTravelImages.forest,
+        layout: 1,
+      },
+      {
+        title: 'Travel in Small Ways',
+        text: 'Small groups make room for conversation, different walking speeds and changes of plan. They allow a journey to remain responsive instead of asking the place to fit a fixed performance.',
+        image: wayOfTravelImages.walking,
+        layout: 2,
+      },
+      {
+        title: 'Respect Everyday Life',
+        text: 'A village is somebody’s home and workplace. We photograph with permission, enter private spaces only when invited and do not turn ordinary routines into scenes arranged for visitors.',
+        image: wayOfTravelImages.village,
+        layout: 3,
+      },
+      {
+        title: 'Leave Room for Change',
+        text: 'Weather, seasons, local work and the needs of each group can change the day. We treat flexibility as part of responsible travel, not as a failure to follow the plan.',
+        image: wayOfTravelImages.waterfall,
+        layout: 4,
+      },
+    ],
+  },
+  closing: {
+    eyebrow: '06 — A Longer Relationship',
+    title: 'A journey should leave more than a photograph.',
+    paragraphs: [
+      'We want travel to create value in both directions. That means returning, keeping conversations open and connecting future visits with work and knowledge that local people consider useful.',
+      'Our way of travel is still developing through every walk, shared meal, changed plan and honest conversation. The route may end, but the relationship should have room to continue.',
+    ],
+    image: wayOfTravelImages.entering,
+    backgroundColor: '#cbd1c2',
+  },
+  extraSections: [
+    {
+      id: 'place-is-not-a-stage',
+      type: 'introduction',
+      eyebrow: '04 — The Place Is Not a Stage',
+      title: 'We look closely without asking daily life to perform.',
+      paragraphs: [
+        'The most important moments are often unplanned: people meeting beside the road, a path becoming quieter beneath the trees, or a conversation continuing while work carries on nearby.',
+        'We document what is present and explain the context around it. We do not add activities simply to fill an itinerary, and we accept that some encounters belong to the people living them rather than to the visitor.',
+      ],
+      image: wayOfTravelImages.encounter,
+      backgroundColor: '#ded7ca',
+    },
+    {
+      id: 'participation-changes-travel',
+      type: 'pillars',
+      eyebrow: '05 — From Seeing to Taking Part',
+      title: 'Participation changes the relationship',
+      intro: 'When appropriate, a journey can move beyond observation and create space to learn, contribute and spend time alongside others.',
+      backgroundColor: '#ece5d9',
+      items: [
+        { title: 'Learn From the People Here', text: 'Local knowledge remains with the people who practise it. We create space for their explanations and decisions rather than speaking over them.', image: wayOfTravelImages.looking, layout: 1 },
+        { title: 'Contribute Carefully', text: 'Participation may involve practical work, documentation or shared activity, but only when it is useful, appropriate and connected to something already underway.', image: wayOfTravelImages.encounter, layout: 2 },
+        { title: 'Move at the Place’s Pace', text: 'Time to pause, look again and adjust allows people to understand more than a tightly scheduled sequence of stops can offer.', image: wayOfTravelImages.forest, layout: 3 },
+        { title: 'Carry the Story Forward', text: 'We hope travellers leave with context, relationships and a reason to remain connected—not only a collection of images from a place they passed through.', image: wayOfTravelImages.entering, layout: 4 },
+      ],
+    },
+  ],
+  cta: {
+    eyebrow: 'Travel With Us',
+    title: 'Come closer. Take part. Grow together.',
+    buttonLabel: 'Start a Conversation',
+    buttonHref: '/make-an-enquiry',
+    backgroundColor: '#93482f',
+    textColor: '#ffffff',
+    buttonBackgroundColor: '#111111',
+    buttonTextColor: '#ffffff',
+    textureImage: '',
+    textureOpacity: 28,
+  },
+  recommendations: {
+    eyebrow: 'Continue exploring',
+    title: 'More of Our Story',
+    description: 'Discover the ideas, people and places that continue to shape how we work.',
+    backgroundColor: '#e6dfd4',
+  },
+  contentBlocks: [],
+};
+
 const fallbackImages = [
   '', '', '', '', '', '',
 ];
 
 export function createDefaultOurStoryPage(title: string, summary: string, image = ''): OurStoryPageContent {
+  if (title === 'Our Way of Travel') return ourWayOfTravelPageContent;
   const isOriginal = title === 'Why We Started';
   return {
     hero: {

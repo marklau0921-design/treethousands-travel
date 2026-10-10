@@ -1,5 +1,5 @@
 import { eq, desc, and, sql } from "drizzle-orm";
-import { normalizeOurStoryPage, whatWeBelievePageContent, whyWeStartedPageContent } from "../shared/our-story";
+import { normalizeOurStoryPage, ourWayOfTravelPageContent, whatWeBelievePageContent, whyWeStartedPageContent } from "../shared/our-story";
 import { defaultExploreSections, normalizeExplorePage } from "../shared/explore";
 import { inferStoryCategory, normalizeStoryDetail, plainExcerpt, type EditorialStory } from "../shared/story-content";
 import { defaultHomepageSections, normalizeHomepageSection, type HomepageSectionKey } from "../shared/homepage";
@@ -1291,6 +1291,7 @@ async function ensureOurStorySectionsTable() {
 
 const WHY_WE_STARTED_CONTENT_SEED = "why-we-started-editorial-v1";
 const WHAT_WE_BELIEVE_CONTENT_SEED = "what-we-believe-editorial-v4";
+const OUR_WAY_OF_TRAVEL_CONTENT_SEED = "our-way-of-travel-editorial-v1";
 
 async function seedWhyWeStartedContent() {
   const pool = await getPool();
@@ -1366,6 +1367,41 @@ async function seedWhatWeBelieveContent() {
   await pool.execute("INSERT INTO `site_content_seeds` (`seedKey`) VALUES (?)", [WHAT_WE_BELIEVE_CONTENT_SEED]);
 }
 
+async function seedOurWayOfTravelContent() {
+  const pool = await getPool();
+  const db = await getDb();
+  if (!pool || !db) return;
+
+  await pool.execute(`
+    CREATE TABLE IF NOT EXISTS \`site_content_seeds\` (
+      \`seedKey\` varchar(160) NOT NULL,
+      \`appliedAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (\`seedKey\`)
+    )
+  `);
+  const [applied] = await pool.query(
+    "SELECT `seedKey` FROM `site_content_seeds` WHERE `seedKey` = ? LIMIT 1",
+    [OUR_WAY_OF_TRAVEL_CONTENT_SEED],
+  );
+  if ((applied as any[]).length > 0) return;
+
+  const existing = await db.select({ id: ourStorySections.id })
+    .from(ourStorySections)
+    .where(eq(ourStorySections.slug, "our-way-of-travel"))
+    .limit(1);
+  if (existing.length === 0) await db.insert(ourStorySections).values(defaultOurStorySections[2]);
+
+  await db.update(ourStorySections).set({
+    eyebrow: "Our Approach",
+    title: "Our Way of Travel",
+    content: ourWayOfTravelPageContent.introduction.paragraphs.join("\n\n"),
+    image: ourWayOfTravelPageContent.hero.image,
+    pageContent: ourWayOfTravelPageContent,
+    updatedAt: new Date(),
+  }).where(eq(ourStorySections.slug, "our-way-of-travel"));
+  await pool.execute("INSERT INTO `site_content_seeds` (`seedKey`) VALUES (?)", [OUR_WAY_OF_TRAVEL_CONTENT_SEED]);
+}
+
 export async function listOurStorySections() {
   const wasCreated = await ensureOurStorySectionsTable();
   const db = await getDb();
@@ -1381,6 +1417,7 @@ export async function listOurStorySections() {
   }
   await seedWhyWeStartedContent();
   await seedWhatWeBelieveContent();
+  await seedOurWayOfTravelContent();
   rows = await db.select().from(ourStorySections).orderBy(ourStorySections.sortOrder);
   return rows.map(row => ({
     ...row,
