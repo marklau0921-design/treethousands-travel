@@ -58,7 +58,7 @@ export default function HomepageOurStory({ content: settings }: { content: Homep
   if (cmsSections && cmsSections.length === 0) return null;
 
   return (
-    <section id="our-story" className="our-story-home" style={{ background:settings.backgroundColor, scrollMarginTop: 80, paddingTop: 'clamp(64px, 7vw, 96px)', paddingBottom: 'clamp(50px, 6vw, 80px)' }}>
+    <section id="our-story" className="our-story-home" style={{ background:'#ffffff', scrollMarginTop: 80, paddingTop: 'clamp(64px, 7vw, 96px)', paddingBottom: 'clamp(50px, 6vw, 80px)' }}>
       <style>{`
         .our-story-home .our-story-edge-row{display:flex;flex-direction:row;align-items:stretch;width:100%;margin:0 0 32px}
         .our-story-home .our-story-edge-text,.our-story-home .our-story-edge-image-wrap{flex:0 0 50%;min-width:0}

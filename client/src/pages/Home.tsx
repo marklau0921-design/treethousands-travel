@@ -97,8 +97,9 @@ export default function Home() {
     ? heroBackgroundImages
     : (apiBanners && apiBanners.length > 0) ? apiBanners.map((b) => b.url) : [];
   const explorationCategories: Trip[] = explorePages?.length
-    ? explorePages.flatMap((item,index)=>{const page=normalizeExplorePage(item.pageContent,item.slug);if(page.activity.enabled)return[];const card=page.homepageCard;return[{id:item.id,title:card.title,buttonText:'Explore',image:card.image,href:`/explore/${item.slug}`}]})
+    ? explorePages.flatMap((item)=>{const page=normalizeExplorePage(item.pageContent,item.slug);if(!page.activity.enabled)return[];const card=page.homepageCard;return[{id:item.id,title:card.title||page.hero.title,buttonText:'View Activity',image:card.image||page.hero.image,href:`/explore/activity/${item.slug}`}]})
     : exploreSection.content.cards.map((card,index)=>({id:index,title:card.title,buttonText:card.buttonLabel,image:card.image,href:card.href}));
+  const exploreBackgroundImage = activeBanners[1] || activeBanners[0] || exploreSection.content.backgroundImage;
   const heroTitle = heroSection.content.title;
   const heroSubtitle = heroSection.content.subtitle;
 
@@ -335,9 +336,9 @@ export default function Home() {
           minHeight: '680px',
           paddingTop: '50px',
           paddingBottom: '50px',
-          backgroundImage: `url(${exploreSection.content.backgroundImage})`,
+          backgroundImage: `url(${exploreBackgroundImage})`,
           backgroundSize: 'cover',
-          backgroundPosition: getObjectPosition(activeBanners[0]),
+          backgroundPosition: getObjectPosition(exploreBackgroundImage),
           backgroundAttachment: 'scroll',
         }}
       >
