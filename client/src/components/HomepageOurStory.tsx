@@ -60,10 +60,11 @@ export default function HomepageOurStory({ content: settings }: { content: Homep
   return (
     <section id="our-story" className="our-story-home" style={{ background:'#ffffff', scrollMarginTop: 80, paddingTop: 'clamp(64px, 7vw, 96px)', paddingBottom: 'clamp(50px, 6vw, 80px)' }}>
       <style>{`
-        .our-story-home .our-story-edge-row{display:flex;flex-direction:row;align-items:stretch;width:100%;margin:0 0 32px}
+        .our-story-home{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);overflow:hidden}
+        .our-story-home .our-story-edge-row{display:flex;flex-direction:row;align-items:stretch;width:100vw;max-width:none;margin:0 0 32px}
         .our-story-home .our-story-edge-text,.our-story-home .our-story-edge-image-wrap{flex:0 0 50%;min-width:0}
         .our-story-home .our-story-edge-text{display:flex;align-items:center;justify-content:center;padding:48px;box-sizing:border-box}
-        .our-story-home .our-story-edge-image-wrap{display:flex}
+        .our-story-home .our-story-edge-image-wrap{display:flex;overflow:hidden}
         .our-story-home .our-story-edge-image{display:block;width:100%;height:480px;object-fit:cover}
         @media(max-width:767px){
           .our-story-home .our-story-edge-row{flex-direction:column;margin-bottom:28px}
@@ -74,7 +75,9 @@ export default function HomepageOurStory({ content: settings }: { content: Homep
         }
       `}</style>
       {visibleSections.map((section, index) => {
-        const image = section.image || imagePool[index] || '';
+        const image = section.id === 'why-we-started'
+          ? '/images/why-we-started-editorial/01-opening.jpeg'
+          : section.image || imagePool[index] || '';
         const text = (
           <div className="our-story-edge-text">
             <div className="tea-detail-text-inner">
