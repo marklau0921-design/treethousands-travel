@@ -34,7 +34,7 @@ const FIXED_HEIGHT_VW = 70 * 0.65; // 45.5vw
 const FIXED_HEIGHT_MAX = 720; // px
 const GAP_PX = 0;
 
-function HeroCarousel({ images }: { images: string[] }) {
+export function HeroCarousel({ images }: { images: string[] }) {
   const getObjectPosition = useMediaObjectPosition();
   const extended = [images[images.length - 1], ...images, images[0]];
   const [internalIdx, setInternalIdx] = useState(1);
