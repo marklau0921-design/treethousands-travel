@@ -742,7 +742,24 @@ You remain a visitor, but not a distant observer. You begin to notice how a plac
 
 export function mergePublishedStories(databaseStories: EditorialStory[]) {
   const databaseSlugs = new Set(databaseStories.map((story) => story.slug));
-  return [...publishedEditorialStories.filter((story) => !databaseSlugs.has(story.slug)), ...databaseStories];
+  const fallbackCoverImages = [
+    '/images/why-we-started-editorial/02-life.jpeg',
+    '/images/why-we-started-editorial/01-opening.jpeg',
+    '/images/why-we-started/life-already-here.jpg',
+    '/images/why-we-started-editorial/05-craft.jpeg',
+    '/images/why-we-started-editorial/04-landscape.jpeg',
+    '/images/why-we-started-editorial/02-person.jpeg',
+    '/images/why-we-started-editorial/05-life.jpeg',
+    '/images/why-we-started/still-at-the-beginning.jpg',
+    '/images/why-we-started/people-and-stories.jpg',
+    '/images/why-we-started-editorial/03-place.jpeg',
+    '/images/why-we-started-editorial/04-action.jpeg',
+    '/images/why-we-started-editorial/06-closing.jpeg',
+  ];
+  const fallback = fallbackStories.map((story, index) => ({ ...story, coverImage: story.coverImage || fallbackCoverImages[index] }));
+  const publishedSlugs = new Set(databaseStories.map((story) => story.slug));
+  publishedEditorialStories.forEach((story) => publishedSlugs.add(story.slug));
+  return [...publishedEditorialStories.filter((story) => !databaseSlugs.has(story.slug)), ...fallback.filter((story) => !publishedSlugs.has(story.slug)), ...databaseStories];
 }
 
 export const fallbackStories: EditorialStory[] = [
