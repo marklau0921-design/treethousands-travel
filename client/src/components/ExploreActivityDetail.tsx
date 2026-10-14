@@ -7,9 +7,7 @@ import {
   Clock3,
   Grid3X3,
   Hammer,
-  Heart,
   MapPin,
-  Share2,
   X,
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
@@ -151,13 +149,27 @@ export default function ExploreActivityDetail({
         .activity-detail-page .activity-overview {
           grid-template-columns: minmax(0, 1.32fr) minmax(350px, .72fr);
           gap: clamp(32px, 3.4vw, 46px);
+          align-items: stretch;
+        }
+        .activity-detail-page .activity-media {
+          display: flex;
+          min-height: 0;
+          flex-direction: column;
         }
         .activity-detail-page .preview-grid {
+          flex: 1;
+          min-height: 0;
           overflow: hidden;
           border-radius: 30px;
         }
         .activity-detail-page .preview-image {
+          min-height: 0;
+          aspect-ratio: auto;
           border-radius: 0;
+        }
+        .activity-detail-page .preview-image img {
+          position: absolute;
+          inset: 0;
         }
         .activity-detail-page .gallery-modal {
           background: #fff;
@@ -213,6 +225,8 @@ export default function ExploreActivityDetail({
             padding: 88px 0 60px;
           }
           .activity-detail-page .preview-grid { border-radius: 20px; }
+          .activity-detail-page .activity-media { display: block; }
+          .activity-detail-page .preview-grid { aspect-ratio: 1 / 1; }
           .activity-detail-page .gallery-stage { padding: 72px 18px 88px; }
           .activity-detail-page .gallery-stage img {
             max-width: 100%;
@@ -228,7 +242,7 @@ export default function ExploreActivityDetail({
 
       <section className="activity-intro">
         <div className="activity-overview">
-          <div>
+          <div className="activity-media">
             <div className="preview-grid">
               {gallery.slice(0, 4).map((image, index) => (
                 <button
@@ -266,28 +280,6 @@ export default function ExploreActivityDetail({
             <p className="activity-location">
               {content.activity.location} · {detail.category}
             </p>
-            <div className="activity-actions">
-              <button
-                type="button"
-                className="icon-action"
-                aria-label="Share activity"
-                onClick={() =>
-                  navigator.share?.({
-                    title: content.hero.title,
-                    url: window.location.href,
-                  })
-                }
-              >
-                <Share2 size={19} />
-              </button>
-              <button
-                type="button"
-                className="icon-action"
-                aria-label="Save activity"
-              >
-                <Heart size={20} />
-              </button>
-            </div>
             <div className="activity-tags">
               <span className="activity-tag">Small groups</span>
               <span className="activity-tag">Flexible arrangement</span>
