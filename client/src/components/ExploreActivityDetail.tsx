@@ -143,13 +143,13 @@ export default function ExploreActivityDetail({
 
       <style>{`
         .activity-detail-page .activity-intro {
-          width: min(1200px, calc(100% - 40px));
+          width: min(1240px, calc(100% - 40px));
           padding: 104px 0 76px;
         }
         .activity-detail-page .activity-overview {
-          grid-template-columns: minmax(0, 1.32fr) minmax(350px, .72fr);
+          grid-template-columns: minmax(0, 750px) minmax(360px, 1fr);
           gap: clamp(32px, 3.4vw, 46px);
-          align-items: stretch;
+          align-items: start;
         }
         .activity-detail-page .activity-media {
           display: flex;
@@ -157,7 +157,10 @@ export default function ExploreActivityDetail({
           flex-direction: column;
         }
         .activity-detail-page .preview-grid {
-          flex: 1;
+          width: 750px;
+          max-width: 100%;
+          height: 750px;
+          flex: none;
           min-height: 0;
           overflow: hidden;
           border-radius: 30px;
@@ -182,6 +185,28 @@ export default function ExploreActivityDetail({
           background: transparent;
           color: #F5569B;
         }
+        .activity-detail-page .activity-category { font-size: 12px; }
+        .activity-detail-page .activity-title {
+          max-width: 470px;
+          font-size: clamp(34px, 3vw, 42px);
+          line-height: 1.12;
+        }
+        .activity-detail-page .activity-excerpt {
+          max-width: 440px;
+          font-size: 16px;
+          line-height: 1.58;
+        }
+        .activity-detail-page .activity-status,
+        .activity-detail-page .activity-location { font-size: 14px; }
+        .activity-detail-page .activity-tag { font-size: 12px; }
+        .activity-detail-page .highlight-title { font-size: 15px; }
+        .activity-detail-page .highlight-copy {
+          font-size: 13px;
+          line-height: 1.5;
+        }
+        .activity-detail-page .booking-label { font-size: 14px; }
+        .activity-detail-page .booking-note,
+        .activity-detail-page .activity-note { font-size: 12px; }
         .activity-detail-page .gallery-modal {
           background: #fff;
           color: #222;
@@ -237,7 +262,11 @@ export default function ExploreActivityDetail({
           }
           .activity-detail-page .preview-grid { border-radius: 20px; }
           .activity-detail-page .activity-media { display: block; }
-          .activity-detail-page .preview-grid { aspect-ratio: 1 / 1; }
+          .activity-detail-page .preview-grid {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+          }
           .activity-detail-page .gallery-stage { padding: 72px 18px 88px; }
           .activity-detail-page .gallery-stage img {
             max-width: 100%;
