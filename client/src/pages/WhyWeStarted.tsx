@@ -6,7 +6,8 @@ import EditorialBlocks from '@/components/EditorialBlocks';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
 import { normalizeOurStoryPage } from '@shared/our-story';
-import WhyWeStartedEditorial from '@/components/WhyWeStartedEditorial';
+import OurStoryEditorialTemplate from '@/components/OurStoryEditorialTemplate';
+import { ourStoryEditorialPages } from '@/content/ourStoryEditorialPages';
 
 const DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
@@ -19,7 +20,8 @@ export default function WhyWeStarted() {
   const section = sections?.find(item => item.slug === slug);
   const meta = section;
 
-  if (slug === 'why-we-started') return <WhyWeStartedEditorial />;
+  const editorialContent = ourStoryEditorialPages[slug];
+  if (editorialContent) return <OurStoryEditorialTemplate content={editorialContent} />;
 
   if (!meta && !isLoading) {
     return <div style={{ minHeight: '100vh', background: '#f4f0e7', paddingTop: 180, textAlign: 'center' }}><Navigation /><h1 style={{ fontFamily: DISPLAY, fontSize: 72, textTransform: 'uppercase' }}>Page not found</h1><Link href="/our-story">Return to Our Story</Link></div>;

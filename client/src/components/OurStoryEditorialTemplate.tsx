@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Link } from 'wouter';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import type { OurStoryEditorialContent } from '@/content/ourStoryEditorialPages';
 
-const ASSET = '/images/why-we-started-editorial';
 const SERIF = `var(--font-travel-condensed, "League Gothic", "Arial Narrow", Impact, sans-serif)`;
 const SANS = `var(--font-travel-sans, "Helvetica Neue", Arial, sans-serif)`;
+const ASSET = '/images/why-we-started-editorial';
 
 type StoryImageProps = {
   src: string;
@@ -27,7 +28,12 @@ export function StorySectionLabel({ children }: { children: string }) {
   return <p className="wys-label" data-reveal>{children}</p>;
 }
 
-function StoryHero() {
+function StoryTitle({ text }: { text: string }) {
+  const lines = text.split('\n');
+  return <>{lines.map((line, index) => <span key={`${line}-${index}`}>{line}{index < lines.length - 1 && <br />}</span>)}</>;
+}
+
+function StoryHero({ content }: { content: OurStoryEditorialContent['hero'] }) {
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -54,133 +60,126 @@ function StoryHero() {
 
   return (
     <header className="wys-hero" ref={heroRef}>
-      <img className="wys-hero-image" src={`${ASSET}/01-opening.jpeg`} alt="Mountain village surrounded by forest and morning mist" />
+      <img className="wys-hero-image" src={content.image} alt={content.alt} />
       <div className="wys-hero-shade" />
       <div className="wys-hero-meta wys-hero-animate">
-        <span>TREE THOUSANDS / OUR STORIES</span>
-        <span>01 / ORIGINS</span>
+        <span>{content.metaLeft}</span>
+        <span>{content.metaRight}</span>
       </div>
       <div className="wys-hero-copy">
-        <h1 className="wys-hero-animate">Why We Started.</h1>
-        <p className="wys-hero-animate">Every story begins somewhere. Ours begins with a place, its people, and a different way of seeing the world.</p>
+        <h1 className="wys-hero-animate">{content.title}</h1>
+        <p className="wys-hero-animate">{content.subtitle}</p>
       </div>
     </header>
   );
 }
 
-function EditorialPhotoCollage() {
+function EditorialPhotoCollage({ content }: { content: OurStoryEditorialContent['beginning'] }) {
   return (
     <section className="wys-section wys-beginning" aria-labelledby="wys-beginning-title">
       <div className="wys-shell">
         <div className="wys-beginning-copy">
-          <StorySectionLabel>01 / THE BEGINNING</StorySectionLabel>
-          <h2 id="wys-beginning-title" data-reveal>It began with a place.</h2>
+          <StorySectionLabel>{content.eyebrow}</StorySectionLabel>
+          <h2 id="wys-beginning-title" data-reveal><StoryTitle text={content.title} /></h2>
           <div className="wys-copy" data-reveal>
-            <p>Before Tree Thousands became what it is today, there was a growing curiosity about the relationship between people and the places they call home.</p>
-            <p>In the mountains of Sichuan, forests, villages, and everyday traditions exist side by side. Here, nature is not simply a landscape to admire, but part of daily life.</p>
-            <p>Over time, these connections offered a different perspective: to understand a place, we must also understand the people who shape it and call it home.</p>
+            {content.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
           </div>
         </div>
-        <StoryImage className="wys-beginning-person" src={`${ASSET}/02-person.jpeg`} alt="A villager carrying a woven basket" />
-        <StoryImage className="wys-beginning-village" src={`${ASSET}/02-village.jpeg`} alt="A narrow path between traditional village buildings" />
-        <StoryImage className="wys-beginning-life" src={`${ASSET}/02-life.jpeg`} alt="Children carrying branches along a village path" />
-        <StoryImage className="wys-beginning-detail" src={`${ASSET}/02-detail.jpeg`} alt="Hands weaving a bamboo basket" />
+        <StoryImage className="wys-beginning-person" {...content.images[0]} />
+        <StoryImage className="wys-beginning-village" {...content.images[1]} />
+        <StoryImage className="wys-beginning-life" {...content.images[2]} />
+        <StoryImage className="wys-beginning-detail" {...content.images[3]} />
       </div>
     </section>
   );
 }
 
-function DocumentarySpread() {
+function DocumentarySpread({ content }: { content: OurStoryEditorialContent['turning'] }) {
   return (
     <section className="wys-section wys-turning" aria-labelledby="wys-turning-title">
       <div className="wys-shell wys-turning-grid">
         <div className="wys-turning-heading">
-          <StorySectionLabel>02 / THE TURNING POINT</StorySectionLabel>
-          <h2 id="wys-turning-title" data-reveal>A Different Way<br />of Seeing.</h2>
+          <StorySectionLabel>{content.eyebrow}</StorySectionLabel>
+          <h2 id="wys-turning-title" data-reveal><StoryTitle text={content.title} /></h2>
         </div>
         <div className="wys-turning-left-copy wys-copy" data-reveal>
-          <p>Our early work focused on the natural world. From planting bamboo to removing invasive species, these experiences brought us closer to the landscapes we hoped to protect.</p>
-          <p>Yet the more time we spent in these places, the more we came to understand that nature and community were deeply connected.</p>
+          {content.leftParagraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
         </div>
         <figure className="wys-turning-main">
-          <StoryImage src={`${ASSET}/03-action.jpeg`} alt="People working together in a mountain field" />
-          <figcaption>Learning by taking part.</figcaption>
+          <StoryImage {...content.images[0]} />
+          <figcaption>{content.captions[0]}</figcaption>
         </figure>
         <figure className="wys-turning-place">
-          <StoryImage src={`${ASSET}/03-place.jpeg`} alt="An old village window framed by green leaves" />
-          <figcaption>Daily life leaves its traces.</figcaption>
+          <StoryImage {...content.images[1]} />
+          <figcaption>{content.captions[1]}</figcaption>
         </figure>
-        <StoryImage className="wys-turning-detail" src={`${ASSET}/03-detail.jpeg`} alt="Hands carving and shaping bamboo" />
+        <StoryImage className="wys-turning-detail" {...content.images[2]} />
         <div className="wys-turning-side-copy wys-copy" data-reveal>
-          <p>The people living alongside these forests carried knowledge, traditions, and ways of life shaped by generations of experience.</p>
-          <p>Our perspective began to expand. Protecting a place was not only about its environment, but also about recognizing the people whose lives were intertwined with it.</p>
+          {content.rightParagraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
         </div>
       </div>
     </section>
   );
 }
 
-function ActionPhotoSequence() {
+function ActionPhotoSequence({ content }: { content: OurStoryEditorialContent['action'] }) {
   return (
     <section className="wys-section wys-action" aria-labelledby="wys-action-title">
       <div className="wys-shell wys-action-grid">
         <div className="wys-action-intro">
-          <StoryImage src={`${ASSET}/04-detail.jpeg`} alt="People planting bamboo together in a forest" />
-          <StorySectionLabel>03 / TAKING ACTION</StorySectionLabel>
-          <h2 id="wys-action-title" data-reveal>Small actions.<br />Real connections.</h2>
+          <StoryImage {...content.images[0]} />
+          <StorySectionLabel>{content.eyebrow}</StorySectionLabel>
+          <h2 id="wys-action-title" data-reveal><StoryTitle text={content.title} /></h2>
           <div className="wys-copy" data-reveal>
-            <p>From planting bamboo and caring for the natural environment to working alongside villagers on shared spaces, our ideas began to take shape through real experiences.</p>
-            <p>These moments were not simply about completing a task. They created opportunities to learn from one another, exchange skills, and develop a deeper understanding of the places we had come to know.</p>
-            <p>What stayed with us was not only what we made or changed, but the relationships formed along the way.</p>
+            {content.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
           </div>
         </div>
-        <StoryImage className="wys-action-work" src={`${ASSET}/04-action.jpeg`} alt="Two people repairing a shared wooden structure" />
+        <StoryImage className="wys-action-work" {...content.images[1]} />
       </div>
       <div className="wys-action-landscape" data-reveal="wide">
-        <img src={`${ASSET}/04-landscape.jpeg`} alt="Terraced fields and homes across a mountain valley" loading="lazy" decoding="async" />
+        <img src={content.images[2].src} alt={content.images[2].alt} loading="lazy" decoding="async" />
       </div>
     </section>
   );
 }
 
-function EditorialPhotoEssay() {
+function EditorialPhotoEssay({ content }: { content: OurStoryEditorialContent['belief'] }) {
   return (
     <section className="wys-section wys-belief" aria-labelledby="wys-belief-title">
       <div className="wys-shell wys-belief-grid">
-        <StoryImage className="wys-belief-life" src={`${ASSET}/05-life.jpeg`} alt="A family sharing a meal at home" />
-        <StoryImage className="wys-belief-person" src={`${ASSET}/05-person.jpeg`} alt="An older villager standing in a carved wooden doorway" />
-        <StoryImage className="wys-belief-craft" src={`${ASSET}/05-craft.jpeg`} alt="A craftsperson weaving a bamboo basket" />
+        <StoryImage className="wys-belief-life" {...content.images[0]} />
+        <StoryImage className="wys-belief-person" {...content.images[1]} />
+        <StoryImage className="wys-belief-craft" {...content.images[2]} />
         <div className="wys-belief-main">
-          <StorySectionLabel>04 / WHAT WE BELIEVE</StorySectionLabel>
-          <h2 id="wys-belief-title" data-reveal>A place is more<br />than a place.</h2>
+          <StorySectionLabel>{content.eyebrow}</StorySectionLabel>
+          <h2 id="wys-belief-title" data-reveal><StoryTitle text={content.title} /></h2>
           <div className="wys-copy" data-reveal>
-            <p>It is the people who call it home, the traditions they carry, and the everyday moments that shape their lives.</p>
-            <p>Over time, we have come to value the simple exchanges that happen when people share a meal, learn a skill, or work together. These moments often reveal more about a place than any landmark or itinerary ever could.</p>
+            {content.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
           </div>
         </div>
         <div className="wys-belief-side wys-copy" data-reveal>
-          <p>We believe meaningful travel begins with curiosity and grows through understanding. Not simply seeing somewhere new, but taking the time to connect with the people who make it what it is.</p>
-          <blockquote>The most meaningful journeys bring us closer to people, not just places.</blockquote>
+          {content.sideParagraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+          <blockquote>{content.quote}</blockquote>
         </div>
       </div>
     </section>
   );
 }
 
-function StoryClosing() {
+function StoryClosing({ content }: { content: OurStoryEditorialContent['closing'] }) {
   return (
     <section className="wys-closing" aria-labelledby="wys-closing-title">
       <div className="wys-shell wys-closing-grid">
         <div className="wys-closing-copy">
-          <StorySectionLabel>THE JOURNEY AHEAD</StorySectionLabel>
-          <h2 id="wys-closing-title" data-reveal>The Story<br />Continues.</h2>
-          <p data-reveal>What began with a simple curiosity continues to grow through the people we meet, the places we come to know, and the experiences we share along the way.</p>
+          <StorySectionLabel>{content.eyebrow}</StorySectionLabel>
+          <h2 id="wys-closing-title" data-reveal><StoryTitle text={content.title} /></h2>
+          <p data-reveal>{content.paragraph}</p>
           <nav className="wys-closing-links" aria-label="Continue exploring" data-reveal>
             <Link href="/stories">Explore Our Stories <span aria-hidden="true">↗</span></Link>
             <Link href="/experiences">Discover Our Experiences <span aria-hidden="true">↗</span></Link>
           </nav>
         </div>
-        <StoryImage className="wys-closing-image" src={`${ASSET}/06-closing.jpeg`} alt="Two villagers sitting together outside a wooden home" />
+        <StoryImage className="wys-closing-image" {...content.image} />
       </div>
     </section>
   );
@@ -196,24 +195,24 @@ const exploreRecommendations = [
   {
     title: 'Care for the Forest',
     meta: 'Nature & Landscape · By Arrangement',
-    image: `${ASSET}/04-detail.jpeg`,
+    image: '/images/why-we-started-editorial/04-detail.jpeg',
     href: '/explore/nature-landscape',
   },
   {
     title: 'Share Village Life',
     meta: 'Village Life · By Arrangement',
-    image: `${ASSET}/05-life.jpeg`,
+    image: '/images/why-we-started-editorial/05-life.jpeg',
     href: '/explore/village-life',
   },
   {
     title: 'Learn Through Local Craft',
     meta: 'People & Culture · Ongoing',
-    image: `${ASSET}/02-detail.jpeg`,
+    image: '/images/why-we-started-editorial/02-detail.jpeg',
     href: '/explore/people-culture',
   },
 ];
 
-function StoryExploreRecommendations() {
+function StoryExploreRecommendations({ content }: { content: OurStoryEditorialContent['recommendations'] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
   const startXRef = useRef(0);
@@ -282,11 +281,11 @@ function StoryExploreRecommendations() {
   };
 
   return (
-    <section className="wys-recommendations" aria-labelledby="wys-recommendations-title">
+    <section className="wys-recommendations" aria-labelledby="wys-recommendations-title" style={{ backgroundImage: `url(${content.backgroundImage})` } as CSSProperties}>
       <div className="wys-recommendations-backdrop" aria-hidden="true" />
       <div className="wys-recommend-mobile-heading">
-        <h2 id="wys-recommendations-title">What We Are Explore</h2>
-        <p>Ongoing ways to join the work already taking place in the village.</p>
+        <h2 id="wys-recommendations-title">{content.title}</h2>
+        <p>{content.description}</p>
       </div>
       <div
         className="wys-recommend-track"
@@ -326,8 +325,8 @@ function StoryExploreRecommendations() {
         <div className="wys-recommend-row">
           <div className="wys-recommend-spacer" aria-hidden="true" />
           <header className="wys-recommend-intro">
-            <h2>What We Are Explore</h2>
-            <p>Ongoing ways to join the work already taking place in the village.</p>
+            <h2>{content.title}</h2>
+            <p>{content.description}</p>
           </header>
           {exploreRecommendations.map(item => (
             <article className="wys-recommend-card" key={item.title}>
@@ -356,20 +355,20 @@ function StoryExploreRecommendations() {
   );
 }
 
-function StoryExploreCta() {
+function StoryExploreCta({ content }: { content: OurStoryEditorialContent['cta'] }) {
   return (
     <section className="wys-explore-cta" aria-labelledby="wys-explore-cta-title">
-      <img src={`${ASSET}/04-landscape.jpeg`} alt="" loading="lazy" decoding="async" />
+      <img src={content.image} alt="" loading="lazy" decoding="async" />
       <div className="wys-explore-cta-shade" aria-hidden="true" />
       <div className="wys-explore-cta-copy">
-        <h2 id="wys-explore-cta-title">So, Ready to Take Part?</h2>
-        <Link href="/explore">Explore Activities</Link>
+        <h2 id="wys-explore-cta-title">{content.title}</h2>
+        <Link href={content.buttonHref}>{content.buttonLabel}</Link>
       </div>
     </section>
   );
 }
 
-export default function WhyWeStartedEditorial() {
+export default function OurStoryEditorialTemplate({ content }: { content: OurStoryEditorialContent }) {
   useEffect(() => {
     const nodes = Array.from(document.querySelectorAll<HTMLElement>('.wys-page [data-reveal]'));
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -392,14 +391,14 @@ export default function WhyWeStartedEditorial() {
       <style>{styles}</style>
       <Navigation />
       <main>
-        <StoryHero />
-        <EditorialPhotoCollage />
-        <DocumentarySpread />
-        <ActionPhotoSequence />
-        <EditorialPhotoEssay />
-        <StoryClosing />
-        <StoryExploreRecommendations />
-        <StoryExploreCta />
+        <StoryHero content={content.hero} />
+        <EditorialPhotoCollage content={content.beginning} />
+        <DocumentarySpread content={content.turning} />
+        <ActionPhotoSequence content={content.action} />
+        <EditorialPhotoEssay content={content.belief} />
+        <StoryClosing content={content.closing} />
+        <StoryExploreRecommendations content={content.recommendations} />
+        <StoryExploreCta content={content.cta} />
       </main>
       <Footer />
     </div>

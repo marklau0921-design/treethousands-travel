@@ -1290,7 +1290,7 @@ async function ensureOurStorySectionsTable() {
 }
 
 const WHY_WE_STARTED_CONTENT_SEED = "why-we-started-editorial-v1";
-const WHAT_WE_BELIEVE_CONTENT_SEED = "what-we-believe-editorial-v5";
+const WHAT_WE_BELIEVE_CONTENT_SEED = "what-we-believe-shared-template-v6";
 const OUR_WAY_OF_TRAVEL_CONTENT_SEED = "our-way-of-travel-editorial-v1";
 
 async function seedWhyWeStartedContent() {

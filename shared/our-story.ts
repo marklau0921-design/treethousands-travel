@@ -203,43 +203,7 @@ export const whatWeBelievePageContent: OurStoryPageContent = {
     description: 'Continue with the stories, people, and places that shape the way we work.',
     backgroundColor: '#f3f3f1',
   },
-  contentBlocks: [
-    {
-      id: 'learning-from-the-land', type: 'story-photo-quote', eyebrow: '02 / Learning From the Land',
-      title: 'Knowledge lives in repeated gestures', quote: 'The land teaches through repetition.',
-      body: [
-        'Planting, picking, carrying, waiting, and beginning again—local knowledge is held in movements repeated across generations.',
-        'We come not only to see, but to listen, observe, and learn from the people who understand this land through daily practice.',
-      ],
-      images: ['/images/what-we-believe/learning-from-the-land-01.jpg', '/images/what-we-believe/learning-from-the-land-02.jpg'], captions: ['', ''],
-      backgroundColor: '#f3f3f1', textColor: '#262a27', accentColor: '#60665f', imageSide: 'left', imageFit: 'cover', visible: true,
-    },
-    {
-      id: 'participation-not-observation', type: 'our-story-mosaic', eyebrow: '03 / Participation, Not Observation',
-      title: 'Taking part changes the journey', quote: '',
-      body: [
-        'To participate is to accept the pace of another place. It means working with our hands, listening before acting, and understanding that even a simple task carries knowledge.',
-        'Building, farming, making, and restoring become ways of meeting—not activities arranged only for entertainment.',
-      ],
-      images: ['/images/what-we-believe/participation-01.jpg', '/images/what-we-believe/participation-02.jpg', '/images/what-we-believe/participation-03.jpg', '/images/what-we-believe/participation-04.jpg'], captions: ['', '', '', ''],
-      backgroundColor: '#ffffff', textColor: '#262a27', accentColor: '#60665f', imageSide: 'left', imageFit: 'cover', visible: true,
-    },
-    {
-      id: 'relationships-that-continue', type: 'magazine-contact-sheet', eyebrow: '04 / Relationships That Continue',
-      title: 'A visit is not the end of the relationship', quote: '',
-      body: [
-        'A meaningful journey continues through the people we remember, the knowledge we carry, and the responsibilities we choose to share.',
-        'We hope every visit becomes part of a longer relationship—between guests and hosts, cities and villages, people and the living world around them.',
-      ],
-      images: ['/images/what-we-believe/relationships-01.jpg', '/images/what-we-believe/relationships-02.png', '/images/what-we-believe/relationships-03.webp', '/images/what-we-believe/relationships-04.jpg', '/images/what-we-believe/relationships-05.jpg', '/images/what-we-believe/relationships-06.jpg'], captions: ['', '', '', '', '', ''],
-      backgroundColor: '#f3f3f1', textColor: '#262a27', accentColor: '#60665f', imageSide: 'left', imageFit: 'cover', visible: true,
-    },
-    {
-      id: 'travel-that-listens', type: 'explore-statement', eyebrow: 'Our Belief',
-      title: 'We believe in travel that listens, respects what is already here, and asks how we can take part.', quote: '', body: [], images: [], captions: [],
-      backgroundColor: '#ffffff', textColor: '#1f2521', accentColor: '#60665f', imageSide: 'left', imageFit: 'cover', visible: true,
-    },
-  ],
+  contentBlocks: [],
 };
 
 const wayOfTravelImages = {
