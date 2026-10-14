@@ -430,5 +430,23 @@ const styles = `
     .wys-closing{padding:76px 0}.wys-closing-grid{display:flex;flex-direction:column;gap:0}.wys-closing-copy h2{margin-bottom:26px}.wys-closing-links{margin-top:34px}.wys-closing-image{width:100%;height:auto;aspect-ratio:4/5;margin:48px 0 0}
     .wys-recommendations{padding:50px 0 42px}.wys-recommend-mobile-heading{padding:0 20px 28px}.wys-recommend-mobile-heading p{font-size:16px}.wys-recommend-row{padding-left:20px;gap:12px}.wys-recommend-card{width:82vw;max-width:320px;height:460px}.wys-recommend-more{width:155px;height:460px}.wys-recommend-card-copy{left:20px;right:20px;bottom:24px}.wys-recommend-end{width:8px}.wys-explore-cta{height:280px;padding:0 26px}.wys-explore-cta h2{margin-bottom:24px}
   }
+  /* Shared story rhythm: compact enough for continuous reading while preserving the editorial layouts. */
+  .wys-section{padding:clamp(72px,8vw,120px) 0}
+  .wys-turning{padding:clamp(68px,7vw,108px) 0}
+  .wys-action-landscape{margin-top:clamp(44px,5vw,78px)}
+  .wys-belief{padding:clamp(72px,8vw,120px) 0}
+  .wys-closing{padding:clamp(80px,9vw,140px) 0}
+  @media(max-width:900px){
+    .wys-section,.wys-turning,.wys-belief,.wys-closing{padding:72px 0}
+  }
+  @media(max-width:640px){
+    .wys-section,.wys-turning,.wys-belief,.wys-closing{padding:56px 0}
+    .wys-action{padding-top:56px}
+    .wys-beginning-copy{margin-bottom:32px}
+    .wys-turning-main{margin-top:32px}
+    .wys-action-intro>.wys-image{margin-top:30px}
+    .wys-belief-main{margin-bottom:32px}
+    .wys-closing-image{margin-top:36px}
+  }
   @media(prefers-reduced-motion:reduce){.wys-page *{animation:none!important;scroll-behavior:auto!important}.wys-hero-animate,.wys-page [data-reveal],.wys-page [data-reveal="image"]{opacity:1!important;transform:none!important}.wys-image img{transform:none!important;transition:none!important}.wys-action-landscape{clip-path:none!important;transition:none!important}}
 `;
