@@ -27,6 +27,19 @@ const SANS =
   "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
 const TEXT = "#52575c";
 
+const PLACE_IMAGES = [
+  {
+    src: "/images/explore/build-together/place/yaan-tea-landscape.jpg",
+    alt: "Tea gardens moving across the hills around Ya'an",
+    caption: "Tea-growing hills in Ya’an, where cultivation follows the shape of the land.",
+  },
+  {
+    src: "/images/explore/build-together/place/yaan-misty-tea-mountains.jpg",
+    alt: "Misty tea mountains in Ya'an",
+    caption: "Rain and low cloud are part of the everyday landscape, not an interruption to it.",
+  },
+];
+
 export default function ExploreActivityDetail({
   content,
 }: {
@@ -36,6 +49,7 @@ export default function ExploreActivityDetail({
   const getObjectPosition = useMediaObjectPosition();
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
   const [experienceIndex, setExperienceIndex] = useState<number | null>(null);
+  const [placeIndex, setPlaceIndex] = useState(0);
   const overlayOpen = galleryIndex !== null || experienceIndex !== null;
 
   useEffect(() => {
@@ -537,6 +551,145 @@ export default function ExploreActivityDetail({
           cursor: pointer;
         }
         .activity-detail-page .experience-modal-close:hover { background: #f2f2f2; }
+        .activity-detail-page .story-purpose {
+          padding: 118px 24px 126px;
+          background: #fff;
+        }
+        .activity-detail-page .story-purpose-shell {
+          width: min(1240px, 100%);
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: minmax(0, 1.02fr) minmax(360px, .82fr);
+          gap: clamp(76px, 8vw, 126px);
+          align-items: center;
+        }
+        .activity-detail-page .story-purpose-images {
+          position: relative;
+          min-height: 650px;
+          padding: 0 68px 68px 0;
+        }
+        .activity-detail-page .story-purpose-main {
+          width: 88%;
+          height: 610px;
+          display: block;
+          object-fit: cover;
+          border-radius: 28px;
+        }
+        .activity-detail-page .story-purpose-inset {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 48%;
+          aspect-ratio: 4 / 3;
+          display: block;
+          object-fit: cover;
+          border: 10px solid #fff;
+          border-radius: 24px;
+          box-shadow: 0 18px 44px rgba(0,0,0,.12);
+        }
+        .activity-detail-page .story-kicker {
+          margin: 0 0 20px;
+          color: #F5569B;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: .16em;
+          text-transform: uppercase;
+        }
+        .activity-detail-page .story-heading {
+          margin: 0 0 30px;
+          color: #111;
+          font-size: clamp(36px, 4vw, 56px);
+          font-weight: 700;
+          line-height: 1.08;
+          letter-spacing: -.035em;
+        }
+        .activity-detail-page .story-copy p {
+          margin: 0 0 19px;
+          color: #5f6367;
+          font-size: 17px;
+          line-height: 1.72;
+        }
+        .activity-detail-page .story-pullquote {
+          margin: 34px 0 0;
+          padding-left: 22px;
+          border-left: 3px solid #F5569B;
+          color: #171717;
+          font-size: 20px;
+          font-weight: 600;
+          line-height: 1.5;
+        }
+        .activity-detail-page .place-story {
+          padding: 110px 24px 122px;
+          background: #f6f6f6;
+        }
+        .activity-detail-page .place-story-shell {
+          width: min(1340px, 100%);
+          margin: 0 auto;
+        }
+        .activity-detail-page .place-figure { margin: 0; }
+        .activity-detail-page .place-image-wrap {
+          position: relative;
+          height: clamp(380px, 43vw, 600px);
+          overflow: hidden;
+          border-radius: 28px;
+          background: #e9e9e9;
+        }
+        .activity-detail-page .place-image {
+          width: 100%;
+          height: 100%;
+          display: block;
+          object-fit: cover;
+        }
+        .activity-detail-page .place-arrow {
+          position: absolute;
+          top: 50%;
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 0;
+          border-radius: 50%;
+          background: rgba(255,255,255,.78);
+          color: #222;
+          box-shadow: 0 4px 18px rgba(0,0,0,.1);
+          cursor: pointer;
+          transform: translateY(-50%);
+        }
+        .activity-detail-page .place-arrow:hover { color: #F5569B; background: #fff; }
+        .activity-detail-page .place-arrow.prev { left: 22px; }
+        .activity-detail-page .place-arrow.next { right: 22px; }
+        .activity-detail-page .place-caption {
+          margin: 12px 5px 0;
+          color: #7b7b7b;
+          font-size: 11px;
+          line-height: 1.5;
+        }
+        .activity-detail-page .place-header {
+          max-width: 820px;
+          margin: 66px auto 48px;
+          text-align: center;
+        }
+        .activity-detail-page .place-header .story-heading { margin-bottom: 22px; }
+        .activity-detail-page .place-deck {
+          margin: 0;
+          color: #5d6165;
+          font-size: 19px;
+          line-height: 1.65;
+        }
+        .activity-detail-page .place-columns {
+          width: min(1020px, 100%);
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: clamp(52px, 7vw, 96px);
+        }
+        .activity-detail-page .place-columns p {
+          margin: 0;
+          color: #5f6367;
+          font-size: 16px;
+          line-height: 1.78;
+        }
         .activity-detail-page .gallery-modal {
           background: #fff;
           color: #222;
@@ -650,6 +803,23 @@ export default function ExploreActivityDetail({
           .activity-detail-page .experience-modal-copy h3 { margin-bottom: 12px; padding-right: 44px; font-size: 26px; }
           .activity-detail-page .experience-modal-copy p { font-size: 14px; }
           .activity-detail-page .experience-modal-close { top: 20px; right: 20px; background: #fff; }
+          .activity-detail-page .story-purpose { padding: 74px 20px 82px; }
+          .activity-detail-page .story-purpose-shell { display: block; }
+          .activity-detail-page .story-purpose-images { min-height: 0; margin-bottom: 72px; padding: 0 36px 40px 0; }
+          .activity-detail-page .story-purpose-main { width: 92%; height: auto; aspect-ratio: 4 / 5; border-radius: 20px; }
+          .activity-detail-page .story-purpose-inset { width: 48%; border-width: 7px; border-radius: 18px; }
+          .activity-detail-page .story-heading { font-size: 36px; }
+          .activity-detail-page .story-copy p { font-size: 15px; line-height: 1.68; }
+          .activity-detail-page .story-pullquote { font-size: 18px; }
+          .activity-detail-page .place-story { padding: 72px 14px 82px; }
+          .activity-detail-page .place-image-wrap { height: 54vw; min-height: 250px; border-radius: 20px; }
+          .activity-detail-page .place-arrow { width: 42px; height: 42px; }
+          .activity-detail-page .place-arrow.prev { left: 12px; }
+          .activity-detail-page .place-arrow.next { right: 12px; }
+          .activity-detail-page .place-header { margin: 48px auto 34px; padding: 0 8px; }
+          .activity-detail-page .place-deck { font-size: 16px; }
+          .activity-detail-page .place-columns { display: block; padding: 0 8px; }
+          .activity-detail-page .place-columns p + p { margin-top: 22px; }
         }
       `}</style>
 
@@ -891,45 +1061,116 @@ export default function ExploreActivityDetail({
         </div>
       )}
 
-      <div className="tea-body">
-        <div
-          style={{
-            maxWidth: 800,
-            margin: "0 auto 48px",
-            padding: "0 24px",
-            textAlign: "center",
-            boxSizing: "border-box",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: DISPLAY,
-              fontSize: "clamp(34px,4vw,45px)",
-              fontWeight: 400,
-              lineHeight: 1,
-              letterSpacing: "2.25px",
-              color: "#000",
-              margin: "0 0 18px",
-              textTransform: "uppercase",
-            }}
-          >
-            {detail.purpose.eyebrow}
-          </h2>
-          <p
-            style={{
-              fontSize: 17,
-              lineHeight: 1.5,
-              color: TEXT,
-              fontFamily: SANS,
-              letterSpacing: ".85px",
-              margin: 0,
-            }}
-          >
-            {detail.excerpt}
-          </p>
+      <section className="story-purpose">
+        <div className="story-purpose-shell">
+          <div className="story-purpose-images">
+            <img
+              className="story-purpose-main"
+              src="/images/explore/build-together/place/sichuan-rural-house.jpg"
+              alt="A traditional rural house in Sichuan"
+            />
+            <img
+              className="story-purpose-inset"
+              src="/images/explore/build-together/place/bamboo-courtyard-house.jpg"
+              alt="A timber courtyard house surrounded by bamboo"
+            />
+          </div>
+          <div className="story-copy">
+            <p className="story-kicker">Why We Do This</p>
+            <h2 className="story-heading">A House Holds More Than Its Walls</h2>
+            <p>
+              A village house is never only a structure. It carries the marks of
+              the people who built it, the materials available around it and the
+              ordinary lives that have passed through its rooms.
+            </p>
+            <p>
+              Rather than replacing what has aged, this project begins by looking
+              carefully at what remains. Timber, tile, earth and stone each tell us
+              something about how the house was made—and how it may continue to be
+              useful.
+            </p>
+            <p>
+              Participants join a real project already in progress. The work changes
+              with the condition of the house, the weather and the knowledge of the
+              people involved. Some days may involve clearing and sorting materials;
+              others may focus on timber, walls, paths or the small tasks that allow
+              a place to become useful again.
+            </p>
+            <p>
+              This is not about arriving with a ready-made solution. It is about
+              learning how to notice, working alongside others and contributing with
+              care.
+            </p>
+            <blockquote className="story-pullquote">
+              We are not rebuilding an image of village life. We are helping an
+              existing place continue its story.
+            </blockquote>
+          </div>
         </div>
+      </section>
 
-        {blocks.map((block, index) => {
+      <section className="place-story">
+        <div className="place-story-shell">
+          <figure className="place-figure">
+            <div className="place-image-wrap">
+              <img
+                className="place-image"
+                src={PLACE_IMAGES[placeIndex].src}
+                alt={PLACE_IMAGES[placeIndex].alt}
+              />
+              <button
+                type="button"
+                className="place-arrow prev"
+                onClick={() => setPlaceIndex(index => (index - 1 + PLACE_IMAGES.length) % PLACE_IMAGES.length)}
+                aria-label="Previous landscape"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <button
+                type="button"
+                className="place-arrow next"
+                onClick={() => setPlaceIndex(index => (index + 1) % PLACE_IMAGES.length)}
+                aria-label="Next landscape"
+              >
+                <ChevronRight size={24} />
+              </button>
+            </div>
+            <figcaption className="place-caption">
+              {PLACE_IMAGES[placeIndex].caption} {placeIndex + 1} / {PLACE_IMAGES.length}
+            </figcaption>
+          </figure>
+
+          <div className="place-header">
+            <p className="story-kicker">The Place Around the House</p>
+            <h2 className="story-heading">A Landscape Shaped by Rain, Forest and Everyday Work</h2>
+            <p className="place-deck">
+              The activity belongs to a wider landscape. Understanding the house
+              also means noticing the climate, cultivated land and daily rhythms
+              that have shaped it.
+            </p>
+          </div>
+
+          <div className="place-columns">
+            <p>
+              Around Ya’an, forested hills, tea-growing land and frequent rain give
+              the countryside its particular texture. Weather changes the colour of
+              walls, the condition of paths and sometimes the work planned for the
+              day. The landscape is not simply a view from the project—it helps
+              explain why buildings here use the materials and forms they do.
+            </p>
+            <p>
+              Village life is not arranged as a performance for visitors. Farming,
+              meals, repairs and conversations continue in their own rhythm. We ask
+              participants to enter that rhythm slowly: to observe before
+              photographing, to listen before acting and to remember that the
+              village is first of all someone’s home.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div className="tea-body">
+        {blocks.slice(1).map((block, index) => {
           const text = (
             <div className="tea-detail-text">
               <div className="tea-detail-text-inner">
