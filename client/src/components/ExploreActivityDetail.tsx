@@ -421,7 +421,7 @@ export default function ExploreActivityDetail({
           align-items: center;
           justify-content: center;
           padding: 50px 60px;
-          background: rgba(255,255,255,.48);
+          background: rgba(255,255,255,.36);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
         }
@@ -447,7 +447,7 @@ export default function ExploreActivityDetail({
           bottom: 0;
           left: 112px;
           border-radius: 32px;
-          background: rgba(255,255,255,.78);
+          background: rgba(255,255,255,.68);
           box-shadow: 0 18px 56px rgba(0,0,0,.12);
           backdrop-filter: blur(18px);
           -webkit-backdrop-filter: blur(18px);
