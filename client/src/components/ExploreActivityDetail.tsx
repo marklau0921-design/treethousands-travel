@@ -2,9 +2,8 @@ import {
   useEffect,
   useRef,
   useState,
-  type MouseEvent as ReactMouseEvent,
+  type PointerEvent as ReactPointerEvent,
   type ReactNode,
-  type TouchEvent as ReactTouchEvent,
 } from "react";
 import { Link } from "wouter";
 import {
@@ -1239,6 +1238,7 @@ function ActivityRecommendations() {
   const velocityRef = useRef(0);
   const frameRef = useRef<number | null>(null);
   const draggedRef = useRef(false);
+  const activePointerRef = useRef<number | null>(null);
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
 
@@ -1302,6 +1302,7 @@ function ActivityRecommendations() {
   const endDrag = () => {
     if (!draggingRef.current) return;
     draggingRef.current = false;
+    activePointerRef.current = null;
     beginInertia();
   };
 
@@ -1323,7 +1324,7 @@ function ActivityRecommendations() {
   return (
     <section className="activity-recommendations">
       <style>{`
-        .activity-detail-page .activity-recommendations{position:relative;padding:92px 0 102px;background:#fff;overflow:hidden}.activity-detail-page .recommendation-heading{width:min(1240px,calc(100% - 80px));margin:0 auto 38px}.activity-detail-page .recommendation-kicker{margin:0 0 12px;color:#F5569B;font:700 11px/1.3 ${SANS};letter-spacing:.18em;text-transform:uppercase}.activity-detail-page .recommendation-title{margin:0;color:#151515;font-family:${DISPLAY};font-size:clamp(38px,4vw,54px);font-weight:400;letter-spacing:.035em;line-height:1;text-transform:uppercase}.activity-detail-page .recommendation-track{width:100%;overflow-x:auto;overflow-y:hidden;cursor:grab;user-select:none;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}.activity-detail-page .recommendation-track::-webkit-scrollbar{display:none}.activity-detail-page .recommendation-row{display:flex;width:max-content;gap:24px;padding:0 max(40px,calc((100vw - 1240px)/2)) 8px}.activity-detail-page .recommendation-card{display:block;width:350px;flex:0 0 350px;color:inherit;text-decoration:none}.activity-detail-page .recommendation-image{width:100%;aspect-ratio:1.08/1;overflow:hidden;border-radius:28px;background:#eee}.activity-detail-page .recommendation-image img{width:100%;height:100%;display:block;object-fit:cover;pointer-events:none;transition:transform .45s ease}.activity-detail-page .recommendation-card:hover .recommendation-image img{transform:scale(1.025)}.activity-detail-page .recommendation-copy{padding:18px 4px 0}.activity-detail-page .recommendation-card-title{margin:0 0 8px;color:#1d1d1d;font:600 20px/1.28 ${SANS};letter-spacing:-.015em}.activity-detail-page .recommendation-meta{margin:0 0 5px;color:#6a6a6a;font:500 13px/1.4 ${SANS}}.activity-detail-page .recommendation-detail{margin:0;color:#333;font:600 13px/1.4 ${SANS}}.activity-detail-page .recommendation-arrow{position:absolute;top:54%;z-index:5;width:40px;height:40px;border:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);color:#fff;cursor:pointer;transition:background .2s ease,opacity .2s ease}.activity-detail-page .recommendation-arrow:hover{background:rgba(0,0,0,.72)}.activity-detail-page .recommendation-arrow.left{left:16px}.activity-detail-page .recommendation-arrow.right{right:16px}@media(max-width:800px){.activity-detail-page .activity-recommendations{padding:72px 0 78px}.activity-detail-page .recommendation-heading{width:calc(100% - 40px);margin-bottom:28px}.activity-detail-page .recommendation-title{font-size:38px}.activity-detail-page .recommendation-row{gap:16px;padding-left:20px;padding-right:20px}.activity-detail-page .recommendation-card{width:78vw;flex-basis:78vw}.activity-detail-page .recommendation-image{border-radius:22px}.activity-detail-page .recommendation-arrow{display:none}}
+        .activity-detail-page .activity-recommendations{position:relative;padding:92px 0 102px;background:#fff;overflow:hidden}.activity-detail-page .recommendation-heading{width:min(1240px,calc(100% - 80px));margin:0 auto 38px}.activity-detail-page .recommendation-kicker{margin:0 0 12px;color:#F5569B;font:700 11px/1.3 ${SANS};letter-spacing:.18em;text-transform:uppercase}.activity-detail-page .recommendation-title{margin:0;color:#151515;font-family:${DISPLAY};font-size:clamp(38px,4vw,54px);font-weight:400;letter-spacing:.035em;line-height:1;text-transform:uppercase}.activity-detail-page .recommendation-track{width:100%;overflow-x:auto;overflow-y:hidden;cursor:grab;user-select:none;touch-action:pan-y;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}.activity-detail-page .recommendation-track.is-dragging{cursor:grabbing}.activity-detail-page .recommendation-track::-webkit-scrollbar{display:none}.activity-detail-page .recommendation-row{display:flex;width:max-content;gap:24px;padding:0 max(40px,calc((100vw - 1240px)/2)) 8px}.activity-detail-page .recommendation-card{display:block;width:350px;flex:0 0 350px;color:inherit;text-decoration:none;-webkit-user-drag:none}.activity-detail-page .recommendation-image{width:100%;aspect-ratio:1.08/1;overflow:hidden;border-radius:28px;background:#eee}.activity-detail-page .recommendation-image img{width:100%;height:100%;display:block;object-fit:cover;pointer-events:none;-webkit-user-drag:none;transition:transform .45s ease}.activity-detail-page .recommendation-card:hover .recommendation-image img{transform:scale(1.025)}.activity-detail-page .recommendation-copy{padding:18px 4px 0}.activity-detail-page .recommendation-card-title{margin:0 0 8px;color:#1d1d1d;font:600 20px/1.28 ${SANS};letter-spacing:-.015em}.activity-detail-page .recommendation-meta{margin:0 0 5px;color:#6a6a6a;font:500 13px/1.4 ${SANS}}.activity-detail-page .recommendation-detail{margin:0;color:#333;font:600 13px/1.4 ${SANS}}.activity-detail-page .recommendation-arrow{position:absolute;top:54%;z-index:5;width:40px;height:40px;border:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);color:#fff;cursor:pointer;transition:background .2s ease,opacity .2s ease}.activity-detail-page .recommendation-arrow:hover{background:rgba(0,0,0,.72)}.activity-detail-page .recommendation-arrow.left{left:16px}.activity-detail-page .recommendation-arrow.right{right:16px}@media(max-width:800px){.activity-detail-page .activity-recommendations{padding:72px 0 78px}.activity-detail-page .recommendation-heading{width:calc(100% - 40px);margin-bottom:28px}.activity-detail-page .recommendation-title{font-size:38px}.activity-detail-page .recommendation-row{gap:16px;padding-left:20px;padding-right:20px}.activity-detail-page .recommendation-card{width:78vw;flex-basis:78vw}.activity-detail-page .recommendation-image{border-radius:22px}.activity-detail-page .recommendation-arrow{display:none}}
       `}</style>
       <div className="recommendation-heading">
         <p className="recommendation-kicker">Explore More</p>
@@ -1344,17 +1345,30 @@ function ActivityRecommendations() {
         ref={trackRef}
         className="recommendation-track"
         onScroll={updateArrows}
-        onMouseDown={(event: ReactMouseEvent<HTMLDivElement>) => beginDrag(event.pageX)}
-        onMouseMove={(event: ReactMouseEvent<HTMLDivElement>) => {
-          if (!draggingRef.current) return;
-          event.preventDefault();
-          moveDrag(event.pageX);
+        onPointerDown={(event: ReactPointerEvent<HTMLDivElement>) => {
+          if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+          activePointerRef.current = event.pointerId;
+          event.currentTarget.setPointerCapture(event.pointerId);
+          event.currentTarget.classList.add("is-dragging");
+          beginDrag(event.clientX);
         }}
-        onMouseUp={endDrag}
-        onMouseLeave={endDrag}
-        onTouchStart={(event: ReactTouchEvent<HTMLDivElement>) => beginDrag(event.touches[0].pageX)}
-        onTouchMove={(event: ReactTouchEvent<HTMLDivElement>) => moveDrag(event.touches[0].pageX)}
-        onTouchEnd={endDrag}
+        onPointerMove={(event: ReactPointerEvent<HTMLDivElement>) => {
+          if (!draggingRef.current || activePointerRef.current !== event.pointerId) return;
+          if (event.pointerType === "mouse") event.preventDefault();
+          moveDrag(event.clientX);
+        }}
+        onPointerUp={(event: ReactPointerEvent<HTMLDivElement>) => {
+          if (activePointerRef.current !== event.pointerId) return;
+          if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+            event.currentTarget.releasePointerCapture(event.pointerId);
+          }
+          event.currentTarget.classList.remove("is-dragging");
+          endDrag();
+        }}
+        onPointerCancel={(event: ReactPointerEvent<HTMLDivElement>) => {
+          event.currentTarget.classList.remove("is-dragging");
+          endDrag();
+        }}
         onClickCapture={event => {
           if (!draggedRef.current) return;
           event.preventDefault();
