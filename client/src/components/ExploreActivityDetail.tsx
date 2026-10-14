@@ -1,4 +1,11 @@
-import { useEffect, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+  type ReactNode,
+  type TouchEvent as ReactTouchEvent,
+} from "react";
 import { Link } from "wouter";
 import {
   Accessibility,
@@ -1079,6 +1086,8 @@ export default function ExploreActivityDetail({
         </div>
       </section>
 
+      <ActivityRecommendations />
+
       <section
         style={{
           position: "relative",
@@ -1173,5 +1182,211 @@ function Highlight({
         <p className="highlight-copy">{copy}</p>
       </div>
     </div>
+  );
+}
+
+const ACTIVITY_RECOMMENDATIONS = [
+  {
+    title: "Pick Tea With a Mountain Family",
+    category: "Village craft",
+    duration: "Half day",
+    detail: "By arrangement",
+    image: "/images/our-way-of-travel/walking-together.jpg",
+  },
+  {
+    title: "A Day Along the Village Paths",
+    category: "Village life",
+    duration: "3–5 hours",
+    detail: "Small groups",
+    image: "/images/our-way-of-travel/entering-village.jpg",
+  },
+  {
+    title: "Walk Into the Forest Together",
+    category: "Nature & landscape",
+    duration: "Half day",
+    detail: "Gentle pace",
+    image: "/images/stories/into-the-forest-together/group-in-forest.jpg",
+  },
+  {
+    title: "Follow Water Through the Valley",
+    category: "Nature & landscape",
+    duration: "4 hours",
+    detail: "Weather dependent",
+    image: "/images/our-way-of-travel/waterfall.jpg",
+  },
+  {
+    title: "Prepare and Share a Village Meal",
+    category: "People & culture",
+    duration: "Half day",
+    detail: "By arrangement",
+    image: "/images/what-we-believe/preparing-together.jpg",
+  },
+  {
+    title: "Meet the Hands Behind Local Clay",
+    category: "People & culture",
+    duration: "2–3 hours",
+    detail: "Small groups",
+    image: "/images/stories/the-rhythm-of-clay/craftsman-with-lids.jpg",
+  },
+];
+
+function ActivityRecommendations() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const draggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startScrollRef = useRef(0);
+  const lastXRef = useRef(0);
+  const velocityRef = useRef(0);
+  const frameRef = useRef<number | null>(null);
+  const draggedRef = useRef(false);
+  const [showLeft, setShowLeft] = useState(false);
+  const [showRight, setShowRight] = useState(true);
+
+  const cancelMotion = () => {
+    if (frameRef.current !== null) {
+      cancelAnimationFrame(frameRef.current);
+      frameRef.current = null;
+    }
+  };
+
+  const updateArrows = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    setShowLeft(track.scrollLeft > 3);
+    setShowRight(track.scrollLeft < track.scrollWidth - track.clientWidth - 3);
+  };
+
+  const beginInertia = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const step = () => {
+      velocityRef.current *= 0.92;
+      if (Math.abs(velocityRef.current) < 0.45) {
+        velocityRef.current = 0;
+        frameRef.current = null;
+        updateArrows();
+        return;
+      }
+      const before = track.scrollLeft;
+      track.scrollLeft -= velocityRef.current;
+      updateArrows();
+      if (track.scrollLeft === before) {
+        frameRef.current = null;
+        return;
+      }
+      frameRef.current = requestAnimationFrame(step);
+    };
+    frameRef.current = requestAnimationFrame(step);
+  };
+
+  const beginDrag = (pageX: number) => {
+    cancelMotion();
+    draggingRef.current = true;
+    draggedRef.current = false;
+    startXRef.current = pageX;
+    startScrollRef.current = trackRef.current?.scrollLeft ?? 0;
+    lastXRef.current = pageX;
+    velocityRef.current = 0;
+  };
+
+  const moveDrag = (pageX: number) => {
+    if (!draggingRef.current || !trackRef.current) return;
+    const distance = pageX - startXRef.current;
+    velocityRef.current = pageX - lastXRef.current;
+    lastXRef.current = pageX;
+    if (Math.abs(distance) > 4) draggedRef.current = true;
+    trackRef.current.scrollLeft = startScrollRef.current - distance;
+    updateArrows();
+  };
+
+  const endDrag = () => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    beginInertia();
+  };
+
+  const scrollBy = (distance: number) => {
+    cancelMotion();
+    trackRef.current?.scrollBy({ left: distance, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    updateArrows();
+    const onResize = () => updateArrows();
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      cancelMotion();
+    };
+  }, []);
+
+  return (
+    <section className="activity-recommendations">
+      <style>{`
+        .activity-detail-page .activity-recommendations{position:relative;padding:92px 0 102px;background:#fff;overflow:hidden}.activity-detail-page .recommendation-heading{width:min(1240px,calc(100% - 80px));margin:0 auto 38px}.activity-detail-page .recommendation-kicker{margin:0 0 12px;color:#F5569B;font:700 11px/1.3 ${SANS};letter-spacing:.18em;text-transform:uppercase}.activity-detail-page .recommendation-title{margin:0;color:#151515;font-family:${DISPLAY};font-size:clamp(38px,4vw,54px);font-weight:400;letter-spacing:.035em;line-height:1;text-transform:uppercase}.activity-detail-page .recommendation-track{width:100%;overflow-x:auto;overflow-y:hidden;cursor:grab;user-select:none;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}.activity-detail-page .recommendation-track::-webkit-scrollbar{display:none}.activity-detail-page .recommendation-row{display:flex;width:max-content;gap:24px;padding:0 max(40px,calc((100vw - 1240px)/2)) 8px}.activity-detail-page .recommendation-card{display:block;width:350px;flex:0 0 350px;color:inherit;text-decoration:none}.activity-detail-page .recommendation-image{width:100%;aspect-ratio:1.08/1;overflow:hidden;border-radius:28px;background:#eee}.activity-detail-page .recommendation-image img{width:100%;height:100%;display:block;object-fit:cover;pointer-events:none;transition:transform .45s ease}.activity-detail-page .recommendation-card:hover .recommendation-image img{transform:scale(1.025)}.activity-detail-page .recommendation-copy{padding:18px 4px 0}.activity-detail-page .recommendation-card-title{margin:0 0 8px;color:#1d1d1d;font:600 20px/1.28 ${SANS};letter-spacing:-.015em}.activity-detail-page .recommendation-meta{margin:0 0 5px;color:#6a6a6a;font:500 13px/1.4 ${SANS}}.activity-detail-page .recommendation-detail{margin:0;color:#333;font:600 13px/1.4 ${SANS}}.activity-detail-page .recommendation-arrow{position:absolute;top:54%;z-index:5;width:40px;height:40px;border:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);color:#fff;cursor:pointer;transition:background .2s ease,opacity .2s ease}.activity-detail-page .recommendation-arrow:hover{background:rgba(0,0,0,.72)}.activity-detail-page .recommendation-arrow.left{left:16px}.activity-detail-page .recommendation-arrow.right{right:16px}@media(max-width:800px){.activity-detail-page .activity-recommendations{padding:72px 0 78px}.activity-detail-page .recommendation-heading{width:calc(100% - 40px);margin-bottom:28px}.activity-detail-page .recommendation-title{font-size:38px}.activity-detail-page .recommendation-row{gap:16px;padding-left:20px;padding-right:20px}.activity-detail-page .recommendation-card{width:78vw;flex-basis:78vw}.activity-detail-page .recommendation-image{border-radius:22px}.activity-detail-page .recommendation-arrow{display:none}}
+      `}</style>
+      <div className="recommendation-heading">
+        <p className="recommendation-kicker">Explore More</p>
+        <h2 className="recommendation-title">More Ways to Take Part</h2>
+      </div>
+
+      <button
+        type="button"
+        className="recommendation-arrow left"
+        style={{ opacity: showLeft ? 1 : 0, pointerEvents: showLeft ? "auto" : "none" }}
+        onClick={() => scrollBy(-Math.min(window.innerWidth * 0.72, 720))}
+        aria-label="Scroll recommendations left"
+      >
+        <ChevronLeft size={20} strokeWidth={2} />
+      </button>
+
+      <div
+        ref={trackRef}
+        className="recommendation-track"
+        onScroll={updateArrows}
+        onMouseDown={(event: ReactMouseEvent<HTMLDivElement>) => beginDrag(event.pageX)}
+        onMouseMove={(event: ReactMouseEvent<HTMLDivElement>) => {
+          if (!draggingRef.current) return;
+          event.preventDefault();
+          moveDrag(event.pageX);
+        }}
+        onMouseUp={endDrag}
+        onMouseLeave={endDrag}
+        onTouchStart={(event: ReactTouchEvent<HTMLDivElement>) => beginDrag(event.touches[0].pageX)}
+        onTouchMove={(event: ReactTouchEvent<HTMLDivElement>) => moveDrag(event.touches[0].pageX)}
+        onTouchEnd={endDrag}
+        onClickCapture={event => {
+          if (!draggedRef.current) return;
+          event.preventDefault();
+          event.stopPropagation();
+          draggedRef.current = false;
+        }}
+      >
+        <div className="recommendation-row">
+          {ACTIVITY_RECOMMENDATIONS.map(item => (
+            <Link href="/explore" className="recommendation-card" key={item.title}>
+              <div className="recommendation-image">
+                <img src={item.image} alt={item.title} draggable={false} />
+              </div>
+              <div className="recommendation-copy">
+                <h3 className="recommendation-card-title">{item.title}</h3>
+                <p className="recommendation-meta">{item.category} · {item.duration}</p>
+                <p className="recommendation-detail">{item.detail}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <button
+        type="button"
+        className="recommendation-arrow right"
+        style={{ opacity: showRight ? 1 : 0, pointerEvents: showRight ? "auto" : "none" }}
+        onClick={() => scrollBy(Math.min(window.innerWidth * 0.72, 720))}
+        aria-label="Scroll recommendations right"
+      >
+        <ChevronRight size={20} strokeWidth={2} />
+      </button>
+    </section>
   );
 }
