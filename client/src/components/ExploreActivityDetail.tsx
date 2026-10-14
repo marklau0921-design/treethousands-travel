@@ -420,18 +420,18 @@ export default function ExploreActivityDetail({
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 48px;
+          padding: 50px 60px;
           background: rgba(255,255,255,.48);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
         }
         .activity-detail-page .experience-dialog {
           position: relative;
-          width: min(1180px, calc(100vw - 96px));
-          height: min(660px, calc(100vh - 96px));
+          width: min(1360px, calc(100vw - 120px));
+          height: min(700px, calc(100vh - 100px));
           display: grid;
-          grid-template-columns: 68px minmax(390px, 1.05fr) minmax(340px, .95fr);
-          gap: 16px;
+          grid-template-columns: 68px minmax(0, 1.08fr) minmax(320px, .92fr);
+          column-gap: 42px;
           padding: 18px;
           border: 0;
           border-radius: 0;
@@ -445,7 +445,7 @@ export default function ExploreActivityDetail({
           top: 0;
           right: 0;
           bottom: 0;
-          left: 84px;
+          left: 112px;
           border-radius: 32px;
           background: rgba(255,255,255,.78);
           box-shadow: 0 18px 56px rgba(0,0,0,.12);
