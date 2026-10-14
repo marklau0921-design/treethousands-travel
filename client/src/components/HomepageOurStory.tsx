@@ -75,9 +75,12 @@ export default function HomepageOurStory({ content: settings }: { content: Homep
         }
       `}</style>
       {visibleSections.map((section, index) => {
-        const image = section.id === 'why-we-started'
+        const editorialCover = section.id === 'why-we-started'
           ? '/images/why-we-started-editorial/01-opening.jpeg'
-          : section.image || imagePool[index] || '';
+          : section.id === 'our-way-of-travel'
+            ? '/images/our-way-of-travel/hero.jpg'
+            : '';
+        const image = editorialCover || section.image || imagePool[index] || '';
         const text = (
           <div className="our-story-edge-text">
             <div className="tea-detail-text-inner">

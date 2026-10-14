@@ -109,7 +109,102 @@ const whatWeBelieve: OurStoryEditorialContent = {
   cta: { title: 'So, Ready to Take Part?', buttonLabel: 'Explore Activities', buttonHref: '/explore', image: `${beliefAsset}/participation-03.jpg` },
 };
 
+const travelAsset = '/images/our-way-of-travel';
+
+const ourWayOfTravel: OurStoryEditorialContent = {
+  hero: {
+    image: `${travelAsset}/hero.jpg`,
+    alt: 'A quiet forest road in rural Sichuan',
+    metaLeft: 'TREE THOUSANDS / OUR STORIES',
+    metaRight: '',
+    title: 'Our Way of Travel.',
+    subtitle: 'We begin on the ground—walking, listening, and learning how a place lives before deciding how a journey should move through it.',
+  },
+  beginning: {
+    eyebrow: '01 / BEFORE THE ITINERARY',
+    title: 'The journey begins before there is a route.',
+    paragraphs: [
+      'Before we invite anyone to travel with us, we go ourselves. We walk the forest roads, enter village lanes, notice where the pace changes, and listen to the people who understand the place through everyday life.',
+      'This first visit is not a rehearsal for a finished tour. It is fieldwork—a way to understand what can be shared responsibly, what needs more time, and what should remain part of ordinary life rather than becoming an attraction.',
+      'The route grows from what we learn on the ground, not from a checklist prepared somewhere else.',
+    ],
+    images: [
+      { src: `${travelAsset}/walking-together.jpg`, alt: 'A small group walking through a forest landscape' },
+      { src: `${travelAsset}/documenting-village.jpg`, alt: 'Documenting details along a village lane' },
+      { src: `${travelAsset}/forest-steps.jpg`, alt: 'People climbing a shaded path through the forest' },
+      { src: `${travelAsset}/bamboo-stick-detail.jpg`, alt: 'A bamboo walking stick touching the ground' },
+    ],
+  },
+  turning: {
+    eyebrow: '02 / LISTEN BEFORE WE PLAN',
+    title: 'A route is shaped\nwith a place.',
+    leftParagraphs: [
+      'We do not begin with a list of attractions. We begin with conversations, changing weather, the condition of a path, and the rhythm of local work.',
+      'Walking reveals effort, shade, distance, places to pause, and the small transitions between landscape and village life.',
+    ],
+    rightParagraphs: [
+      'Listening also reveals boundaries: where photography is welcome, when a visit would interrupt daily life, and what local people would rather keep for themselves.',
+      'These details determine not only where a journey goes, but how it should behave when it arrives.',
+    ],
+    images: [
+      { src: `${travelAsset}/listening-on-trail.jpg`, alt: 'A group pausing to listen during a field visit' },
+      { src: `${travelAsset}/mountain-vegetation.jpg`, alt: 'Mountain vegetation observed during route research' },
+      { src: `${travelAsset}/looking-closely.jpg`, alt: 'Participants looking closely at the surrounding environment' },
+    ],
+    captions: ['Listen first. Plan second.', 'Attention changes what we notice.'],
+  },
+  action: {
+    eyebrow: '03 / TRAVEL IN SMALL WAYS',
+    title: 'Move slowly.\nStay responsive.',
+    paragraphs: [
+      'Small groups make room for conversation, different walking speeds, and changes of plan. They allow a journey to remain responsive instead of asking the place to fit a fixed performance.',
+      'Weather, seasons, local work, and the needs of each group can change the day. We treat flexibility as part of responsible travel, not as a failure to follow the plan.',
+      'Covering less ground often creates more space to understand where we are.',
+    ],
+    images: [
+      { src: `${travelAsset}/trail-ascent.jpg`, alt: 'A small group ascending a village trail' },
+      { src: `${travelAsset}/bamboo-trail-group.jpg`, alt: 'People moving together through a bamboo trail' },
+      { src: `${travelAsset}/waterfall.jpg`, alt: 'Water moving through a shaded forest' },
+    ],
+  },
+  belief: {
+    eyebrow: '04 / FROM SEEING TO TAKING PART',
+    title: 'The place is not\na stage.',
+    paragraphs: [
+      'A village is somebody’s home and workplace. We photograph with permission, enter private spaces only when invited, and do not turn ordinary routines into scenes arranged for visitors.',
+      'When participation is appropriate, building, farming, making, and conservation work become ways of meeting—not activities arranged only for entertainment.',
+    ],
+    sideParagraphs: [
+      'Taking part means accepting the pace of another place, listening before acting, and understanding that even a simple task carries knowledge. The value lies not only in what is completed, but in the exchange created while doing it together.',
+    ],
+    quote: 'A meaningful journey is shaped with a place, not placed on top of it.',
+    images: [
+      { src: `${travelAsset}/roadside-encounter.jpg`, alt: 'A spontaneous encounter beside a rural road' },
+      { src: `${travelAsset}/documenting-village.jpg`, alt: 'A traveler documenting village life with attention' },
+      { src: `${travelAsset}/looking-closely.jpg`, alt: 'Learning by observing closely in the field' },
+    ],
+  },
+  closing: {
+    eyebrow: 'THE RELATIONSHIP CONTINUES',
+    title: 'Leave More Than\na Photograph.',
+    paragraph: 'We want travel to create value in both directions. The route may end, but the relationship should have room to continue through return visits, shared work, open conversations, and support for what local people are already building.',
+    image: { src: `${travelAsset}/entering-village.jpg`, alt: 'A small group entering a mountain village on foot' },
+  },
+  recommendations: {
+    title: 'What We Are Explore',
+    description: 'Ongoing ways to move from seeing a place to taking part with care.',
+    backgroundImage: `${travelAsset}/bamboo-trail-group.jpg`,
+  },
+  cta: {
+    title: 'So, Ready to Travel Differently?',
+    buttonLabel: 'Explore Activities',
+    buttonHref: '/explore',
+    image: `${travelAsset}/waterfall.jpg`,
+  },
+};
+
 export const ourStoryEditorialPages: Record<string, OurStoryEditorialContent> = {
   'why-we-started': whyWeStarted,
   'what-we-believe': whatWeBelieve,
+  'our-way-of-travel': ourWayOfTravel,
 };
