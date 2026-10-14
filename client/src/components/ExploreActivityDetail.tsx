@@ -27,19 +27,6 @@ const SANS =
   "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
 const TEXT = "#52575c";
 
-const PLACE_IMAGES = [
-  {
-    src: "/images/explore/build-together/place/yaan-tea-landscape.jpg",
-    alt: "Tea gardens moving across the hills around Ya'an",
-    caption: "Tea-growing hills in Ya’an, where cultivation follows the shape of the land.",
-  },
-  {
-    src: "/images/explore/build-together/place/yaan-misty-tea-mountains.jpg",
-    alt: "Misty tea mountains in Ya'an",
-    caption: "Rain and low cloud are part of the everyday landscape, not an interruption to it.",
-  },
-];
-
 export default function ExploreActivityDetail({
   content,
 }: {
@@ -49,7 +36,6 @@ export default function ExploreActivityDetail({
   const getObjectPosition = useMediaObjectPosition();
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
   const [experienceIndex, setExperienceIndex] = useState<number | null>(null);
-  const [placeIndex, setPlaceIndex] = useState(0);
   const overlayOpen = galleryIndex !== null || experienceIndex !== null;
 
   useEffect(() => {
@@ -623,15 +609,17 @@ export default function ExploreActivityDetail({
           background: #f6f6f6;
         }
         .activity-detail-page .place-story-shell {
-          width: min(1340px, 100%);
+          width: min(1440px, 100%);
           margin: 0 auto;
         }
-        .activity-detail-page .place-figure { margin: 0; }
+        .activity-detail-page .place-figure {
+          width: 88%;
+          margin: 0;
+        }
         .activity-detail-page .place-image-wrap {
-          position: relative;
-          height: clamp(380px, 43vw, 600px);
+          width: 100%;
+          aspect-ratio: 2.55 / 1;
           overflow: hidden;
-          border-radius: 28px;
           background: #e9e9e9;
         }
         .activity-detail-page .place-image {
@@ -639,53 +627,37 @@ export default function ExploreActivityDetail({
           height: 100%;
           display: block;
           object-fit: cover;
+          object-position: center 58%;
         }
-        .activity-detail-page .place-arrow {
-          position: absolute;
-          top: 50%;
-          width: 48px;
-          height: 48px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 0;
-          border-radius: 50%;
-          background: rgba(255,255,255,.78);
-          color: #222;
-          box-shadow: 0 4px 18px rgba(0,0,0,.1);
-          cursor: pointer;
-          transform: translateY(-50%);
-        }
-        .activity-detail-page .place-arrow:hover { color: #F5569B; background: #fff; }
-        .activity-detail-page .place-arrow.prev { left: 22px; }
-        .activity-detail-page .place-arrow.next { right: 22px; }
-        .activity-detail-page .place-caption {
-          margin: 12px 5px 0;
-          color: #7b7b7b;
-          font-size: 11px;
-          line-height: 1.5;
+        .activity-detail-page .place-editorial {
+          width: 88%;
+          margin-top: 48px;
+          display: grid;
+          grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
+          gap: clamp(60px, 8vw, 130px);
+          align-items: start;
         }
         .activity-detail-page .place-header {
-          max-width: 820px;
-          margin: 66px auto 48px;
-          text-align: center;
-        }
-        .activity-detail-page .place-header .story-heading { margin-bottom: 22px; }
-        .activity-detail-page .place-deck {
           margin: 0;
+          text-align: left;
+        }
+        .activity-detail-page .place-header .story-heading {
+          max-width: 410px;
+          margin-bottom: 0;
+          font-size: clamp(34px, 3.5vw, 50px);
+        }
+        .activity-detail-page .place-deck {
+          margin: 0 0 25px;
           color: #5d6165;
-          font-size: 19px;
-          line-height: 1.65;
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 1.6;
         }
         .activity-detail-page .place-columns {
-          width: min(1020px, 100%);
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: clamp(52px, 7vw, 96px);
+          margin: 0;
         }
         .activity-detail-page .place-columns p {
-          margin: 0;
+          margin: 0 0 18px;
           color: #5f6367;
           font-size: 16px;
           line-height: 1.78;
@@ -812,14 +784,14 @@ export default function ExploreActivityDetail({
           .activity-detail-page .story-copy p { font-size: 15px; line-height: 1.68; }
           .activity-detail-page .story-pullquote { font-size: 18px; }
           .activity-detail-page .place-story { padding: 72px 14px 82px; }
-          .activity-detail-page .place-image-wrap { height: 54vw; min-height: 250px; border-radius: 20px; }
-          .activity-detail-page .place-arrow { width: 42px; height: 42px; }
-          .activity-detail-page .place-arrow.prev { left: 12px; }
-          .activity-detail-page .place-arrow.next { right: 12px; }
-          .activity-detail-page .place-header { margin: 48px auto 34px; padding: 0 8px; }
+          .activity-detail-page .place-figure,
+          .activity-detail-page .place-editorial { width: 92%; }
+          .activity-detail-page .place-image-wrap { aspect-ratio: 1.72 / 1; }
+          .activity-detail-page .place-editorial { display: block; margin-top: 34px; }
+          .activity-detail-page .place-header { margin: 0 0 30px; }
+          .activity-detail-page .place-header .story-heading { font-size: 34px; }
           .activity-detail-page .place-deck { font-size: 16px; }
-          .activity-detail-page .place-columns { display: block; padding: 0 8px; }
-          .activity-detail-page .place-columns p + p { margin-top: 22px; }
+          .activity-detail-page .place-columns p { font-size: 15px; line-height: 1.7; }
         }
       `}</style>
 
@@ -1115,56 +1087,38 @@ export default function ExploreActivityDetail({
             <div className="place-image-wrap">
               <img
                 className="place-image"
-                src={PLACE_IMAGES[placeIndex].src}
-                alt={PLACE_IMAGES[placeIndex].alt}
+                src="/images/explore/build-together/place/yaan-mountain-panorama.jpg"
+                alt="Snow mountains and a sea of clouds around Ya'an"
               />
-              <button
-                type="button"
-                className="place-arrow prev"
-                onClick={() => setPlaceIndex(index => (index - 1 + PLACE_IMAGES.length) % PLACE_IMAGES.length)}
-                aria-label="Previous landscape"
-              >
-                <ChevronLeft size={24} />
-              </button>
-              <button
-                type="button"
-                className="place-arrow next"
-                onClick={() => setPlaceIndex(index => (index + 1) % PLACE_IMAGES.length)}
-                aria-label="Next landscape"
-              >
-                <ChevronRight size={24} />
-              </button>
             </div>
-            <figcaption className="place-caption">
-              {PLACE_IMAGES[placeIndex].caption} {placeIndex + 1} / {PLACE_IMAGES.length}
-            </figcaption>
           </figure>
 
-          <div className="place-header">
-            <p className="story-kicker">The Place Around the House</p>
-            <h2 className="story-heading">A Landscape Shaped by Rain, Forest and Everyday Work</h2>
-            <p className="place-deck">
-              The activity belongs to a wider landscape. Understanding the house
-              also means noticing the climate, cultivated land and daily rhythms
-              that have shaped it.
-            </p>
-          </div>
-
-          <div className="place-columns">
-            <p>
-              Around Ya’an, forested hills, tea-growing land and frequent rain give
-              the countryside its particular texture. Weather changes the colour of
-              walls, the condition of paths and sometimes the work planned for the
-              day. The landscape is not simply a view from the project—it helps
-              explain why buildings here use the materials and forms they do.
-            </p>
-            <p>
-              Village life is not arranged as a performance for visitors. Farming,
-              meals, repairs and conversations continue in their own rhythm. We ask
-              participants to enter that rhythm slowly: to observe before
-              photographing, to listen before acting and to remember that the
-              village is first of all someone’s home.
-            </p>
+          <div className="place-editorial">
+            <div className="place-header">
+              <p className="story-kicker">The Place Around the House</p>
+              <h2 className="story-heading">A Landscape Shaped by Rain, Forest and Everyday Work</h2>
+            </div>
+            <div>
+              <p className="place-deck">
+                The activity belongs to a wider landscape. Understanding the house
+                also means noticing the climate, cultivated land and daily rhythms
+                that have shaped it.
+              </p>
+              <div className="place-columns">
+                <p>
+                  Around Ya’an, forested hills, deep valleys and frequent rain give
+                  the countryside its particular texture. From the lower tea-growing
+                  slopes to the snow mountains and cloud seas beyond them, the land
+                  changes quickly with altitude and weather.
+                </p>
+                <p>
+                  Village life is not arranged as a performance for visitors. We ask
+                  participants to enter its rhythm slowly: to observe before
+                  photographing, to listen before acting and to remember that the
+                  village is first of all someone’s home.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
