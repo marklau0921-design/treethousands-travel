@@ -421,7 +421,7 @@ export default function ExploreActivityDetail({
           align-items: center;
           justify-content: center;
           padding: 48px;
-          background: rgba(255,255,255,.68);
+          background: rgba(255,255,255,.48);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
         }
@@ -434,13 +434,27 @@ export default function ExploreActivityDetail({
           gap: 16px;
           padding: 18px;
           border: 0;
+          border-radius: 0;
+          background: transparent;
+          box-shadow: none;
+        }
+        .activity-detail-page .experience-dialog::before {
+          content: "";
+          position: absolute;
+          z-index: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 84px;
           border-radius: 32px;
-          background: rgba(255,255,255,.94);
-          box-shadow: 0 18px 56px rgba(0,0,0,.14);
+          background: rgba(255,255,255,.78);
+          box-shadow: 0 18px 56px rgba(0,0,0,.12);
           backdrop-filter: blur(18px);
           -webkit-backdrop-filter: blur(18px);
         }
         .activity-detail-page .experience-thumbs {
+          position: relative;
+          z-index: 1;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -464,6 +478,8 @@ export default function ExploreActivityDetail({
           object-fit: cover;
         }
         .activity-detail-page .experience-main-image {
+          position: relative;
+          z-index: 1;
           width: 100%;
           height: 100%;
           overflow: hidden;
@@ -477,6 +493,8 @@ export default function ExploreActivityDetail({
           object-fit: cover;
         }
         .activity-detail-page .experience-modal-copy {
+          position: relative;
+          z-index: 1;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -608,6 +626,10 @@ export default function ExploreActivityDetail({
             flex-direction: column;
             gap: 14px;
             padding: 16px;
+            border-radius: 0;
+          }
+          .activity-detail-page .experience-dialog::before {
+            left: 0;
             border-radius: 0;
           }
           .activity-detail-page .experience-thumbs {
