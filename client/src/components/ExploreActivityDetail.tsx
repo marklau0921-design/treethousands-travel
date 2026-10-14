@@ -171,6 +171,17 @@ export default function ExploreActivityDetail({
           position: absolute;
           inset: 0;
         }
+        .activity-detail-page .gallery-button {
+          align-self: flex-start;
+          padding: 9px 0;
+          border: 0;
+          border-radius: 0;
+          background: transparent;
+        }
+        .activity-detail-page .gallery-button:hover {
+          background: transparent;
+          color: #F5569B;
+        }
         .activity-detail-page .gallery-modal {
           background: #fff;
           color: #222;
