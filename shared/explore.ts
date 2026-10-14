@@ -10,6 +10,7 @@ export type ExploreActivityStatus = 'planning' | 'open' | 'seasonal' | 'full' | 
 export interface ExploreActivityDetail {
   category: ExploreCategory;
   excerpt: string;
+  gallery: string[];
   purpose: { eyebrow: string; title: string; paragraphs: string[]; image: string };
   currentWork: { eyebrow: string; title: string; paragraphs: string[]; images: string[] };
   participation: { eyebrow: string; title: string; introduction: string; items: Array<{ title: string; description: string }> };
@@ -87,7 +88,7 @@ const emptyActivity: ExploreActivityInfo = {
 };
 
 const defaultActivityDetail: ExploreActivityDetail = {
-  category: 'Village Life', excerpt: '',
+  category: 'Village Life', excerpt: '', gallery: [],
   purpose: { eyebrow: 'Why This Work Exists', title: '', paragraphs: [], image: '' },
   currentWork: { eyebrow: 'What Is Happening Here', title: '', paragraphs: [], images: [] },
   participation: { eyebrow: 'Ways to Take Part', title: '', introduction: '', items: [] },
@@ -112,6 +113,11 @@ const houseImages = {
   sandingWall: '/images/stories/working-with-what-is-already-here/sanding-wall.jpg',
 };
 
+const buildTogetherGallery = Array.from({ length: 12 }, (_, index) => {
+  const names = ['house-setting', 'opening-work', 'material-sorting', 'material-detail', 'working-together', 'craft-detail', 'roof-work', 'guided-work', 'hands-material', 'group-roof', 'restoration-progress', 'shared-process'];
+  return `/images/explore/build-together/reference/${String(index + 1).padStart(2, '0')}-${names[index]}.jpg`;
+});
+
 export function createDefaultExplorePage(slug: string): ExplorePageContent {
   const copy = PAGE_COPY[slug] ?? PAGE_COPY['village-life'];
   const pageIndex = Math.max(0, defaultExploreSlugs.indexOf(slug));
@@ -121,6 +127,7 @@ export function createDefaultExplorePage(slug: string): ExplorePageContent {
     activityDetail: {
       category: 'Village Life',
       excerpt: 'Take part in the careful repair of an existing village house, with each visit shaped around the work currently underway and the needs of the participating group.',
+      gallery: buildTogetherGallery,
       purpose: { eyebrow: 'Why This Work Exists', title: 'Another use can grow from what the house already holds.', paragraphs: ['The house stands within the existing fabric of the village. Its roof, timber, windows and plaster carry the marks of weather, repair and everyday life.', 'The aim is not to erase those layers or impose a finished idea from outside. The work begins by understanding what can remain, what needs attention and how the house might become useful again.'], image: houseImages.hero },
       currentWork: { eyebrow: 'What Is Happening Here', title: 'Repair follows the condition of the building.', paragraphs: ['The project moves through practical stages: examining the roof and structure, preparing existing surfaces, working with timber and organising the interior as each decision becomes clear.', 'The precise work changes over time. Participants enter a real process already underway; activities are not added merely to create a visitor experience.'], images: [houseImages.roofWide, houseImages.transitionWall] },
       participation: { eyebrow: 'Ways to Take Part', title: 'Different forms of participation can support the same work.', introduction: 'Appropriate tasks are selected after we understand the project stage, the group and what each participant hopes to learn or contribute.', items: [
@@ -200,7 +207,7 @@ export function normalizeExplorePage(value: unknown, slug: string): ExplorePageC
   return {
     homepageCard: { ...defaults.homepageCard, ...(page.homepageCard ?? {}) },
     activity: { ...defaults.activity, ...(page.activity ?? {}) },
-    activityDetail: page.activityDetail ? { ...defaultActivityDetail, ...page.activityDetail } : defaults.activityDetail,
+    activityDetail: page.activityDetail ? { ...defaultActivityDetail, ...defaults.activityDetail, ...page.activityDetail, gallery: page.activityDetail.gallery?.length ? page.activityDetail.gallery : defaults.activityDetail?.gallery ?? [] } : defaults.activityDetail,
     hero: { ...defaults.hero, ...(page.hero ?? {}) },
     introduction: { ...defaults.introduction, ...(page.introduction ?? {}) },
     visual: { ...defaults.visual, ...(page.visual ?? {}), paragraphs: page.visual?.paragraphs ?? defaults.visual.paragraphs, images: page.visual?.images ?? defaults.visual.images },
