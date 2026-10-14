@@ -145,12 +145,19 @@ export default function ExploreActivityDetail({
 
       <style>{`
         .activity-detail-page .activity-intro {
-          width: min(1280px, calc(100% - 40px));
+          width: min(1200px, calc(100% - 40px));
           padding: 104px 0 76px;
         }
         .activity-detail-page .activity-overview {
-          grid-template-columns: minmax(0, 1.38fr) minmax(350px, .72fr);
-          gap: clamp(32px, 3.6vw, 52px);
+          grid-template-columns: minmax(0, 1.32fr) minmax(350px, .72fr);
+          gap: clamp(32px, 3.4vw, 46px);
+        }
+        .activity-detail-page .preview-grid {
+          overflow: hidden;
+          border-radius: 30px;
+        }
+        .activity-detail-page .preview-image {
+          border-radius: 0;
         }
         .activity-detail-page .gallery-modal {
           background: #fff;
@@ -205,6 +212,7 @@ export default function ExploreActivityDetail({
             width: calc(100% - 28px);
             padding: 88px 0 60px;
           }
+          .activity-detail-page .preview-grid { border-radius: 20px; }
           .activity-detail-page .gallery-stage { padding: 72px 18px 88px; }
           .activity-detail-page .gallery-stage img {
             max-width: 100%;
