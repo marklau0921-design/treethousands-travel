@@ -36,6 +36,7 @@ export default function ExploreActivityDetail({
   const getObjectPosition = useMediaObjectPosition();
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
   const [experienceIndex, setExperienceIndex] = useState<number | null>(null);
+  const overlayOpen = galleryIndex !== null || experienceIndex !== null;
 
   useEffect(() => {
     document.title = `${content.hero.title} | TreeThousands`;
@@ -65,9 +66,33 @@ export default function ExploreActivityDetail({
   ).filter((src, index, all) => Boolean(src) && all.indexOf(src) === index);
 
   useEffect(() => {
-    if (galleryIndex === null && experienceIndex === null) return;
-    const previousOverflow = document.body.style.overflow;
+    if (!overlayOpen) return;
+    const scrollY = window.scrollY;
+    const htmlOverflow = document.documentElement.style.overflow;
+    const bodyStyles = {
+      overflow: document.body.style.overflow,
+      position: document.body.style.position,
+      top: document.body.style.top,
+      left: document.body.style.left,
+      right: document.body.style.right,
+      width: document.body.style.width,
+    };
+    document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+    return () => {
+      document.documentElement.style.overflow = htmlOverflow;
+      Object.assign(document.body.style, bodyStyles);
+      window.scrollTo(0, scrollY);
+    };
+  }, [overlayOpen]);
+
+  useEffect(() => {
+    if (!overlayOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setGalleryIndex(null);
@@ -84,10 +109,9 @@ export default function ExploreActivityDetail({
     };
     window.addEventListener("keydown", onKeyDown);
     return () => {
-      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [galleryIndex, experienceIndex, gallery.length]);
+  }, [overlayOpen, galleryIndex, gallery.length]);
 
   const blocks = [
     {
@@ -256,6 +280,21 @@ export default function ExploreActivityDetail({
         .activity-detail-page .activity-status,
         .activity-detail-page .activity-location { font-size: 14px; }
         .activity-detail-page .activity-tag { font-size: 12px; }
+        .activity-detail-page .activity-tags {
+          position: relative;
+          padding-bottom: 32px;
+          border-bottom: 0;
+        }
+        .activity-detail-page .activity-tags::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          bottom: 0;
+          width: 25%;
+          height: 1px;
+          background: #e1e1e1;
+          transform: translateX(-50%);
+        }
         .activity-detail-page .highlight-title { font-size: 15px; }
         .activity-detail-page .highlight-copy {
           font-size: 13px;
@@ -381,25 +420,25 @@ export default function ExploreActivityDetail({
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 30px;
+          padding: 48px;
           background: rgba(255,255,255,.68);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
         }
         .activity-detail-page .experience-dialog {
           position: relative;
-          width: min(1420px, calc(100vw - 60px));
-          height: min(760px, calc(100vh - 60px));
+          width: min(1180px, calc(100vw - 96px));
+          height: min(660px, calc(100vh - 96px));
           display: grid;
-          grid-template-columns: 78px minmax(430px, 1.12fr) minmax(360px, .9fr);
-          gap: 18px;
-          padding: 22px;
+          grid-template-columns: 68px minmax(390px, 1.05fr) minmax(340px, .95fr);
+          gap: 16px;
+          padding: 18px;
           border: 0;
-          border-radius: 0;
-          background: rgba(255,255,255,.72);
-          box-shadow: none;
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
+          border-radius: 32px;
+          background: rgba(255,255,255,.94);
+          box-shadow: 0 18px 56px rgba(0,0,0,.14);
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
         }
         .activity-detail-page .experience-thumbs {
           display: flex;
@@ -408,8 +447,8 @@ export default function ExploreActivityDetail({
           gap: 13px;
         }
         .activity-detail-page .experience-thumb-button {
-          width: 64px;
-          height: 64px;
+          width: 58px;
+          height: 58px;
           padding: 0;
           overflow: hidden;
           border: 2px solid transparent;
@@ -428,7 +467,7 @@ export default function ExploreActivityDetail({
           width: 100%;
           height: 100%;
           overflow: hidden;
-          border-radius: 26px;
+          border-radius: 24px;
           background: #eee;
         }
         .activity-detail-page .experience-main-image img {
@@ -442,7 +481,7 @@ export default function ExploreActivityDetail({
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 54px 46px;
+          padding: 46px 34px;
           text-align: center;
         }
         .activity-detail-page .experience-modal-copy h3 {
