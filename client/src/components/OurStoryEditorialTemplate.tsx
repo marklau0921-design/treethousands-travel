@@ -24,10 +24,6 @@ export function StoryImage({ src, alt, className = '', priority = false }: Story
   );
 }
 
-export function StorySectionLabel({ children }: { children: string }) {
-  return <p className="wys-label" data-reveal>{children}</p>;
-}
-
 function StoryTitle({ text }: { text: string }) {
   const lines = text.split('\n');
   return <>{lines.map((line, index) => <span key={`${line}-${index}`}>{line}{index < lines.length - 1 && <br />}</span>)}</>;
@@ -79,7 +75,6 @@ function EditorialPhotoCollage({ content }: { content: OurStoryEditorialContent[
     <section className="wys-section wys-beginning" aria-labelledby="wys-beginning-title">
       <div className="wys-shell">
         <div className="wys-beginning-copy">
-          <StorySectionLabel>{content.eyebrow}</StorySectionLabel>
           <h2 id="wys-beginning-title" data-reveal><StoryTitle text={content.title} /></h2>
           <div className="wys-copy" data-reveal>
             {content.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
@@ -99,7 +94,6 @@ function DocumentarySpread({ content }: { content: OurStoryEditorialContent['tur
     <section className="wys-section wys-turning" aria-labelledby="wys-turning-title">
       <div className="wys-shell wys-turning-grid">
         <div className="wys-turning-heading">
-          <StorySectionLabel>{content.eyebrow}</StorySectionLabel>
           <h2 id="wys-turning-title" data-reveal><StoryTitle text={content.title} /></h2>
         </div>
         <div className="wys-turning-left-copy wys-copy" data-reveal>
@@ -128,7 +122,6 @@ function ActionPhotoSequence({ content }: { content: OurStoryEditorialContent['a
       <div className="wys-shell wys-action-grid">
         <div className="wys-action-intro">
           <StoryImage {...content.images[0]} />
-          <StorySectionLabel>{content.eyebrow}</StorySectionLabel>
           <h2 id="wys-action-title" data-reveal><StoryTitle text={content.title} /></h2>
           <div className="wys-copy" data-reveal>
             {content.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
@@ -151,7 +144,6 @@ function EditorialPhotoEssay({ content }: { content: OurStoryEditorialContent['b
         <StoryImage className="wys-belief-person" {...content.images[1]} />
         <StoryImage className="wys-belief-craft" {...content.images[2]} />
         <div className="wys-belief-main">
-          <StorySectionLabel>{content.eyebrow}</StorySectionLabel>
           <h2 id="wys-belief-title" data-reveal><StoryTitle text={content.title} /></h2>
           <div className="wys-copy" data-reveal>
             {content.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
@@ -171,7 +163,6 @@ function StoryClosing({ content }: { content: OurStoryEditorialContent['closing'
     <section className="wys-closing" aria-labelledby="wys-closing-title">
       <div className="wys-shell wys-closing-grid">
         <div className="wys-closing-copy">
-          <StorySectionLabel>{content.eyebrow}</StorySectionLabel>
           <h2 id="wys-closing-title" data-reveal><StoryTitle text={content.title} /></h2>
           <p data-reveal>{content.paragraph}</p>
           <nav className="wys-closing-links" aria-label="Continue exploring" data-reveal>
