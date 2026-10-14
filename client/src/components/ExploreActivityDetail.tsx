@@ -279,12 +279,15 @@ export default function ExploreActivityDetail({
         .activity-detail-page .experience-heading {
           margin: 0 0 34px;
           color: #111;
-          font-size: clamp(34px, 4vw, 48px);
-          line-height: 1;
-          letter-spacing: -.02em;
+          font-family: ${SANS};
+          font-size: clamp(34px, 3vw, 42px);
+          font-weight: 700;
+          line-height: 1.12;
+          letter-spacing: -.025em;
         }
         .activity-detail-page .experience-list {
-          border-top: 1px solid #d9d9d9;
+          display: grid;
+          gap: 10px;
         }
         .activity-detail-page .experience-item {
           width: 100%;
@@ -294,7 +297,6 @@ export default function ExploreActivityDetail({
           align-items: center;
           padding: 18px 0;
           border: 0;
-          border-bottom: 1px solid #d9d9d9;
           background: transparent;
           color: #111;
           text-align: left;
@@ -358,7 +360,6 @@ export default function ExploreActivityDetail({
           grid-template-columns: 34px 1fr;
           gap: 10px;
           padding: 13px 0;
-          border-top: 1px solid #ececec;
         }
         .activity-detail-page .participation-note-icon { color: #F5569B; }
         .activity-detail-page .participation-note-title {
@@ -381,8 +382,9 @@ export default function ExploreActivityDetail({
           align-items: center;
           justify-content: center;
           padding: 30px;
-          background: rgba(244,244,244,.82);
-          backdrop-filter: blur(14px);
+          background: rgba(255,255,255,.68);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
         }
         .activity-detail-page .experience-dialog {
           position: relative;
@@ -392,9 +394,12 @@ export default function ExploreActivityDetail({
           grid-template-columns: 78px minmax(430px, 1.12fr) minmax(360px, .9fr);
           gap: 18px;
           padding: 22px;
-          border-radius: 36px;
-          background: #fff;
-          box-shadow: 0 24px 70px rgba(0,0,0,.2);
+          border: 0;
+          border-radius: 0;
+          background: rgba(255,255,255,.72);
+          box-shadow: none;
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
         }
         .activity-detail-page .experience-thumbs {
           display: flex;
@@ -454,8 +459,7 @@ export default function ExploreActivityDetail({
         }
         .activity-detail-page .experience-modal-note {
           margin-top: 28px !important;
-          padding-top: 20px;
-          border-top: 1px solid #e5e5e5;
+          padding-top: 0;
           color: #F5569B !important;
           font-size: 13px !important;
         }
@@ -723,7 +727,7 @@ export default function ExploreActivityDetail({
       <section className="experience-section">
         <div className="experience-shell">
           <div>
-            <h2 className="experience-heading">What you’ll experience</h2>
+            <h2 className="experience-heading">What You’ll Experience</h2>
             <div className="experience-list">
               {experienceItems.map((item, index) => (
                 <button
