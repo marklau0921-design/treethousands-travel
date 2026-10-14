@@ -19,6 +19,7 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useMediaObjectPosition } from "@/lib/media-position";
+import { trpc } from "@/lib/trpc";
 import type { ExplorePageContent } from "@shared/explore";
 
 const DISPLAY =
@@ -34,6 +35,7 @@ export default function ExploreActivityDetail({
 }) {
   const detail = content.activityDetail;
   const getObjectPosition = useMediaObjectPosition();
+  const { data: homepageAssets } = trpc.media.getHomepageAssets.useQuery();
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
   const [experienceIndex, setExperienceIndex] = useState<number | null>(null);
   const overlayOpen = galleryIndex !== null || experienceIndex !== null;
@@ -64,6 +66,11 @@ export default function ExploreActivityDetail({
   const gallery = (
     detail.gallery.length ? detail.gallery : fallbackGallery
   ).filter((src, index, all) => Boolean(src) && all.indexOf(src) === index);
+  const ctaTexture = homepageAssets?.cta?.url || content.cta.textureImage || "";
+  const ctaTextureOpacity = Math.max(
+    0,
+    Math.min(1, Number(homepageAssets?.cta?.opacity ?? content.cta.textureOpacity ?? 28) / 100)
+  );
 
   useEffect(() => {
     if (!overlayOpen) return;
@@ -112,57 +119,6 @@ export default function ExploreActivityDetail({
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [overlayOpen, galleryIndex, gallery.length]);
-
-  const blocks = [
-    {
-      title: detail.purpose.title,
-      description: detail.purpose.paragraphs.join("\n\n"),
-      imageUrl: detail.purpose.image,
-    },
-    {
-      title: detail.currentWork.title,
-      description: detail.currentWork.paragraphs.join("\n\n"),
-      imageUrl: detail.currentWork.images[0],
-    },
-    {
-      title: detail.participation.title,
-      description: [
-        detail.participation.introduction,
-        ...detail.participation.items.map(
-          item => `${item.title}\n${item.description}`
-        ),
-      ].join("\n\n"),
-      imageUrl: detail.currentWork.images[1] || detail.flexibility.image,
-    },
-    {
-      title: detail.flexibility.title,
-      description: [
-        ...detail.flexibility.paragraphs,
-        detail.flexibility.points.join(" · "),
-      ].join("\n\n"),
-      imageUrl: detail.flexibility.image,
-    },
-    {
-      title: detail.people.title,
-      description: detail.people.paragraphs.join("\n\n"),
-      imageUrl: detail.people.images[0],
-    },
-    {
-      title: detail.practical.title,
-      description: [
-        detail.practical.introduction,
-        ...detail.practical.items.map(
-          item => `${item.title}\n${item.description}`
-        ),
-      ].join("\n\n"),
-      imageUrl: detail.people.images[1] || detail.closing.image,
-    },
-    {
-      title: detail.closing.title,
-      description: detail.closing.paragraphs.join("\n\n"),
-      imageUrl: detail.closing.image,
-    },
-  ].filter(block => block.imageUrl);
 
   const experienceItems = [
     {
@@ -1123,72 +1079,6 @@ export default function ExploreActivityDetail({
         </div>
       </section>
 
-      <div className="tea-body">
-        {blocks.slice(1).map((block, index) => {
-          const text = (
-            <div className="tea-detail-text">
-              <div className="tea-detail-text-inner">
-                <h3
-                  style={{
-                    fontFamily: DISPLAY,
-                    fontSize: "clamp(34px,3.6vw,45px)",
-                    fontWeight: 400,
-                    lineHeight: 1,
-                    letterSpacing: "2.25px",
-                    color: "#000",
-                    margin: "0 0 18px",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {block.title}
-                </h3>
-                <p
-                  style={{
-                    fontSize: 17,
-                    lineHeight: 1.5,
-                    color: TEXT,
-                    fontFamily: SANS,
-                    letterSpacing: ".85px",
-                    margin: 0,
-                    whiteSpace: "pre-line",
-                  }}
-                >
-                  {block.description}
-                </p>
-              </div>
-            </div>
-          );
-          const image = (
-            <div className="tea-detail-img-wrap">
-              <img
-                src={block.imageUrl}
-                alt={block.title}
-                className="tea-detail-img"
-                style={{ objectPosition: getObjectPosition(block.imageUrl) }}
-              />
-            </div>
-          );
-          return (
-            <div
-              key={block.title}
-              className={`tea-detail-row${index % 2 === 0 ? "" : " mirror"}`}
-            >
-              {index % 2 === 0 ? (
-                <>
-                  {text}
-                  {image}
-                </>
-              ) : (
-                <>
-                  {image}
-                  {text}
-                </>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
       <section
         style={{
           position: "relative",
@@ -1201,15 +1091,17 @@ export default function ExploreActivityDetail({
           background: content.cta.backgroundColor || "#1a1a1a",
         }}
       >
-        {content.cta.textureImage && (
+        {ctaTexture && (
           <div
+            aria-hidden="true"
             style={{
               position: "absolute",
               inset: 0,
-              backgroundImage: `url(${content.cta.textureImage})`,
+              backgroundImage: `url(${ctaTexture})`,
               backgroundRepeat: "repeat",
               backgroundSize: "420px 420px",
-              opacity: content.cta.textureOpacity / 100,
+              opacity: ctaTextureOpacity,
+              filter: "contrast(1.45) brightness(1.08)",
             }}
           />
         )}
