@@ -205,6 +205,100 @@ const ourWayOfTravel: OurStoryEditorialContent = {
 
 const patternAsset = '/images/stories/a-pattern-made-together';
 
+const routeStoryAsset = '/images/our-way-of-travel';
+
+const beforeAJourneyBecomesARoute: OurStoryEditorialContent = {
+  hero: {
+    image: '/images/stories/before-a-journey-becomes-a-route/forest-road.jpg',
+    alt: 'A quiet road leading into a forest in rural China',
+    metaLeft: 'TREE THOUSANDS / BRAND STORIES',
+    metaRight: '',
+    title: 'Before a Journey Becomes a Route.',
+    subtitle: 'Before we share a journey, we walk it ourselves—to understand its pace, its people and what deserves closer attention.',
+  },
+  beginning: {
+    eyebrow: '01 / WE BEGIN ON FOOT',
+    title: 'The first route is walked, not written.',
+    paragraphs: [
+      'A route begins long before it appears on an itinerary. We walk it first: along forest roads, through bamboo paths, over uneven ground and into the lanes where everyday village life continues.',
+      'This is not a preview of a finished product. It is fieldwork—a way to learn where the journey opens, where it becomes demanding and how people naturally move together through the terrain.',
+      'Maps can show distance and direction. Walking reveals effort, rhythm, changing light and the places where attention naturally slows down.',
+    ],
+    images: [
+      { src: `${routeStoryAsset}/walking-together.jpg`, alt: 'A small group beginning a route on foot' },
+      { src: `${routeStoryAsset}/mountain-vegetation.jpg`, alt: 'Mountain vegetation observed during the field walk' },
+      { src: `${routeStoryAsset}/bamboo-trail-group.jpg`, alt: 'The group moving through a bamboo trail' },
+      { src: `${routeStoryAsset}/bamboo-stick-detail.jpg`, alt: 'A bamboo walking stick meeting the wet ground' },
+    ],
+  },
+  turning: {
+    eyebrow: '02 / READING THE LANDSCAPE',
+    title: 'A route is shaped by\nmore than distance.',
+    leftParagraphs: [
+      'Forest edges, dense bamboo, water and changes in elevation each create a different rhythm. We look at how these conditions connect rather than treating the landscape as scenery between attractions.',
+      'Time on the ground also reveals the pauses, narrow passages and changes of energy that a line on a map cannot show.',
+    ],
+    rightParagraphs: [
+      'These observations later become practical decisions: how long a journey needs, where people can rest, what preparation is required and how the route can welcome different walking speeds.',
+      'We measure a route not only in kilometres, but in effort, attention and time to pause.',
+    ],
+    images: [
+      { src: `${routeStoryAsset}/trail-ascent.jpg`, alt: 'Participants ascending an uneven forest trail' },
+      { src: `${routeStoryAsset}/waterfall.jpg`, alt: 'Water moving through the shaded forest' },
+      { src: `${routeStoryAsset}/forest-steps.jpg`, alt: 'Stone steps beneath trees along the route' },
+    ],
+    captions: ['Walking reveals the true pace of a route.', 'Water and shade reshape the journey.'],
+  },
+  action: {
+    eyebrow: '03 / LOOKING BEYOND THE VIEW',
+    title: 'Small conditions change\nthe whole experience.',
+    paragraphs: [
+      'Route research depends on close observation. We notice the condition of the ground, where water collects, how sunlight changes the temperature and where a group can stop without blocking the way.',
+      'We document materials, light and spatial relationships that written notes can miss. The camera records what is present; it does not ask the place to perform.',
+      'These ordinary details shape safety, comfort and the quality of attention. They help us decide not only where a journey goes, but how it should behave.',
+    ],
+    images: [
+      { src: `${routeStoryAsset}/looking-closely.jpg`, alt: 'Participants stopping to look closely at the landscape' },
+      { src: `${routeStoryAsset}/documenting-village.jpg`, alt: 'Documenting an existing village lane without staging it' },
+      { src: `${routeStoryAsset}/mountain-vegetation.jpg`, alt: 'A wide mountain landscape encountered along the route' },
+    ],
+  },
+  belief: {
+    eyebrow: '04 / FROM FOREST TO VILLAGE',
+    title: 'Local life is not\nscenery on a route.',
+    paragraphs: [
+      'The forest path does not exist separately from the settlements around it. As the route enters village lanes, trees give way to walls, doorways, working spaces and the traces of daily routines.',
+      'A lived place asks for a different kind of awareness. Not every encounter should become an activity, and not everything we notice needs to become a stop.',
+    ],
+    sideParagraphs: [
+      'We listen before deciding what can be shared, photograph with restraint and consider whether future interactions can happen naturally and respectfully. The route must remain connected to the life already taking place around it.',
+    ],
+    quote: 'A meaningful route is discovered through attention, not assembled from a list of attractions.',
+    images: [
+      { src: `${routeStoryAsset}/entering-village.jpg`, alt: 'A group walking from the forest into a village lane' },
+      { src: `${routeStoryAsset}/roadside-encounter.jpg`, alt: 'An everyday roadside encounter during fieldwork' },
+      { src: `${routeStoryAsset}/looking-closely.jpg`, alt: 'Learning to observe without intervening' },
+    ],
+  },
+  closing: {
+    eyebrow: 'FROM FIELD NOTES TO JOURNEY',
+    title: 'Let The Route Follow\nThe Place.',
+    paragraph: 'After the walking, photographs and notes become decisions. We begin not by asking how much can be added, but by understanding what is already here—and how others might approach it with care.',
+    image: { src: `${routeStoryAsset}/forest-steps.jpg`, alt: 'The group continuing together through the forest' },
+  },
+  recommendations: {
+    title: 'What We Are Explore',
+    description: 'Ongoing ways to walk, observe and take part with care.',
+    backgroundImage: `${routeStoryAsset}/bamboo-trail-group.jpg`,
+  },
+  cta: {
+    title: 'So, Ready to Follow a Different Route?',
+    buttonLabel: 'Explore Activities',
+    buttonHref: '/explore',
+    image: `${routeStoryAsset}/waterfall.jpg`,
+  },
+};
+
 const aPatternMadeTogether: OurStoryEditorialContent = {
   hero: {
     image: `${patternAsset}/hero.jpg`,
@@ -301,5 +395,6 @@ export const ourStoryEditorialPages: Record<string, OurStoryEditorialContent> = 
   'why-we-started': whyWeStarted,
   'what-we-believe': whatWeBelieve,
   'our-way-of-travel': ourWayOfTravel,
+  'before-a-journey-becomes-a-route': beforeAJourneyBecomesARoute,
   'a-pattern-made-together': aPatternMadeTogether,
 };
