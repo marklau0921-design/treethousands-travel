@@ -581,6 +581,101 @@ const intoTheForestTogether: OurStoryEditorialContent = {
   },
 };
 
+const beyondVisitingAsset = '/images/what-we-believe';
+const beyondVisitingStoryAsset = '/images/why-we-started';
+
+const beyondVisiting: OurStoryEditorialContent = {
+  hero: {
+    image: `${beyondVisitingStoryAsset}/before-the-plan.jpg`,
+    alt: 'A quiet rural landscape encountered before a route is planned',
+    metaLeft: 'TREE THOUSANDS / BRAND STORIES',
+    metaRight: '',
+    title: 'Beyond Visiting.',
+    subtitle: 'Immersive travel begins with time, attention and a willingness to take part—not simply passing through a place.',
+  },
+  beginning: {
+    eyebrow: '01 / ARRIVING WITH TIME',
+    title: 'Understanding begins after arrival.',
+    paragraphs: [
+      'There is a difference between reaching a place and beginning to understand it. Arrival can be measured by distance and time. Understanding grows more slowly.',
+      'It begins through attention to the road, the weather, the work of the day and the people who already know this place as home. We walk without rushing, listen before explaining and allow everyday life to set the pace.',
+      'We do not travel deeper by going farther. We travel deeper by becoming more present.',
+    ],
+    images: [
+      { src: `${beyondVisitingStoryAsset}/entering-the-village.jpg`, alt: 'Visitors entering a village slowly on foot' },
+      { src: `${beyondVisitingAsset}/documenting-the-process.jpg`, alt: 'A journey documented carefully along a rural road' },
+      { src: `${beyondVisitingAsset}/at-the-doorway.jpg`, alt: 'A conversation beginning at a village doorway' },
+      { src: `${beyondVisitingAsset}/place-and-life.jpg`, alt: 'Homes and everyday life within a rural landscape' },
+    ],
+  },
+  turning: {
+    eyebrow: '02 / BEYOND THE ITINERARY',
+    title: 'A route can guide us.\nIt cannot tell the whole story.',
+    leftParagraphs: [
+      'An itinerary can name the next stop, but it cannot predict which details will make a place meaningful. A change in weather may slow the walk. A doorway may become the beginning of a conversation.',
+      'A road that appears ordinary on a map may reveal how homes, fields and forests belong to one another.',
+    ],
+    rightParagraphs: [
+      'Travelling deeply means leaving room for these moments. The aim is not to collect more places in a day, but to notice what a faster journey would have passed without seeing.',
+      'Time turns a destination into a relationship and observation into understanding.',
+    ],
+    images: [
+      { src: `${beyondVisitingAsset}/documenting-the-process.jpg`, alt: 'Recording details discovered beyond the itinerary' },
+      { src: `${beyondVisitingAsset}/listening-first.jpg`, alt: 'A roadside conversation approached by listening first' },
+      { src: `${beyondVisitingAsset}/the-work-stays-open.jpg`, alt: 'A quiet rural road continuing through the landscape' },
+    ],
+    captions: ['The route leaves room for what cannot be planned.', 'Listening changes what the journey reveals.'],
+  },
+  action: {
+    eyebrow: '03 / LIFE IS NOT A PERFORMANCE',
+    title: 'The village continues\nbefore and after we pass through.',
+    paragraphs: [
+      'Meals are prepared, work continues, neighbours speak, animals cross the road and doors open and close throughout the day. None of this begins for the benefit of a visitor.',
+      'Local life is not something arranged for us. It is something we are invited to approach with care—without turning every ordinary moment into a spectacle or every encounter into content.',
+      'Sometimes attention means asking a question and staying long enough to hear the answer. At other times, it means putting the camera away.',
+    ],
+    images: [
+      { src: `${beyondVisitingAsset}/preparing-together.jpg`, alt: 'Everyday preparations continuing within the village' },
+      { src: `${beyondVisitingAsset}/people-not-background.jpg`, alt: 'A person seen as part of a living place rather than a backdrop' },
+      { src: `${beyondVisitingAsset}/everyday-company.jpg`, alt: 'People sharing time together in a familiar room' },
+    ],
+  },
+  belief: {
+    eyebrow: '04 / TAKING PART',
+    title: 'You remain a visitor.\nBut not a distant observer.',
+    paragraphs: [
+      'Participation changes the question from “What can I see here?” to “What is happening here, and how can I take part respectfully?”',
+      'The answer may be found in a walk through the village, a conversation at a doorway, time shared around a table or practical work carried out alongside others.',
+    ],
+    sideParagraphs: [
+      'Taking part does not mean pretending to become local. It means listening, contributing where participation is welcomed and recognising that immersion is not access without limits. It is attention guided by respect.',
+    ],
+    quote: 'A village is never one story. It is many lives sharing the same place.',
+    images: [
+      { src: `${beyondVisitingAsset}/taking-part.jpg`, alt: 'People taking part in practical work together' },
+      { src: `${beyondVisitingAsset}/at-the-doorway.jpg`, alt: 'A respectful encounter at a village doorway' },
+      { src: `${beyondVisitingAsset}/already-here.jpg`, alt: 'An existing village place observed with attention' },
+    ],
+  },
+  closing: {
+    eyebrow: 'WHAT STAYS AFTER THE JOURNEY',
+    title: 'Leave With A Deeper\nUnderstanding.',
+    paragraph: 'The value of an immersive journey is not how much of a place we can claim to know, but how carefully we learn to see it. A thoughtful visit should leave us with more detail, more respect and fewer assumptions than we brought with us.',
+    image: { src: `${beyondVisitingAsset}/everyday-company.jpg`, alt: 'Everyday life continuing in a familiar village room' },
+  },
+  recommendations: {
+    title: 'What We Are Explore',
+    description: 'Ongoing ways to move beyond observing and begin taking part with care.',
+    backgroundImage: `${beyondVisitingAsset}/place-and-life.jpg`,
+  },
+  cta: {
+    title: 'So, Ready to Go Beyond Visiting?',
+    buttonLabel: 'Explore Activities',
+    buttonHref: '/explore',
+    image: `${beyondVisitingAsset}/taking-part.jpg`,
+  },
+};
+
 const aPatternMadeTogether: OurStoryEditorialContent = {
   hero: {
     image: `${patternAsset}/hero.jpg`,
@@ -681,5 +776,6 @@ export const ourStoryEditorialPages: Record<string, OurStoryEditorialContent> = 
   'the-rhythm-of-clay': theRhythmOfClay,
   'working-with-what-is-already-here': workingWithWhatIsAlreadyHere,
   'into-the-forest-together': intoTheForestTogether,
+  'beyond-visiting': beyondVisiting,
   'a-pattern-made-together': aPatternMadeTogether,
 };
