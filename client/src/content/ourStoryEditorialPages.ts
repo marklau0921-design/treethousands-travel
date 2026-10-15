@@ -299,6 +299,100 @@ const beforeAJourneyBecomesARoute: OurStoryEditorialContent = {
   },
 };
 
+const clayStoryAsset = '/images/stories/the-rhythm-of-clay';
+
+const theRhythmOfClay: OurStoryEditorialContent = {
+  hero: {
+    image: `${clayStoryAsset}/craftsman-with-lids.jpg`,
+    alt: 'A craftsman refining clay lids inside a rural pottery workshop',
+    metaLeft: 'TREE THOUSANDS / LOCAL LIFE',
+    metaRight: '',
+    title: 'The Rhythm of Clay.',
+    subtitle: 'Inside a rural pottery workshop, repeated gestures turn clay into objects made for everyday hands.',
+  },
+  beginning: {
+    eyebrow: '01 / INSIDE THE WORKSHOP',
+    title: 'The room was already shaped by work.',
+    paragraphs: [
+      'The workshop was already in motion when we entered. Shelves held rows of cups and lids, clay dust softened the floor, and finished forms waited beside objects still being worked by hand.',
+      'Nothing had been arranged as a demonstration. One person prepared clay while another refined the edge of a lid. Vessels moved between tables, racks and carts according to the condition of the material—not the pace of a visitor.',
+      'The working order of the room told us how the day moved. Every shelf, board and open space supported a process that had begun long before we arrived.',
+    ],
+    images: [
+      { src: `${clayStoryAsset}/workshop-courtyard.jpg`, alt: 'The old brick exterior of the pottery workshop' },
+      { src: `${clayStoryAsset}/workshop-storage.jpg`, alt: 'A craftsperson preparing clay inside the workshop' },
+      { src: `${clayStoryAsset}/workshop-shelves.jpg`, alt: 'Rows of vessels filling the workshop shelves' },
+      { src: `${clayStoryAsset}/clay-detail.jpg`, alt: 'A close detail of clay marked by heat and handling' },
+    ],
+  },
+  turning: {
+    eyebrow: '02 / CLAY BEFORE FORM',
+    title: 'Every vessel begins\nbefore its shape appears.',
+    leftParagraphs: [
+      'Before there is a cup, teapot or lid, the material must be prepared for the hand. Too much resistance, too little structure or an uneven texture will travel into everything that follows.',
+      'The preparation can look repetitive from a distance. Up close, it is a sequence of judgements—when to continue, when to add pressure and when the clay is ready for another stage.',
+    ],
+    rightParagraphs: [
+      'The same movement becomes more precise over time. Practical knowledge lives in pressure that is difficult to measure, in the angle of a tool and in knowing when another movement would improve the form—or disturb it.',
+      'Experience is visible not only in what the hand does, but in knowing when to stop.',
+    ],
+    images: [
+      { src: `${clayStoryAsset}/preparing-clay.jpg`, alt: 'Preparing the raw clay at a working table' },
+      { src: `${clayStoryAsset}/finishing-by-hand.jpg`, alt: 'A craftsman refining a lid by hand' },
+      { src: `${clayStoryAsset}/animal-detail.jpg`, alt: 'A small animal motif formed into a clay vessel' },
+    ],
+    captions: ['The day begins with the material.', 'Knowledge gathers through repetition.'],
+  },
+  action: {
+    eyebrow: '03 / ONE FORM, MANY DIFFERENCES',
+    title: 'Repetition makes\nthe details visible.',
+    paragraphs: [
+      'Placed together, the cups and teapots form a repeated pattern. Shared proportions make them recognisable as a family of objects, while small differences reveal how each one arrived there.',
+      'A handle sits slightly higher. A rim carries a different pressure. A lid meets its vessel through tiny adjustments. These are not effects added to make the work appear handmade; they are the natural record of the process.',
+      'Similarity does not erase the maker. It makes the evidence of each decision easier to see.',
+    ],
+    images: [
+      { src: `${clayStoryAsset}/animal-detail.jpg`, alt: 'A detailed clay surface and formed handle' },
+      { src: `${clayStoryAsset}/teapots.jpg`, alt: 'Rows of teapots with handles, spouts and lids' },
+      { src: `${clayStoryAsset}/cups-in-sunlight.jpg`, alt: 'Newly formed cups gathered in sunlight' },
+    ],
+  },
+  belief: {
+    eyebrow: '04 / TIME DOES PART OF THE WORK',
+    title: 'Waiting is part\nof making.',
+    paragraphs: [
+      'Newly formed vessels occupy every available surface. Some wait close together on racks; others travel outside on carts where air and sunlight change their condition gradually.',
+      'Moving faster would not make the next stage arrive sooner. The workshop follows the pace of the material, allowing moisture, heat and time to do work that hands alone cannot complete.',
+    ],
+    sideParagraphs: [
+      'The finished vessel will enter another routine: held, poured from, placed on a table, washed and used again. Craft remains alive because the object continues its relationship with everyday life.',
+    ],
+    quote: 'The form returns. The hand never makes it in exactly the same way twice.',
+    images: [
+      { src: `${clayStoryAsset}/cups-on-racks.jpg`, alt: 'Rows of vessels waiting across workshop racks' },
+      { src: `${clayStoryAsset}/cups-on-carts.jpg`, alt: 'Carts carrying newly formed vessels into sunlight' },
+      { src: `${clayStoryAsset}/craftsman-with-lids.jpg`, alt: 'The craftsman working among repeated clay forms' },
+    ],
+  },
+  closing: {
+    eyebrow: 'WHAT THE HANDS CARRY FORWARD',
+    title: 'Made For Everyday\nHands.',
+    paragraph: 'A craft continues not because it remains unchanged, but because it remains useful, practised and connected to daily life. Its knowledge moves forward through material, repetition and the people still working here today.',
+    image: { src: `${clayStoryAsset}/workshop-sign.jpg`, alt: 'The pottery workshop and its old sign beneath a tiled roof' },
+  },
+  recommendations: {
+    title: 'What We Are Explore',
+    description: 'Ongoing ways to learn through material, practice and local knowledge.',
+    backgroundImage: `${clayStoryAsset}/workshop-shelves.jpg`,
+  },
+  cta: {
+    title: 'So, Ready to Learn With Your Hands?',
+    buttonLabel: 'Explore Activities',
+    buttonHref: '/explore',
+    image: `${clayStoryAsset}/teapots.jpg`,
+  },
+};
+
 const aPatternMadeTogether: OurStoryEditorialContent = {
   hero: {
     image: `${patternAsset}/hero.jpg`,
@@ -396,5 +490,6 @@ export const ourStoryEditorialPages: Record<string, OurStoryEditorialContent> = 
   'what-we-believe': whatWeBelieve,
   'our-way-of-travel': ourWayOfTravel,
   'before-a-journey-becomes-a-route': beforeAJourneyBecomesARoute,
+  'the-rhythm-of-clay': theRhythmOfClay,
   'a-pattern-made-together': aPatternMadeTogether,
 };
