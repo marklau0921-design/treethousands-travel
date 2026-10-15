@@ -51,7 +51,7 @@ export default function StoryDetail() {
     return () => { script.remove(); };
   }, [story]);
 
-  if (isLoading && !story) return <div style={{ minHeight: '100vh', background: '#f5f1e8' }}><Navigation /></div>;
+  if (isLoading && !story) return <div style={{ minHeight: '100vh', background: '#fff' }}><Navigation /></div>;
   if (!story) return <div style={{ minHeight: '100vh', background: '#f5f1e8', paddingTop: 180, textAlign: 'center', fontFamily: SANS }}><Navigation /><h1 style={{ fontFamily: DISPLAY, fontSize: 72, textTransform: 'uppercase' }}>Story not found</h1><Link href="/stories">Return to Stories</Link></div>;
   const page = normalizeStoryDetail(story.pageContent, story);
 

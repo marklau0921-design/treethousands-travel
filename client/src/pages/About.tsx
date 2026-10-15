@@ -51,7 +51,7 @@ export default function About() {
     });
   }, [currentSlug, cmsSections]);
 
-  if (cmsSections === undefined || homepageData === undefined) return <div className="min-h-screen bg-[#F5F3EF]" />;
+  if (cmsSections === undefined || homepageData === undefined) return <div className="min-h-screen bg-white" />;
 
   return (
     <div className="our-story-page min-h-screen flex flex-col bg-[#F5F3EF]">

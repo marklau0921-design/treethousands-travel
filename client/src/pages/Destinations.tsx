@@ -47,7 +47,7 @@ export default function Destinations() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col bg-[#F5F3EF]">
+      <div className="min-h-screen flex flex-col bg-white">
         <Navigation />
         <section className="flex-1 flex items-center justify-center">
           <p className="text-gray-600">Loading destinations...</p>

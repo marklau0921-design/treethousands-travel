@@ -122,7 +122,7 @@ export function createDefaultExplorePage(slug: string): ExplorePageContent {
   const copy = PAGE_COPY[slug] ?? PAGE_COPY['village-life'];
   const pageIndex = Math.max(0, defaultExploreSlugs.indexOf(slug));
   if (slug === 'build-with-what-is-already-here') return {
-    homepageCard: { title: 'Build Together', image: houseImages.hero },
+    homepageCard: { title: 'Build Together', image: '/images/explore/build-together/reference/10-group-roof.jpg' },
     activity: { ...emptyActivity, enabled: true, type: 'Build Together', status: 'open', statusLabel: 'Ongoing · By Arrangement', location: 'A village in rural China' },
     activityDetail: {
       category: 'Village Life',

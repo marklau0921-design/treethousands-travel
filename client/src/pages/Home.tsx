@@ -97,7 +97,7 @@ export default function Home() {
     ? heroBackgroundImages
     : (apiBanners && apiBanners.length > 0) ? apiBanners.map((b) => b.url) : [];
   const explorationCategories: Trip[] = explorePages?.length
-    ? explorePages.flatMap((item)=>{const page=normalizeExplorePage(item.pageContent,item.slug);if(!page.activity.enabled)return[];const card=page.homepageCard;return[{id:item.id,title:card.title||page.hero.title,buttonText:'View Activity',image:card.image||page.hero.image,href:`/explore/activity/${item.slug}`}]})
+    ? explorePages.flatMap((item)=>{const page=normalizeExplorePage(item.pageContent,item.slug);if(!page.activity.enabled)return[];const card=page.homepageCard;const image=item.slug==='build-with-what-is-already-here'?'/images/explore/build-together/reference/10-group-roof.jpg':(card.image||page.hero.image);return[{id:item.id,title:card.title||page.hero.title,buttonText:'View Activity',image,href:`/explore/activity/${item.slug}`}]})
     : exploreSection.content.cards.map((card,index)=>({id:index,title:card.title,buttonText:card.buttonLabel,image:card.image,href:card.href}));
   const exploreBackgroundImage = activeBanners[1] || activeBanners[0] || exploreSection.content.backgroundImage;
   const heroTitle = heroSection.content.title;
@@ -228,7 +228,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [activeBanners.length]);
 
-  if (homepageData === undefined || homepageAssets === undefined || explorePages === undefined) return <div className="min-h-screen bg-black" />;
+  if (homepageData === undefined || homepageAssets === undefined || explorePages === undefined) return <div className="min-h-screen bg-white" />;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">

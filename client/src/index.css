@@ -249,7 +249,11 @@ html {
 
 body {
   font-family: var(--font-sans);
+  background: #fff;
+  color: #111;
 }
+
+#root { min-height: 100vh; background: #fff; }
 
 html {
   overflow-x: clip;

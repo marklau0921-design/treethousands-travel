@@ -27,7 +27,7 @@ export default function WhyWeStarted() {
     return <div style={{ minHeight: '100vh', background: '#f4f0e7', paddingTop: 180, textAlign: 'center' }}><Navigation /><h1 style={{ fontFamily: DISPLAY, fontSize: 72, textTransform: 'uppercase' }}>Page not found</h1><Link href="/our-story">Return to Our Story</Link></div>;
   }
 
-  if (!section) return <div className="min-h-screen bg-[#f4f0e7]" />;
+  if (!section) return <div className="min-h-screen bg-white" />;
   const page = normalizeOurStoryPage(section.pageContent, section.title, section.content, section.image ?? '');
   const ctaTexture = homepageAssets?.cta?.url || '';
   const ctaTextureOpacity = Math.max(0, Math.min(1, Number(homepageAssets?.cta?.opacity ?? 28) / 100));
