@@ -329,7 +329,7 @@ The objects shared recognisable forms, but no two carried the process in exactly
   id: 'working-with-what-is-already-here',
   slug: 'working-with-what-is-already-here',
   title: 'Working With What Is Already Here',
-  category: 'Journal',
+  category: 'Village Notes',
   date: '2026-09-29',
   location: 'Rural China',
   excerpt: 'A field journal about repairing an old village house by first asking what should remain, what needs attention, and what might grow from here.',
@@ -341,7 +341,7 @@ Repair began with practical questions. Which parts of the roof needed attention?
 The answers emerged through work: tiles lifted and returned, timber measured and cut, old surfaces cleaned, and decisions made inside the space itself. The process was not about making the house appear untouched by time. It was about allowing its next use to grow from the life and materials it already held.`,
   pageContent: {
     meta: {
-      category: 'Journal',
+      category: 'Village Notes',
       location: 'Rural China',
       publishedDate: '2026-09-29',
       excerpt: 'A field journal about repairing an old village house by first asking what should remain, what needs attention, and what might grow from here.',
@@ -757,9 +757,25 @@ export function mergePublishedStories(databaseStories: EditorialStory[]) {
     '/images/why-we-started-editorial/06-closing.jpeg',
   ];
   const fallback = fallbackStories.map((story, index) => ({ ...story, coverImage: story.coverImage || fallbackCoverImages[index] }));
-  const publishedSlugs = new Set(databaseStories.map((story) => story.slug));
-  publishedEditorialStories.forEach((story) => publishedSlugs.add(story.slug));
-  return [...publishedEditorialStories.filter((story) => !databaseSlugs.has(story.slug)), ...fallback.filter((story) => !publishedSlugs.has(story.slug)), ...databaseStories];
+  const editorialStories = publishedEditorialStories.filter((story) => !databaseSlugs.has(story.slug));
+  const realStories = [...editorialStories, ...databaseStories];
+  const realSlugs = new Set(realStories.map((story) => story.slug));
+  const minimumPerCategory = 3;
+  const fillersByCategory = new Map<StoryCategory, EditorialStory[]>();
+
+  fallback.forEach((story) => {
+    if (realSlugs.has(story.slug)) return;
+    const items = fillersByCategory.get(story.category) ?? [];
+    items.push(story);
+    fillersByCategory.set(story.category, items);
+  });
+
+  const fillers = (STORY_CATEGORIES.slice(1) as StoryCategory[]).flatMap((category) => {
+    const realCount = realStories.filter((story) => story.category === category).length;
+    return (fillersByCategory.get(category) ?? []).slice(0, Math.max(0, minimumPerCategory - realCount));
+  });
+
+  return [...realStories, ...fillers];
 }
 
 export const fallbackStories: EditorialStory[] = [
