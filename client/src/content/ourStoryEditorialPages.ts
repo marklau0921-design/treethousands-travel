@@ -393,6 +393,100 @@ const theRhythmOfClay: OurStoryEditorialContent = {
   },
 };
 
+const houseStoryAsset = '/images/explore/build-together/reference';
+
+const workingWithWhatIsAlreadyHere: OurStoryEditorialContent = {
+  hero: {
+    image: `${houseStoryAsset}/10-group-roof.jpg`,
+    alt: 'A group of craftspeople repairing the roof of an existing rural house',
+    metaLeft: 'TREE THOUSANDS / FIELD JOURNAL',
+    metaRight: '',
+    title: 'Working With What Is Already Here.',
+    subtitle: 'Repair begins by asking what should remain, what needs attention and what the existing house can teach us.',
+  },
+  beginning: {
+    eyebrow: '01 / BEFORE ANY CHANGE',
+    title: 'The first task was to look carefully.',
+    paragraphs: [
+      'An existing house is not an empty surface. Its structure, openings, marks of use and relationship with the surrounding land already give it a character that new work must learn to meet.',
+      'Before plans and new materials entered the space, the building itself became the most important source of information. What was still sound? Where had weather entered? Which parts carried knowledge worth keeping?',
+      'The aim was never to erase the age of the house. It was to understand how careful repair might allow it to remain useful without losing the qualities that made it belong here.',
+    ],
+    images: [
+      { src: `${houseStoryAsset}/01-house-setting.jpg`, alt: 'The existing rural house within its landscape' },
+      { src: `${houseStoryAsset}/02-opening-work.jpg`, alt: 'The group gathering before repair work begins' },
+      { src: `${houseStoryAsset}/11-restoration-progress.jpg`, alt: 'The building partway through the repair process' },
+      { src: `${houseStoryAsset}/04-material-detail.jpg`, alt: 'A close view of existing building material' },
+    ],
+  },
+  turning: {
+    eyebrow: '02 / READING THE EXISTING HOUSE',
+    title: 'The building became\nthe first set of plans.',
+    leftParagraphs: [
+      'An old house contains decisions made over many years. Roof layers meet in a particular rhythm. Openings follow the rooms behind them. Timbers and surfaces carry traces of repair, weather and everyday use.',
+      'Reading those details does not mean keeping everything without question. It means understanding the consequences of change before making it.',
+    ],
+    rightParagraphs: [
+      'The work distinguishes between what can continue, what requires repair and what needs a careful new response. New material must meet the old structure without making the house feel detached from its surroundings.',
+      'Working with an existing house begins by listening to what its materials can still do.',
+    ],
+    images: [
+      { src: `${houseStoryAsset}/03-material-sorting.jpg`, alt: 'Materials being sorted and assessed for reuse' },
+      { src: `${houseStoryAsset}/06-craft-detail.jpg`, alt: 'A close view of careful repair by hand' },
+      { src: `${houseStoryAsset}/09-hands-material.jpg`, alt: 'Hands examining material during the work' },
+    ],
+    captions: ['Existing materials guide the next decision.', 'Repair begins through close attention.'],
+  },
+  action: {
+    eyebrow: '03 / THE MOST PRACTICAL WORK FIRST',
+    title: 'The answers emerged\nthrough the work.',
+    paragraphs: [
+      'A roof determines whether the rooms below can continue to be used. Repair begins above the house, where people move carefully across the structure and attend to the places that can no longer be left as they are.',
+      'The photographs keep the physical reality visible: ladders at the eaves, materials within reach, bodies balanced carefully and decisions made directly where new work meets old.',
+      'A drawing can describe a dimension. A practised hand understands how the material will answer.',
+    ],
+    images: [
+      { src: `${houseStoryAsset}/07-roof-work.jpg`, alt: 'Workers beginning practical repairs across the roof' },
+      { src: `${houseStoryAsset}/10-group-roof.jpg`, alt: 'Craftspeople working together across the existing roof' },
+      { src: `${houseStoryAsset}/05-working-together.jpg`, alt: 'The repair team working alongside one another' },
+    ],
+  },
+  belief: {
+    eyebrow: '04 / BUILDING ALONGSIDE',
+    title: 'More than one kind\nof knowledge was needed.',
+    paragraphs: [
+      'Repair brings different forms of experience into the same place. Craftspeople understand how materials behave. Workers know how to move safely through a difficult structure. Others document, discuss and respond to what the work reveals.',
+      'This is not a story about arriving with every answer. It is a process of working alongside people who already understand the building, its materials and the conditions of working here.',
+    ],
+    sideParagraphs: [
+      'The unfinished stage matters. Tools remain nearby and the next decision is still connected to the one before it. It makes visible the labour and judgement that a polished final image can easily hide.',
+    ],
+    quote: 'What should stay? What needs to change? What could grow from here?',
+    images: [
+      { src: `${houseStoryAsset}/08-guided-work.jpg`, alt: 'An experienced craftsperson guiding the work' },
+      { src: `${houseStoryAsset}/12-shared-process.jpg`, alt: 'People sharing responsibility during the repair process' },
+      { src: `${houseStoryAsset}/09-hands-material.jpg`, alt: 'Material knowledge carried through the hands' },
+    ],
+  },
+  closing: {
+    eyebrow: 'STILL TAKING SHAPE',
+    title: 'Let The Next Use Grow\nFrom The First.',
+    paragraph: 'The measure of the work is not how new the house appears. It is whether the space can be useful again while still belonging to the landscape, materials and relationships that have allowed it to remain here.',
+    image: { src: `${houseStoryAsset}/11-restoration-progress.jpg`, alt: 'The rural house continuing to take shape through repair' },
+  },
+  recommendations: {
+    title: 'What We Are Explore',
+    description: 'Ongoing ways to contribute practical skills to a real project in progress.',
+    backgroundImage: `${houseStoryAsset}/01-house-setting.jpg`,
+  },
+  cta: {
+    title: 'So, Ready to Build Alongside Us?',
+    buttonLabel: 'Explore Activities',
+    buttonHref: '/explore/activity/build-with-what-is-already-here',
+    image: `${houseStoryAsset}/05-working-together.jpg`,
+  },
+};
+
 const aPatternMadeTogether: OurStoryEditorialContent = {
   hero: {
     image: `${patternAsset}/hero.jpg`,
@@ -491,5 +585,6 @@ export const ourStoryEditorialPages: Record<string, OurStoryEditorialContent> = 
   'our-way-of-travel': ourWayOfTravel,
   'before-a-journey-becomes-a-route': beforeAJourneyBecomesARoute,
   'the-rhythm-of-clay': theRhythmOfClay,
+  'working-with-what-is-already-here': workingWithWhatIsAlreadyHere,
   'a-pattern-made-together': aPatternMadeTogether,
 };
