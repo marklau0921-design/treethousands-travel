@@ -768,6 +768,100 @@ const aPatternMadeTogether: OurStoryEditorialContent = {
   },
 };
 
+const teaHillsAsset = '/images/stories/where-the-tea-hills-begin';
+
+const whereTheTeaHillsBegin: OurStoryEditorialContent = {
+  hero: {
+    image: `${teaHillsAsset}/hero.jpg`,
+    alt: 'Tea pickers moving across steep green hills at first light in Ya’an',
+    metaLeft: 'TREE THOUSANDS / VILLAGE NOTES',
+    metaRight: '',
+    title: 'Where The Tea Hills Begin.',
+    subtitle: 'In Ya’an, the landscape is shaped leaf by leaf—through weather, repetition and the people who return to these slopes each morning.',
+  },
+  beginning: {
+    eyebrow: '01 / BEFORE THE DAY WARMS',
+    title: 'Morning begins\nalong the contour.',
+    paragraphs: [
+      'Before the sun reaches the lower valleys, movement has already begun on the tea hills. Paths disappear between rows of shrubs, baskets are adjusted, and figures spread slowly across the slope.',
+      'From a distance, the terraces appear almost effortless: long green lines following the mountain. Up close, the landscape reveals the attention required to maintain it—each row reached on foot, each tender leaf judged by hand.',
+      'The day does not begin with a performance for visitors. It begins because the season is ready and the work must continue.',
+    ],
+    images: [
+      { src: `${teaHillsAsset}/picker-portrait.jpg`, alt: 'Portrait of a tea picker working among fresh green leaves' },
+      { src: `${teaHillsAsset}/misty-terraces.jpg`, alt: 'Tea terraces receding into mist in the Ya’an mountains' },
+      { src: `${teaHillsAsset}/tea-garden-above.jpg`, alt: 'Tea rows and workers seen from above' },
+      { src: `${teaHillsAsset}/morning-harvest.jpg`, alt: 'A group beginning the morning harvest across a tea garden' },
+    ],
+  },
+  turning: {
+    eyebrow: '02 / READING THE SLOPE',
+    title: 'The mountain sets\nthe pace of the hand.',
+    leftParagraphs: [
+      'Tea picking is a rhythm of looking, reaching and moving forward. The hand searches for the right growth while the body continually adjusts to uneven ground.',
+      'What appears repetitive is full of small decisions—what is ready, what should remain and how the weather has changed the leaf since yesterday.',
+    ],
+    rightParagraphs: [
+      'This knowledge is not separated from the landscape. It has been learned through seasons of rain, fog, heat and return.',
+      'To spend time here is to understand that the beauty of the tea hills and the labour within them are not two different stories.',
+    ],
+    images: [
+      { src: `${teaHillsAsset}/between-rows.jpg`, alt: 'Tea pickers moving between narrow rows' },
+      { src: `${teaHillsAsset}/single-picker.jpg`, alt: 'A single picker working across a steep terrace' },
+      { src: `${teaHillsAsset}/group-from-above.jpg`, alt: 'A harvest group working together seen from above' },
+    ],
+    captions: ['The hand learns what the season is ready to give.', 'Every row carries the trace of repeated work.'],
+  },
+  action: {
+    eyebrow: '03 / A HARVEST OF SMALL MOVEMENTS',
+    title: 'Leaf By Leaf.\nRow By Row.',
+    paragraphs: [
+      'There is no single dramatic gesture in a tea harvest. The day accumulates through thousands of careful movements, made by people working separately and together across the same slope.',
+      'Voices travel between rows. Someone pauses to shift a basket; another continues toward the next contour. The group shares the landscape without needing to move at exactly the same speed.',
+      'By midday, the change is measured not by how different the mountain looks, but by what many hands have gathered from it.',
+    ],
+    images: [
+      { src: `${teaHillsAsset}/picker-portrait.jpg`, alt: 'Close view of a tea picker and the leaves being gathered' },
+      { src: `${teaHillsAsset}/between-rows.jpg`, alt: 'Workers sharing the narrow paths between tea rows' },
+      { src: `${teaHillsAsset}/group-from-above.jpg`, alt: 'Many small movements forming one harvest across the hillside' },
+    ],
+  },
+  belief: {
+    eyebrow: '04 / WHAT TRAVEL SHOULD NOTICE',
+    title: 'The view is beautiful.\nThe work gives it meaning.',
+    paragraphs: [
+      'It is easy to arrive and see only the pattern: green terraces, rising mist and sunlight moving across the mountain. A slower visit asks how that pattern came to exist and whose daily knowledge continues to shape it.',
+      'The tea hills are not scenery placed behind village life. They are part of a working landscape—connected to weather, livelihoods, family routines and the changing demands of each season.',
+    ],
+    sideParagraphs: [
+      'For Tree Thousands, travel becomes meaningful when observation leads to respect. We want to come close enough to understand the work, while remembering that the day belongs first to the people living it.',
+    ],
+    quote: 'To see the landscape clearly, we must also see the hands that keep shaping it.',
+    images: [
+      { src: `${teaHillsAsset}/sunrise-garden.jpg`, alt: 'Morning light spreading across a quiet tea garden' },
+      { src: `${teaHillsAsset}/spring-trees.jpg`, alt: 'Tea pickers working beneath fresh spring trees' },
+      { src: `${teaHillsAsset}/tea-garden-above.jpg`, alt: 'The geometry of tea rows and the people within them' },
+    ],
+  },
+  closing: {
+    eyebrow: 'AT THE EDGE OF THE TEA ROWS',
+    title: 'A Landscape\nStill Being Made.',
+    paragraph: 'The mountain will look different with the next rain, the next season and the next harvest. What remains is a relationship between people and place, renewed each morning through work that is careful, ordinary and ongoing.',
+    image: { src: `${teaHillsAsset}/sunrise-garden.jpg`, alt: 'Tea hills glowing softly at the beginning of the day' },
+  },
+  recommendations: {
+    title: 'What We Are Explore',
+    description: 'Ongoing ways to walk, learn and take part with the people who shape rural landscapes.',
+    backgroundImage: `${teaHillsAsset}/spring-trees.jpg`,
+  },
+  cta: {
+    title: 'So, Ready to Walk Into the Tea Hills?',
+    buttonLabel: 'Explore Activities',
+    buttonHref: '/explore',
+    image: `${teaHillsAsset}/morning-harvest.jpg`,
+  },
+};
+
 export const ourStoryEditorialPages: Record<string, OurStoryEditorialContent> = {
   'why-we-started': whyWeStarted,
   'what-we-believe': whatWeBelieve,
@@ -778,4 +872,5 @@ export const ourStoryEditorialPages: Record<string, OurStoryEditorialContent> = 
   'into-the-forest-together': intoTheForestTogether,
   'beyond-visiting': beyondVisiting,
   'a-pattern-made-together': aPatternMadeTogether,
+  'where-the-tea-hills-begin': whereTheTeaHillsBegin,
 };

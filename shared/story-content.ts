@@ -106,6 +106,20 @@ const beforeRouteImages = {
 };
 
 export const publishedEditorialStories: EditorialStory[] = [{
+  id: 'where-the-tea-hills-begin',
+  slug: 'where-the-tea-hills-begin',
+  title: 'Where the Tea Hills Begin',
+  category: 'Village Notes',
+  date: '2026-10-15',
+  location: 'Ya’an, Sichuan',
+  excerpt: 'At first light in Ya’an, the tea hills reveal themselves as more than a view: a working landscape shaped leaf by leaf, season after season.',
+  coverImage: '/images/stories/where-the-tea-hills-begin/hero.jpg',
+  content: `Before the sun reaches the lower valleys, movement has already begun on the tea hills. Paths disappear between rows of shrubs, baskets are adjusted, and figures spread slowly across the slope.
+
+From a distance, the terraces appear almost effortless. Up close, the landscape reveals the attention required to maintain it—each row reached on foot, each tender leaf judged by hand.
+
+The beauty of the tea hills and the labour within them are not two different stories. To understand the landscape, we must also see the hands that keep shaping it.`,
+}, {
   id: 'before-a-journey-becomes-a-route',
   slug: 'before-a-journey-becomes-a-route',
   title: 'Before a Journey Becomes a Route',
