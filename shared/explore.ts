@@ -20,6 +20,9 @@ export interface ExploreActivityDetail {
   practical: { eyebrow: string; title: string; introduction: string; items: Array<{ title: string; description: string }> };
   principles: { eyebrow: string; title: string; items: string[] };
   closing: { eyebrow: string; title: string; paragraphs: string[]; image: string };
+  roles: { eyebrow: string; title: string; footer: string; linkLabel: string; items: Array<{ title: string; description: string; icon: string }> };
+  purposeStory: { eyebrow: string; title: string; paragraphs: string[]; quote: string; mainImage: string; insetImage: string };
+  placeStory: { eyebrow: string; title: string; introduction: string; paragraphs: string[]; image: string };
 }
 export interface ExploreActivityInfo {
   enabled: boolean;
@@ -103,6 +106,9 @@ const defaultActivityDetail: ExploreActivityDetail = {
   practical: { eyebrow: 'Before You Join', title: '', introduction: '', items: [] },
   principles: { eyebrow: 'Our Shared Principles', title: '', items: [] },
   closing: { eyebrow: 'Begin a Conversation', title: '', paragraphs: [], image: '' },
+  roles: { eyebrow: 'Bring What You Know', title: 'There Is More Than One Way to Help', footer: 'Not sure where you fit? Start with a conversation.', linkLabel: 'Tell Us What You Can Bring →', items: [] },
+  purposeStory: { eyebrow: 'Why We Do This', title: '', paragraphs: [], quote: '', mainImage: '', insetImage: '' },
+  placeStory: { eyebrow: 'The Place Around the Activity', title: '', introduction: '', paragraphs: [], image: '' },
 };
 
 const houseImages = {
@@ -194,6 +200,41 @@ export function createDefaultExplorePage(slug: string): ExplorePageContent {
         paragraphs: ['Share your travel dates, group, available time and any walking or dietary needs. We will check the season and local work before suggesting the right form of participation.', 'The aim is not to promise the same programme every day. It is to create a meaningful encounter with the landscape, knowledge and people already here.'],
         image: teaActivityGallery[3],
       },
+      roles: {
+        eyebrow: 'How You Can Take Part', title: 'There Is More Than One Way to Join the Tea Day', footer: 'You do not need tea experience. Tell us what you are curious about and how you like to learn.', linkLabel: 'Tell Us How You Would Like to Join →',
+        items: [
+          { title: 'Tea Learner', description: 'Begin with no prior knowledge—observe, ask and practise the day’s suitable tasks.', icon: 'leaf' },
+          { title: 'Helping Hands', description: 'Support picking, carrying or sorting at a pace guided by local growers.', icon: 'hands' },
+          { title: 'Photographer', description: 'Document landscape and work respectfully, always asking before photographing people.', icon: 'camera' },
+          { title: 'Filmmaker', description: 'Record movement, sound and seasonal work without directing the day for the camera.', icon: 'video' },
+          { title: 'Writer / Storyteller', description: 'Listen closely and help communicate the knowledge held in an ordinary working day.', icon: 'writer' },
+          { title: 'Translator', description: 'Help conversation move naturally between local growers and international guests.', icon: 'languages' },
+          { title: 'Plant Observer', description: 'Notice growth, weather, insects and the wider ecology surrounding the tea garden.', icon: 'plant' },
+          { title: 'Tea Host / Cook', description: 'Support the shared table, tasting and conversations that bring the day together.', icon: 'cook' },
+          { title: 'Cultural Researcher', description: 'Explore how tea connects landscape, livelihood, memory and changing rural life.', icon: 'research' },
+          { title: 'Group Facilitator', description: 'Help a small group participate patiently, safely and with attention to local rhythms.', icon: 'group' },
+        ],
+      },
+      purposeStory: {
+        eyebrow: 'Why We Do This', title: 'A Tea Landscape Is Kept Alive Through Knowledge and Work.',
+        paragraphs: [
+          'The terraces of Ya’an are easy to admire as a finished view. Yet their form is never finished. Each season depends on pruning, tending, watching the weather and returning to the slope at the moment new leaves are ready.',
+          'That repeated attention is a form of local knowledge. It lives in judgement that can be difficult to capture in instructions: the feel of a tender leaf, the effect of last night’s rain, the difference between one side of the hill and another.',
+          'Tree Thousands creates this activity so that travel can move beyond looking. By entering the tea garden carefully, participants begin to understand how landscape, livelihood and daily practice remain connected.',
+          'Participation is not a performance arranged around visitors. The work remains real, the grower’s knowledge leads, and the day may change when weather or production requires it. Accepting those limits is part of learning how to travel with respect.',
+        ],
+        quote: 'We do not visit the tea hills only to see their beauty. We come to understand the care that allows that beauty to continue.',
+        mainImage: teaActivityGallery[5], insetImage: teaActivityGallery[9],
+      },
+      placeStory: {
+        eyebrow: 'The Landscape Behind the Leaf', title: 'Rain, Altitude and Repeated Hands Shape Every Harvest.',
+        introduction: 'Ya’an’s tea is inseparable from a mountain climate where mist, rain, changing light and steep ground influence how leaves grow and when people can work.',
+        paragraphs: [
+          'The terraces follow the contour because the slope determines movement. Narrow paths connect rows, baskets travel by hand and a short distance on the map can require slow, careful walking. The landscape establishes the physical rhythm of the activity before any itinerary does.',
+          'Frequent moisture supports the vivid growth associated with the region, but it also makes paths slippery and picking windows uncertain. A visit may shift from the hillside to sorting, making or conversation because responding to conditions is part of tea knowledge—not an interruption to the experience.',
+          'The tea garden is also an economic and social landscape. It holds family work, seasonal income, practiced skills and decisions about how rural livelihoods continue. Understanding the leaf means noticing this larger system rather than separating a product from the place and people that produce it.',
+        ], image: teaActivityGallery[2],
+      },
     },
     hero: { eyebrow: 'Explore / People & Culture', title: copy.title, subtitle: copy.subtitle, image: teaActivityGallery[1], backgroundColor: '#ffffff', overlayOpacity: 0 },
     introduction: { eyebrow: 'An invitation to take part', text: copy.introduction, backgroundColor: '#ffffff', textColor: '#171717' },
@@ -239,6 +280,30 @@ export function createDefaultExplorePage(slug: string): ExplorePageContent {
       ] },
       principles: { eyebrow: 'Our Shared Principles', title: 'Contribute without taking over.', items: ['Begin by listening.', 'Work with what is already here.', 'Respect local knowledge and private life.', 'Do not turn ordinary work into a performance.', 'Allow the place and the work to set the pace.'] },
       closing: { eyebrow: 'Begin a Conversation', title: 'Tell us how you would like to take part.', paragraphs: ['Share your available time, the people you hope to come with, what interests you and any practical needs. We will respond with a participation approach connected to the house’s current stage.', 'Each visit is one moment in a longer process. The work begins before participants arrive and continues after they leave.'], image: houseImages.transitionWall },
+      roles: {
+        eyebrow: 'Bring What You Know', title: 'There Is More Than One Way to Help', footer: 'Not sure where you fit? Start with a conversation.', linkLabel: 'Tell Us What You Can Bring →',
+        items: [
+          { title: 'Designer / Architect', description: 'Help think through space, function, materials and future use.', icon: 'design' },
+          { title: 'Carpenter / Maker', description: 'Work with timber, repair details and practical construction.', icon: 'maker' },
+          { title: 'Photographer', description: 'Document the people, landscape and changing life of the project.', icon: 'camera' },
+          { title: 'Filmmaker', description: 'Turn the building process and village stories into moving images.', icon: 'video' },
+          { title: 'Cook', description: 'Prepare food, share recipes and bring people together at the table.', icon: 'cook' },
+          { title: 'Gardener / Ecologist', description: 'Help us understand plants, land, water and the local environment.', icon: 'plant' },
+          { title: 'Writer / Storyteller', description: 'Record local knowledge and communicate the meaning of the work.', icon: 'writer' },
+          { title: 'Translator', description: 'Help villagers and international participants understand one another.', icon: 'languages' },
+          { title: 'Workshop Facilitator', description: 'Share a useful skill or help organise collaborative activities.', icon: 'group' },
+          { title: 'Helping Hands', description: 'No experience required—observe, learn and join suitable everyday tasks.', icon: 'hands' },
+        ],
+      },
+      purposeStory: {
+        eyebrow: 'Why We Do This', title: 'A House Holds More Than Its Walls',
+        paragraphs: ['A village house is never only a structure. It carries the marks of the people who built it, the materials available around it and the ordinary lives that have passed through its rooms.', 'Rather than replacing what has aged, this project begins by looking carefully at what remains. Timber, tile, earth and stone each tell us something about how the house was made—and how it may continue to be useful.', 'Participants join a real project already in progress. The work changes with the condition of the house, the weather and the knowledge of the people involved.', 'This is not about arriving with a ready-made solution. It is about learning how to notice, working alongside others and contributing with care.'],
+        quote: 'We are not rebuilding an image of village life. We are helping an existing place continue its story.', mainImage: '/images/explore/build-together/place/sichuan-rural-house.jpg', insetImage: '/images/explore/build-together/place/bamboo-courtyard-house.jpg',
+      },
+      placeStory: {
+        eyebrow: 'The Place Around the House', title: 'A Landscape Shaped by Rain, Forest and Everyday Work', introduction: 'The activity belongs to a wider landscape. Understanding the house also means noticing the climate, cultivated land and daily rhythms that have shaped it.',
+        paragraphs: ['Around Ya’an, forested hills, deep valleys and frequent rain give the countryside its particular texture. From the lower tea-growing slopes to the snow mountains and cloud seas beyond them, the land changes quickly with altitude and weather.', 'Village life is not arranged as a performance for visitors. We ask participants to enter its rhythm slowly: to observe before photographing, to listen before acting and to remember that the village is first of all someone’s home.'], image: '/images/explore/build-together/place/yaan-mountain-panorama.jpg',
+      },
     },
     hero: { eyebrow: 'Explore / Build Together', title: copy.title, subtitle: copy.subtitle, image: houseImages.hero, backgroundColor: '#17352d', overlayOpacity: 48 },
     introduction: { eyebrow: 'An invitation to take part', text: copy.introduction, backgroundColor: '#f3efe6', textColor: '#17251f' },

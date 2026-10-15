@@ -9,6 +9,7 @@ import { Link } from "wouter";
 import {
   Accessibility,
   Backpack,
+  BookOpen,
   CalendarDays,
   Camera,
   ChevronLeft,
@@ -43,18 +44,20 @@ const SANS =
   "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
 const TEXT = "#52575c";
 
-const PARTICIPATION_ROLES = [
-  { title: "Designer / Architect", copy: "Help think through space, function, materials and future use.", icon: Ruler },
-  { title: "Carpenter / Maker", copy: "Work with timber, repair details and practical construction.", icon: Hammer },
-  { title: "Photographer", copy: "Document the people, landscape and changing life of the project.", icon: Camera },
-  { title: "Filmmaker", copy: "Turn the building process and village stories into moving images.", icon: Video },
-  { title: "Cook", copy: "Prepare food, share recipes and bring people together at the table.", icon: CookingPot },
-  { title: "Gardener / Ecologist", copy: "Help us understand plants, land, water and the local environment.", icon: Leaf },
-  { title: "Writer / Storyteller", copy: "Record local knowledge and communicate the meaning of the work.", icon: PenLine },
-  { title: "Translator", copy: "Help villagers and international participants understand one another.", icon: Languages },
-  { title: "Workshop Facilitator", copy: "Share a useful skill or help organise collaborative activities.", icon: Users },
-  { title: "Helping Hands", copy: "No experience required—observe, learn and join suitable everyday tasks.", icon: HandHeart },
-];
+const ROLE_ICONS = {
+  design: Ruler,
+  maker: Hammer,
+  camera: Camera,
+  video: Video,
+  cook: CookingPot,
+  plant: Leaf,
+  leaf: Leaf,
+  writer: PenLine,
+  languages: Languages,
+  group: Users,
+  hands: HandHeart,
+  research: BookOpen,
+} as const;
 
 export default function ExploreActivityDetail({
   content,
@@ -831,36 +834,36 @@ export default function ExploreActivityDetail({
           </aside>
         </div>
 
-        {isBuildActivity && <div className="participation-roles">
+        {detail.roles.items.length > 0 && <div className="participation-roles">
           <style>{`
             .activity-detail-page .participation-roles{margin-top:68px;padding-top:34px}.activity-detail-page .roles-intro{margin-bottom:30px}.activity-detail-page .roles-kicker{margin:0 0 12px;color:#F5569B;font:700 11px/1.3 ${SANS};letter-spacing:.18em;text-transform:uppercase}.activity-detail-page .roles-title{margin:0;color:#151515;font-family:${DISPLAY};font-size:clamp(38px,4vw,54px);font-weight:400;letter-spacing:.035em;line-height:1;text-transform:uppercase}.activity-detail-page .roles-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.activity-detail-page .role-card{min-height:150px;padding:19px 18px 18px;border-radius:14px;background:#f6f6f6;transition:background .25s ease,transform .25s ease}.activity-detail-page .role-card:hover{background:#f0f0f0;transform:translateY(-2px)}.activity-detail-page .role-icon{width:33px;height:33px;margin-bottom:17px;color:#F5569B;display:flex;align-items:center;justify-content:flex-start;transition:transform .25s ease}.activity-detail-page .role-card:hover .role-icon{transform:translateY(-2px)}.activity-detail-page .role-card-title{margin:0 0 7px;color:#202020;font:650 14px/1.3 ${SANS}}.activity-detail-page .role-card-copy{margin:0;color:#6c7074;font:400 11px/1.45 ${SANS}}.activity-detail-page .roles-footer{display:flex;align-items:center;justify-content:space-between;gap:30px;margin-top:27px;padding:0 2px}.activity-detail-page .roles-footer p{margin:0;color:#F5569B;font:600 13px/1.5 ${SANS}}.activity-detail-page .roles-link{color:#202020;font:700 12px/1.4 ${SANS};letter-spacing:.08em;text-decoration:none;text-transform:uppercase;white-space:nowrap;transition:color .2s ease}.activity-detail-page .roles-link:hover{color:#F5569B}@media(max-width:980px){.activity-detail-page .roles-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:800px){.activity-detail-page .participation-roles{margin-top:54px;padding-top:24px}.activity-detail-page .roles-intro{margin-bottom:26px}.activity-detail-page .roles-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.activity-detail-page .role-card{min-height:164px;padding:18px 15px 16px}.activity-detail-page .role-icon{margin-bottom:17px}.activity-detail-page .roles-footer{align-items:flex-start;flex-direction:column;gap:14px;margin-top:24px}}
           `}</style>
           <div className="roles-intro">
             <div>
-              <p className="roles-kicker">Bring What You Know</p>
-              <h2 className="roles-title">There Is More Than One Way to Help</h2>
+              <p className="roles-kicker">{detail.roles.eyebrow}</p>
+              <h2 className="roles-title">{detail.roles.title}</h2>
             </div>
           </div>
 
           <div className="roles-grid">
-            {PARTICIPATION_ROLES.map(role => {
-              const Icon = role.icon;
+            {detail.roles.items.map(role => {
+              const Icon = ROLE_ICONS[role.icon as keyof typeof ROLE_ICONS] || HandHeart;
               return (
                 <article className="role-card" key={role.title}>
                   <span className="role-icon" aria-hidden="true">
                     <Icon size={26} strokeWidth={1.7} />
                   </span>
                   <h3 className="role-card-title">{role.title}</h3>
-                  <p className="role-card-copy">{role.copy}</p>
+                  <p className="role-card-copy">{role.description}</p>
                 </article>
               );
             })}
           </div>
 
           <div className="roles-footer">
-            <p>Not sure where you fit? Start with a conversation.</p>
+            <p>{detail.roles.footer}</p>
             <Link href={content.activity.registrationHref} className="roles-link">
-              Tell Us What You Can Bring →
+              {detail.roles.linkLabel}
             </Link>
           </div>
         </div>}
@@ -1025,22 +1028,21 @@ export default function ExploreActivityDetail({
           <div className="story-purpose-images">
             <img
               className="story-purpose-main"
-              src={detail.purpose.image}
-              alt={detail.purpose.title}
+              src={detail.purposeStory.mainImage}
+              alt={detail.purposeStory.title}
             />
             <img
               className="story-purpose-inset"
-              src={detail.people.images[0] || detail.purpose.image}
-              alt={detail.people.title}
+              src={detail.purposeStory.insetImage || detail.purposeStory.mainImage}
+              alt=""
             />
           </div>
           <div className="story-copy">
-            <p className="story-kicker">{detail.purpose.eyebrow}</p>
-            <h2 className="story-heading">{detail.purpose.title}</h2>
-            {detail.purpose.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
-            {detail.people.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+            <p className="story-kicker">{detail.purposeStory.eyebrow}</p>
+            <h2 className="story-heading">{detail.purposeStory.title}</h2>
+            {detail.purposeStory.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
             <blockquote className="story-pullquote">
-              {detail.principles.items[0] || detail.closing.title}
+              {detail.purposeStory.quote}
             </blockquote>
           </div>
         </div>
@@ -1052,27 +1054,27 @@ export default function ExploreActivityDetail({
             <div className="place-image-wrap">
               <img
                 className="place-image"
-                src={detail.flexibility.image}
-                alt={detail.flexibility.title}
+                src={detail.placeStory.image}
+                alt={detail.placeStory.title}
               />
             </div>
           </figure>
 
           <div className="place-editorial">
             <div className="place-header">
-              <p className="story-kicker">{detail.flexibility.eyebrow}</p>
-              <h2 className="story-heading">{detail.flexibility.title}</h2>
+              <p className="story-kicker">{detail.placeStory.eyebrow}</p>
+              <h2 className="story-heading">{detail.placeStory.title}</h2>
             </div>
             <div>
               <p className="place-deck">
-                {detail.flexibility.paragraphs[0]}
+                {detail.placeStory.introduction}
               </p>
               <div className="place-columns">
                 <p>
-                  {detail.flexibility.paragraphs[1] || detail.currentWork.paragraphs[0]}
+                  {detail.placeStory.paragraphs[0]}
                 </p>
                 <p>
-                  {detail.closing.paragraphs[0]}
+                  {detail.placeStory.paragraphs.slice(1).join(" ")}
                 </p>
               </div>
             </div>
