@@ -76,9 +76,14 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
     introduction: 'This is an invitation to join work already taking place in the village. Rather than arriving to replace an old house with a new idea, we begin by reading what can remain, what needs attention and how the space might become useful again.',
     statement: 'To build together is first to understand what is already here.', details: ['Existing House', 'Roof & Structure', 'Local Materials', 'Working Hands', 'Shared Meals', 'Future Use'],
   },
+  'pick-tea-with-local-growers': {
+    title: 'Pick Tea With Local Growers', subtitle: 'Walk into the tea hills of Ya’an, learn how tender leaves are chosen and follow the journey from hillside to cup.',
+    introduction: 'Tea begins long before it reaches a table. This seasonal activity follows the working rhythm of a tea-growing day: reading the slope, learning which leaves are ready, picking alongside local growers and seeing how fresh leaves begin their transformation.',
+    statement: 'The landscape becomes more meaningful when we understand the hands and knowledge that continue to shape it.', details: ['Tea Hills', 'Seasonal Picking', 'Local Knowledge', 'Fresh Leaves', 'Traditional Making', 'Shared Tea'],
+  },
 };
 
-export const defaultExploreSlugs = ['village-life', 'nature-landscape', 'people-culture', 'build-with-what-is-already-here'];
+export const defaultExploreSlugs = ['village-life', 'nature-landscape', 'people-culture', 'build-with-what-is-already-here', 'pick-tea-with-local-growers'];
 
 const emptyActivity: ExploreActivityInfo = {
   enabled: false, type: '', status: 'planning', statusLabel: 'By Arrangement', dateLabel: 'Arranged around the project and participants',
@@ -118,9 +123,94 @@ const buildTogetherGallery = Array.from({ length: 12 }, (_, index) => {
   return `/images/explore/build-together/reference/${String(index + 1).padStart(2, '0')}-${names[index]}.jpg`;
 });
 
+const teaActivityAsset = '/images/explore/tea-with-growers';
+const teaActivityGallery = [
+  'YT-20-tea-hills-aerial.png', 'YT-21-learning-to-pick.png', 'YT-22-misty-tea-harvest.png', 'YT-23-group-tea-harvest.png', 'YT-24-spring-field-picking.png',
+  'YT-25-wide-tea-landscape.png', 'YT-26-traditional-tea-fire.png', 'YT-27-spreading-fresh-leaves.png', 'YT-28-reading-processed-leaves.png', 'YT-29-tea-maker-portrait.png',
+].map(name => `${teaActivityAsset}/${name}`);
+
 export function createDefaultExplorePage(slug: string): ExplorePageContent {
   const copy = PAGE_COPY[slug] ?? PAGE_COPY['village-life'];
   const pageIndex = Math.max(0, defaultExploreSlugs.indexOf(slug));
+  if (slug === 'pick-tea-with-local-growers') return {
+    homepageCard: { title: 'Pick Tea With Local Growers', image: teaActivityGallery[1] },
+    activity: {
+      ...emptyActivity, enabled: true, type: 'Tea & Seasonal Work', status: 'seasonal', statusLabel: 'Seasonal · By Arrangement',
+      dateLabel: 'Arranged during suitable picking periods', duration: 'Half day or full day', groupSize: '2–8 participants', difficulty: 'Light to moderate',
+      location: 'Ya’an, Sichuan', note: 'The exact experience follows the weather, the tea season and the work taking place when you visit.',
+    },
+    activityDetail: {
+      category: 'People & Culture',
+      excerpt: 'Spend time on the tea hills of Ya’an, learning how local growers read the season, select fresh leaves and begin the process that carries tea from hillside to cup.',
+      gallery: teaActivityGallery,
+      purpose: {
+        eyebrow: 'Why This Experience Exists', title: 'Tea is a working relationship between people, season and land.',
+        paragraphs: ['The green terraces of Ya’an are often seen first as a landscape. Their form, however, comes from repeated work: tending bushes, reading weather, selecting leaves and returning to the same slopes through changing seasons.', 'This activity creates time to understand that relationship. Rather than treating the tea garden as a backdrop, participants enter carefully, follow local guidance and learn through the real rhythm of the day.'],
+        image: teaActivityGallery[5],
+      },
+      currentWork: {
+        eyebrow: 'What You Will Experience', title: 'Follow the leaf from the hillside toward the cup.',
+        paragraphs: ['Begin with the mountain itself: its paths, changing weather and the way rows follow the contour. A local grower introduces the tea bushes and demonstrates how to recognise leaves suitable for the day’s picking.', 'Depending on season and local work, the visit may continue with sorting, spreading, observing a traditional making stage or sharing freshly prepared tea. The sequence remains responsive rather than staged.'],
+        images: [teaActivityGallery[2], teaActivityGallery[6]],
+      },
+      participation: {
+        eyebrow: 'Ways to Take Part', title: 'Learn by watching closely, then working with your hands.', introduction: 'The activity is adjusted to the season, the group and the work genuinely useful that day.',
+        items: [
+          { title: 'Read the Tea Garden', description: 'Learn how slope, weather, shade and new growth affect the day’s work.' },
+          { title: 'Learn to Pick', description: 'Follow a grower’s demonstration and practise selecting appropriate tender leaves.' },
+          { title: 'Sort Fresh Leaves', description: 'Look closely at what has been gathered and understand why leaves are handled differently.' },
+          { title: 'Meet the Making Process', description: 'Observe an available stage of spreading, heating or handling without interrupting production.' },
+          { title: 'Share Tea Together', description: 'Finish with tea, conversation and time to reflect on what the landscape now reveals.' },
+        ],
+      },
+      fit: {
+        eyebrow: 'Is This for You?', title: 'Curiosity matters more than experience.', introduction: 'No tea knowledge is required. A good fit begins with patience, mobility on rural ground and respect for a working landscape.',
+        items: ['You would like to understand where tea comes from beyond a tasting room.', 'You are comfortable walking on narrow, uneven or damp paths.', 'You can follow picking guidance and accept that the day changes with weather and season.', 'You value conversation and observation as much as completing an activity.', 'You will ask before photographing people, homes or working spaces.'],
+      },
+      flexibility: {
+        eyebrow: 'Shaped Around the Season', title: 'The mountain—not a fixed timetable—sets the pace.',
+        paragraphs: ['Tea growth, rain, temperature and the needs of local growers determine what can happen on any visit. We confirm the most appropriate activity after learning about your dates, group and interests.', 'Some visits may focus more on the landscape and picking; others may include additional time with sorting, making or tasting. This flexibility keeps the experience connected to real work.'],
+        points: ['Season and recent weather', 'Available half or full day', 'Group size and ages', 'Walking and mobility needs', 'Interest in picking or making', 'Transport and meal arrangements'], image: teaActivityGallery[0],
+      },
+      people: {
+        eyebrow: 'Learning Alongside', title: 'Local knowledge leads the experience.',
+        paragraphs: ['Growers understand the tea hills through repeated attention: the feel of a leaf, the speed of new growth, the arrival of rain and the right moment to move to another row.', 'Participation means learning within that knowledge. Guests do not direct the harvest or turn workers into performers; they follow, ask and contribute at an appropriate pace.'],
+        images: [teaActivityGallery[8], teaActivityGallery[9]],
+      },
+      practical: {
+        eyebrow: 'Before You Join', title: 'Prepare for a real working landscape.', introduction: 'Final guidance is confirmed for each visit. These points apply to most tea-hill days.',
+        items: [
+          { title: 'Physical Level', description: 'Light to moderate walking on slopes, narrow paths and uneven ground.' },
+          { title: 'Weather', description: 'Mist and rain are common in Ya’an; the plan may change with field conditions.' },
+          { title: 'What to Wear', description: 'Closed non-slip shoes, practical layers and rain or sun protection.' },
+          { title: 'What to Bring', description: 'Water, a small day bag and any personal medication.' },
+          { title: 'Children', description: 'Suitability depends on age, supervision, weather and the condition of the paths.' },
+          { title: 'Photography & Respect', description: 'Ask before photographing people or private spaces and never interrupt working routines.' },
+        ],
+      },
+      principles: { eyebrow: 'Our Shared Principles', title: 'Enter the tea hills with care.', items: ['Listen before picking.', 'Let the season shape the plan.', 'Respect working time and private life.', 'Photograph only with permission.', 'Leave the paths, plants and place as you found them.'] },
+      closing: {
+        eyebrow: 'Begin a Conversation', title: 'Tell us when you hope to visit the tea hills.',
+        paragraphs: ['Share your travel dates, group, available time and any walking or dietary needs. We will check the season and local work before suggesting the right form of participation.', 'The aim is not to promise the same programme every day. It is to create a meaningful encounter with the landscape, knowledge and people already here.'],
+        image: teaActivityGallery[3],
+      },
+    },
+    hero: { eyebrow: 'Explore / People & Culture', title: copy.title, subtitle: copy.subtitle, image: teaActivityGallery[1], backgroundColor: '#ffffff', overlayOpacity: 0 },
+    introduction: { eyebrow: 'An invitation to take part', text: copy.introduction, backgroundColor: '#ffffff', textColor: '#171717' },
+    visual: { eyebrow: 'The experience', title: 'From hillside to cup.', paragraphs: [], images: [], backgroundColor: '#f5f5f5' },
+    details: { eyebrow: 'Activity Details', title: 'What the day may hold', description: 'Each visit follows the tea season and local work.', backgroundColor: '#f5f5f5', items: copy.details.map((title, index) => ({ title, image: teaActivityGallery[index] })) },
+    statement: { eyebrow: 'A way of travelling', text: copy.statement, backgroundColor: '#111111', textColor: '#ffffff' },
+    perspectives: { eyebrow: 'Continue Exploring', title: 'Understand the Landscape', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { title: 'Where the Tea Hills Begin', description: 'Read the field story behind Ya’an’s working tea landscape.', href: '/stories/article/where-the-tea-hills-begin', image: teaActivityGallery[0] },
+      { title: 'People & Culture', description: 'Discover other activities shaped by living knowledge and practiced hands.', href: '/explore/people-culture', image: teaActivityGallery[9] },
+      { title: 'Nature & Landscape', description: 'Explore how mountains, forests and cultivated land shape everyday life.', href: '/explore/nature-landscape', image: teaActivityGallery[2] },
+    ] },
+    stories: { eyebrow: 'From the Journal', title: 'Related Stories', viewAllLabel: 'View all stories →', viewAllHref: '/stories', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { category: 'Village Notes', title: 'Where the Tea Hills Begin', href: '/stories/article/where-the-tea-hills-begin', image: teaActivityGallery[0] },
+    ] },
+    cta: { eyebrow: 'Take Part', title: 'Ready to walk into the tea hills?', buttonLabel: 'Register Your Interest', buttonHref: '/join-us/contact', backgroundColor: '#f5569b', textColor: '#ffffff', buttonBackgroundColor: '#111111', buttonTextColor: '#ffffff', textureImage: '', textureOpacity: 25 },
+    contentBlocks: [],
+  };
   if (slug === 'build-with-what-is-already-here') return {
     homepageCard: { title: 'Build Together', image: '/images/explore/build-together/reference/10-group-roof.jpg' },
     activity: { ...emptyActivity, enabled: true, type: 'Build Together', status: 'open', statusLabel: 'Ongoing · By Arrangement', location: 'A village in rural China' },

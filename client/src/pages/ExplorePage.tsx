@@ -22,7 +22,6 @@ const BUILD_SLUG='build-with-what-is-already-here';
 const BUILD_ARCHIVE_IMAGE='/images/explore/build-together/reference/02-opening-work.jpg';
 const EXPLORE_BANNER='/images/our-way-of-travel/bamboo-trail-group.jpg';
 const SAMPLE_ACTIVITIES:ActivityPreview[]=[
-  {id:'sample-village-tea',title:'Pick Tea With a Mountain Family',category:'Village Life',status:'Seasonal · By Arrangement',excerpt:'Follow the rhythm of a tea-growing day and learn how leaves move from hillside to cup.',image:'/images/explore/build-together/place/yaan-tea-landscape.jpg',href:'/join-us/contact',sample:true},
   {id:'sample-village-day',title:'Share a Day of Village Life',category:'Village Life',status:'Ongoing · Small Groups',excerpt:'Walk familiar paths, prepare food and spend unhurried time within the ordinary life of the village.',image:'/images/our-way-of-travel/entering-village.jpg',href:'/join-us/contact',sample:true},
   {id:'sample-nature-forest',title:'Walk Into the Forest Together',category:'Nature & Landscape',status:'Seasonal · Half Day',excerpt:'Enter the mountain forest slowly, noticing its plants, water, changing light and local knowledge.',image:'/images/stories/into-the-forest-together/group-in-forest.jpg',href:'/join-us/contact',sample:true},
   {id:'sample-nature-water',title:'Follow Water Through the Valley',category:'Nature & Landscape',status:'Weather Dependent',excerpt:'Trace the relationship between rainfall, forest, cultivated land and the villages below.',image:'/images/our-way-of-travel/waterfall.jpg',href:'/join-us/contact',sample:true},

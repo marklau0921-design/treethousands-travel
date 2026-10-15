@@ -94,6 +94,7 @@ export default function ExploreActivityDetail({
   const gallery = (
     detail.gallery.length ? detail.gallery : fallbackGallery
   ).filter((src, index, all) => Boolean(src) && all.indexOf(src) === index);
+  const isBuildActivity = content.activity.type === "Build Together";
   const ctaTexture = homepageAssets?.cta?.url || content.cta.textureImage || "";
   const ctaTextureOpacity = Math.max(
     0,
@@ -148,52 +149,21 @@ export default function ExploreActivityDetail({
     };
   }, [overlayOpen, galleryIndex, gallery.length]);
 
-  const experienceItems = [
-    {
-      title: "Meet the house",
-      summary: "Begin with the building, its setting and the work currently underway.",
-      description: "We start by walking through the house and its immediate surroundings. You will hear what has already been learned, which parts can remain and what the current stage of repair requires.",
-      image: gallery[0],
-      note: "An introduction to the place before any practical work begins.",
-    },
-    {
-      title: "Read what is already here",
-      summary: "Look closely at timber, tile, plaster and the traces of everyday use.",
-      description: "Together we examine existing materials and the decisions they suggest. The purpose is not to erase age, but to understand what is sound, what needs care and what can be used again.",
-      image: gallery[1] || gallery[0],
-      note: "Observation and conversation shape the work that follows.",
-    },
-    {
-      title: "Work alongside the project",
-      summary: "Join suitable tasks connected to the real progress of the repair.",
-      description: "Depending on the day, you may help organise reusable materials, prepare simple surfaces or support another non-specialist task. Activities follow the project rather than a fixed visitor programme.",
-      image: gallery[2] || gallery[0],
-      note: "Tasks are confirmed according to weather, safety and the current work stage.",
-    },
-    {
-      title: "Learn from local knowledge",
-      summary: "Understand how experienced hands respond to an existing rural building.",
-      description: "Local craftspeople and project workers share practical knowledge of tools, materials and repair. Specialist work remains with experienced people while participants learn through observation and appropriate support.",
-      image: gallery[3] || gallery[0],
-      note: "The pace is set by the building, the materials and the people doing the work.",
-    },
-    {
-      title: "Share the rhythm of the day",
-      summary: "Make room for pauses, meals, conversation and the ordinary life around the house.",
-      description: "Participation also means respecting the village beyond the work site. Time is left for rest and exchange without turning private life into a performance or rearranging the day for photographs.",
-      image: gallery[4] || gallery[0],
-      note: "A quieter way to take part in a place that continues after the visit.",
-    },
-  ];
+  const experienceItems = detail.participation.items.slice(0, 5).map((item, index) => ({
+    title: item.title,
+    summary: item.description,
+    description: item.description,
+    image: gallery[index] || gallery[0],
+    note: detail.currentWork.paragraphs[index % Math.max(1, detail.currentWork.paragraphs.length)] || detail.participation.introduction,
+  }));
 
-  const participationNotes = [
-    { icon: <Footprints size={20} />, title: "Physical level", copy: "Light to moderate activity on uneven village ground." },
-    { icon: <CloudSun size={20} />, title: "Weather", copy: "Tasks may change with rain, heat and site conditions." },
-    { icon: <Shirt size={20} />, title: "What to wear", copy: "Practical clothes and closed, non-slip footwear." },
-    { icon: <Backpack size={20} />, title: "What to bring", copy: "Water and suitable sun or rain protection." },
-    { icon: <Accessibility size={20} />, title: "Access", copy: "Uneven surfaces; discuss mobility needs in advance." },
-    { icon: <ShieldCheck size={20} />, title: "Respect & safety", copy: "Follow site guidance and ask before photographing people or homes." },
+  const practicalIcons = [
+    <Footprints size={20} />, <CloudSun size={20} />, <Shirt size={20} />,
+    <Backpack size={20} />, <Accessibility size={20} />, <ShieldCheck size={20} />,
   ];
+  const participationNotes = detail.practical.items.slice(0, 6).map((item, index) => ({
+    icon: practicalIcons[index % practicalIcons.length], title: item.title, copy: item.description,
+  }));
 
   return (
     <div
@@ -820,14 +790,14 @@ export default function ExploreActivityDetail({
               {content.activity.location} · {detail.category}
             </p>
             <div className="activity-tags">
-              <span className="activity-tag">Small groups</span>
-              <span className="activity-tag">Flexible arrangement</span>
+              <span className="activity-tag">{content.activity.groupSize}</span>
+              <span className="activity-tag">{content.activity.dateLabel}</span>
             </div>
             <div className="highlights">
               <Highlight
-                icon={<Hammer size={19} />}
-                title="A real project in progress"
-                copy="Join useful work shaped by the condition of the house."
+                icon={isBuildActivity ? <Hammer size={19} /> : <Leaf size={19} />}
+                title={content.activity.type}
+                copy={detail.currentWork.title}
               />
               <Highlight
                 icon={<MapPin size={19} />}
@@ -847,8 +817,8 @@ export default function ExploreActivityDetail({
             </div>
             <div className="booking-card">
               <div>
-                <p className="booking-label">Join by arrangement</p>
-                <p className="booking-note">Ongoing participation</p>
+                <p className="booking-label">{content.activity.registrationLabel}</p>
+                <p className="booking-note">{content.activity.statusLabel}</p>
               </div>
               <Link
                 href={content.activity.registrationHref}
@@ -861,7 +831,7 @@ export default function ExploreActivityDetail({
           </aside>
         </div>
 
-        <div className="participation-roles">
+        {isBuildActivity && <div className="participation-roles">
           <style>{`
             .activity-detail-page .participation-roles{margin-top:68px;padding-top:34px}.activity-detail-page .roles-intro{margin-bottom:30px}.activity-detail-page .roles-kicker{margin:0 0 12px;color:#F5569B;font:700 11px/1.3 ${SANS};letter-spacing:.18em;text-transform:uppercase}.activity-detail-page .roles-title{margin:0;color:#151515;font-family:${DISPLAY};font-size:clamp(38px,4vw,54px);font-weight:400;letter-spacing:.035em;line-height:1;text-transform:uppercase}.activity-detail-page .roles-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.activity-detail-page .role-card{min-height:150px;padding:19px 18px 18px;border-radius:14px;background:#f6f6f6;transition:background .25s ease,transform .25s ease}.activity-detail-page .role-card:hover{background:#f0f0f0;transform:translateY(-2px)}.activity-detail-page .role-icon{width:33px;height:33px;margin-bottom:17px;color:#F5569B;display:flex;align-items:center;justify-content:flex-start;transition:transform .25s ease}.activity-detail-page .role-card:hover .role-icon{transform:translateY(-2px)}.activity-detail-page .role-card-title{margin:0 0 7px;color:#202020;font:650 14px/1.3 ${SANS}}.activity-detail-page .role-card-copy{margin:0;color:#6c7074;font:400 11px/1.45 ${SANS}}.activity-detail-page .roles-footer{display:flex;align-items:center;justify-content:space-between;gap:30px;margin-top:27px;padding:0 2px}.activity-detail-page .roles-footer p{margin:0;color:#F5569B;font:600 13px/1.5 ${SANS}}.activity-detail-page .roles-link{color:#202020;font:700 12px/1.4 ${SANS};letter-spacing:.08em;text-decoration:none;text-transform:uppercase;white-space:nowrap;transition:color .2s ease}.activity-detail-page .roles-link:hover{color:#F5569B}@media(max-width:980px){.activity-detail-page .roles-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:800px){.activity-detail-page .participation-roles{margin-top:54px;padding-top:24px}.activity-detail-page .roles-intro{margin-bottom:26px}.activity-detail-page .roles-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.activity-detail-page .role-card{min-height:164px;padding:18px 15px 16px}.activity-detail-page .role-icon{margin-bottom:17px}.activity-detail-page .roles-footer{align-items:flex-start;flex-direction:column;gap:14px;margin-top:24px}}
           `}</style>
@@ -893,7 +863,7 @@ export default function ExploreActivityDetail({
               Tell Us What You Can Bring →
             </Link>
           </div>
-        </div>
+        </div>}
       </section>
 
       {galleryIndex !== null && (
@@ -940,7 +910,7 @@ export default function ExploreActivityDetail({
             <ChevronRight size={28} />
           </button>
           <div className="gallery-caption">
-            Build together / working with what is already here
+            {content.activity.type} / {content.activity.location}
           </div>
         </div>
       )}
@@ -977,8 +947,7 @@ export default function ExploreActivityDetail({
           <aside className="participation-card">
             <h3 className="participation-title">Before you join</h3>
             <p className="participation-intro">
-              Practical guidance is confirmed for each visit. These points apply
-              to most days on the project.
+              {detail.practical.introduction}
             </p>
             {participationNotes.map(item => (
               <div className="participation-note" key={item.title}>
@@ -1056,44 +1025,22 @@ export default function ExploreActivityDetail({
           <div className="story-purpose-images">
             <img
               className="story-purpose-main"
-              src="/images/explore/build-together/place/sichuan-rural-house.jpg"
-              alt="A traditional rural house in Sichuan"
+              src={detail.purpose.image}
+              alt={detail.purpose.title}
             />
             <img
               className="story-purpose-inset"
-              src="/images/explore/build-together/place/bamboo-courtyard-house.jpg"
-              alt="A timber courtyard house surrounded by bamboo"
+              src={detail.people.images[0] || detail.purpose.image}
+              alt={detail.people.title}
             />
           </div>
           <div className="story-copy">
-            <p className="story-kicker">Why We Do This</p>
-            <h2 className="story-heading">A House Holds More Than Its Walls</h2>
-            <p>
-              A village house is never only a structure. It carries the marks of
-              the people who built it, the materials available around it and the
-              ordinary lives that have passed through its rooms.
-            </p>
-            <p>
-              Rather than replacing what has aged, this project begins by looking
-              carefully at what remains. Timber, tile, earth and stone each tell us
-              something about how the house was made—and how it may continue to be
-              useful.
-            </p>
-            <p>
-              Participants join a real project already in progress. The work changes
-              with the condition of the house, the weather and the knowledge of the
-              people involved. Some days may involve clearing and sorting materials;
-              others may focus on timber, walls, paths or the small tasks that allow
-              a place to become useful again.
-            </p>
-            <p>
-              This is not about arriving with a ready-made solution. It is about
-              learning how to notice, working alongside others and contributing with
-              care.
-            </p>
+            <p className="story-kicker">{detail.purpose.eyebrow}</p>
+            <h2 className="story-heading">{detail.purpose.title}</h2>
+            {detail.purpose.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+            {detail.people.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
             <blockquote className="story-pullquote">
-              We are not rebuilding an image of village life. We are helping an
-              existing place continue its story.
+              {detail.principles.items[0] || detail.closing.title}
             </blockquote>
           </div>
         </div>
@@ -1105,35 +1052,27 @@ export default function ExploreActivityDetail({
             <div className="place-image-wrap">
               <img
                 className="place-image"
-                src="/images/explore/build-together/place/yaan-mountain-panorama.jpg"
-                alt="Snow mountains and a sea of clouds around Ya'an"
+                src={detail.flexibility.image}
+                alt={detail.flexibility.title}
               />
             </div>
           </figure>
 
           <div className="place-editorial">
             <div className="place-header">
-              <p className="story-kicker">The Place Around the House</p>
-              <h2 className="story-heading">A Landscape Shaped by Rain, Forest and Everyday Work</h2>
+              <p className="story-kicker">{detail.flexibility.eyebrow}</p>
+              <h2 className="story-heading">{detail.flexibility.title}</h2>
             </div>
             <div>
               <p className="place-deck">
-                The activity belongs to a wider landscape. Understanding the house
-                also means noticing the climate, cultivated land and daily rhythms
-                that have shaped it.
+                {detail.flexibility.paragraphs[0]}
               </p>
               <div className="place-columns">
                 <p>
-                  Around Ya’an, forested hills, deep valleys and frequent rain give
-                  the countryside its particular texture. From the lower tea-growing
-                  slopes to the snow mountains and cloud seas beyond them, the land
-                  changes quickly with altitude and weather.
+                  {detail.flexibility.paragraphs[1] || detail.currentWork.paragraphs[0]}
                 </p>
                 <p>
-                  Village life is not arranged as a performance for visitors. We ask
-                  participants to enter its rhythm slowly: to observe before
-                  photographing, to listen before acting and to remember that the
-                  village is first of all someone’s home.
+                  {detail.closing.paragraphs[0]}
                 </p>
               </div>
             </div>
@@ -1141,7 +1080,7 @@ export default function ExploreActivityDetail({
         </div>
       </section>
 
-      <ActivityRecommendations />
+      <ActivityRecommendations currentTitle={content.hero.title} />
 
       <section
         style={{
@@ -1242,11 +1181,12 @@ function Highlight({
 
 const ACTIVITY_RECOMMENDATIONS = [
   {
-    title: "Pick Tea With a Mountain Family",
-    category: "Village craft",
-    duration: "Half day",
-    detail: "By arrangement",
-    image: "/images/our-way-of-travel/walking-together.jpg",
+    title: "Pick Tea With Local Growers",
+    category: "People & culture",
+    duration: "Half or full day",
+    detail: "Seasonal · By arrangement",
+    image: "/images/explore/tea-with-growers/YT-21-learning-to-pick.png",
+    href: "/explore/activity/pick-tea-with-local-growers",
   },
   {
     title: "A Day Along the Village Paths",
@@ -1254,6 +1194,7 @@ const ACTIVITY_RECOMMENDATIONS = [
     duration: "3–5 hours",
     detail: "Small groups",
     image: "/images/our-way-of-travel/entering-village.jpg",
+    href: "/explore",
   },
   {
     title: "Walk Into the Forest Together",
@@ -1261,6 +1202,7 @@ const ACTIVITY_RECOMMENDATIONS = [
     duration: "Half day",
     detail: "Gentle pace",
     image: "/images/stories/into-the-forest-together/group-in-forest.jpg",
+    href: "/explore",
   },
   {
     title: "Follow Water Through the Valley",
@@ -1268,6 +1210,7 @@ const ACTIVITY_RECOMMENDATIONS = [
     duration: "4 hours",
     detail: "Weather dependent",
     image: "/images/our-way-of-travel/waterfall.jpg",
+    href: "/explore",
   },
   {
     title: "Prepare and Share a Village Meal",
@@ -1275,6 +1218,7 @@ const ACTIVITY_RECOMMENDATIONS = [
     duration: "Half day",
     detail: "By arrangement",
     image: "/images/what-we-believe/preparing-together.jpg",
+    href: "/explore",
   },
   {
     title: "Meet the Hands Behind Local Clay",
@@ -1282,10 +1226,11 @@ const ACTIVITY_RECOMMENDATIONS = [
     duration: "2–3 hours",
     detail: "Small groups",
     image: "/images/stories/the-rhythm-of-clay/craftsman-with-lids.jpg",
+    href: "/explore",
   },
 ];
 
-function ActivityRecommendations() {
+function ActivityRecommendations({ currentTitle }: { currentTitle: string }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
   const startXRef = useRef(0);
@@ -1433,8 +1378,8 @@ function ActivityRecommendations() {
         }}
       >
         <div className="recommendation-row">
-          {ACTIVITY_RECOMMENDATIONS.map(item => (
-            <Link href="/explore" className="recommendation-card" key={item.title}>
+          {ACTIVITY_RECOMMENDATIONS.filter(item => item.title !== currentTitle).map(item => (
+            <Link href={item.href} className="recommendation-card" key={item.title}>
               <div className="recommendation-image">
                 <img src={item.image} alt={item.title} draggable={false} />
               </div>
