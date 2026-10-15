@@ -487,6 +487,100 @@ const workingWithWhatIsAlreadyHere: OurStoryEditorialContent = {
   },
 };
 
+const forestStoryAsset = '/images/stories/into-the-forest-together';
+
+const intoTheForestTogether: OurStoryEditorialContent = {
+  hero: {
+    image: `${forestStoryAsset}/together.jpg`,
+    alt: 'A group standing together with tools beneath a dense forest canopy',
+    metaLeft: 'TREE THOUSANDS / FIELD JOURNAL',
+    metaRight: '',
+    title: 'Into the Forest, Together.',
+    subtitle: 'A day of forest care turns observation into participation—and participation into a different way of seeing.',
+  },
+  beginning: {
+    eyebrow: '01 / ENTERING THE FOREST',
+    title: 'The day begins by slowing down.',
+    paragraphs: [
+      'The forest received the group with wet ground, close-growing bamboo and a canopy that softened the daylight. The uneven path asked everyone to pay attention to each step.',
+      'Before any work began, there was time to gather, listen and understand how to move through the landscape with care. This was not an arrival at an attraction, but an introduction to a living place.',
+      'Entering slowly made room for another kind of attention: to the plants at our feet, the condition of the trees and the knowledge of the people already caring for this forest.',
+    ],
+    images: [
+      { src: `${forestStoryAsset}/arriving.jpg`, alt: 'Participants gathering to listen before entering the forest' },
+      { src: `${forestStoryAsset}/bamboo-path.jpg`, alt: 'A quiet bamboo forest beneath a green canopy' },
+      { src: `${forestStoryAsset}/looking-closely.jpg`, alt: 'Two participants observing a tree at close range' },
+      { src: `${forestStoryAsset}/forest-landscape.jpg`, alt: 'The wider forest landscape surrounding the day of work' },
+    ],
+  },
+  turning: {
+    eyebrow: '02 / LEARNING TO LOOK MORE CLOSELY',
+    title: 'A forest reveals itself\nthrough relationships.',
+    leftParagraphs: [
+      'At first, the landscape seemed to be made almost entirely of green. Looking longer brought out its many layers: bamboo above the path, ground plants below, moss on trunks and small movements among the leaves.',
+      'A forest is not simply a view. It is a living system whose relationships are not always immediately visible.',
+    ],
+    rightParagraphs: [
+      'Care begins with recognising what already belongs here. Before deciding what to clear, carry or change, the group learned to observe and follow the guidance of people who know the place.',
+      'Attention became the first practical skill of the day—and the foundation for every action that followed.',
+    ],
+    images: [
+      { src: `${forestStoryAsset}/bamboo-path.jpg`, alt: 'Bamboo and ground plants along the forest route' },
+      { src: `${forestStoryAsset}/forest-device.jpg`, alt: 'Participants carefully attaching a monitoring device to a tree' },
+      { src: `${forestStoryAsset}/looking-closely.jpg`, alt: 'Participants learning by observing the forest closely' },
+    ],
+    captions: ['The landscape becomes clearer through attention.', 'Observe first. Act with care.'],
+  },
+  action: {
+    eyebrow: '03 / FROM VISITORS TO PARTICIPANTS',
+    title: 'Care becomes real\nthrough participation.',
+    paragraphs: [
+      'Tools and gloves changed the meaning of the visit. The group was no longer moving through the forest only to admire it; they were joining practical work already taking place there.',
+      'No one needed to arrive as an expert. People learned through demonstration and repetition—watching how others worked, asking questions and finding a useful place within the shared task.',
+      'The day did not promise a dramatic transformation. Its value was found in smaller actions carried out carefully and together.',
+    ],
+    images: [
+      { src: `${forestStoryAsset}/hands-at-work.jpg`, alt: 'Young participants working together on the forest floor' },
+      { src: `${forestStoryAsset}/tools-in-forest.jpg`, alt: 'A group standing in the forest with the tools used during the work' },
+      { src: `${forestStoryAsset}/together.jpg`, alt: 'Participants gathered together after shared forest work' },
+    ],
+  },
+  belief: {
+    eyebrow: '04 / PROTECTION THROUGH PRESENCE',
+    title: 'Some work is quiet\nand meant to continue.',
+    paragraphs: [
+      'Forest care is not a single heroic gesture. It is made from practical movements: holding, clearing, carrying, checking and pausing to make sure each action belongs to a longer process.',
+      'A monitoring device fixed carefully to a tree suggested another part of protection: returning, recording change and paying attention beyond the span of one visit.',
+    ],
+    sideParagraphs: [
+      'The most visible part of the day was the group at work. The deeper lesson was that the forest would continue after everyone left. Responsible participation respects that longer timeline.',
+    ],
+    quote: 'To care for a place, we first have to notice what already belongs there.',
+    images: [
+      { src: `${forestStoryAsset}/forest-device.jpg`, alt: 'A monitoring device being placed carefully against a forest tree' },
+      { src: `${forestStoryAsset}/shared-moment.jpg`, alt: 'Two participants sharing a relaxed moment beneath the trees' },
+      { src: `${forestStoryAsset}/hands-at-work.jpg`, alt: 'Shared work continuing among bamboo and forest plants' },
+    ],
+  },
+  closing: {
+    eyebrow: 'WHAT WE CARRY BACK',
+    title: 'Leave With A Different\nWay Of Seeing.',
+    paragraph: 'The forest remained complex, living and larger than any one day. What changed was the relationship of the participants to the place: observation had become involvement, and a distant idea of conservation had become a series of real actions carried out together.',
+    image: { src: `${forestStoryAsset}/forest-landscape.jpg`, alt: 'The forest continuing beyond the day of shared work' },
+  },
+  recommendations: {
+    title: 'What We Are Explore',
+    description: 'Ongoing ways to take part in the patient work of caring for landscapes and communities.',
+    backgroundImage: `${forestStoryAsset}/bamboo-path.jpg`,
+  },
+  cta: {
+    title: 'So, Ready to Care for the Forest?',
+    buttonLabel: 'Explore Activities',
+    buttonHref: '/explore/nature-landscape',
+    image: `${forestStoryAsset}/together.jpg`,
+  },
+};
+
 const aPatternMadeTogether: OurStoryEditorialContent = {
   hero: {
     image: `${patternAsset}/hero.jpg`,
@@ -586,5 +680,6 @@ export const ourStoryEditorialPages: Record<string, OurStoryEditorialContent> = 
   'before-a-journey-becomes-a-route': beforeAJourneyBecomesARoute,
   'the-rhythm-of-clay': theRhythmOfClay,
   'working-with-what-is-already-here': workingWithWhatIsAlreadyHere,
+  'into-the-forest-together': intoTheForestTogether,
   'a-pattern-made-together': aPatternMadeTogether,
 };
