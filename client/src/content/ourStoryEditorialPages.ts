@@ -203,8 +203,103 @@ const ourWayOfTravel: OurStoryEditorialContent = {
   },
 };
 
+const patternAsset = '/images/stories/a-pattern-made-together';
+
+const aPatternMadeTogether: OurStoryEditorialContent = {
+  hero: {
+    image: `${patternAsset}/hero.jpg`,
+    alt: 'People gathered around a long table making botanical prints together',
+    metaLeft: 'TREE THOUSANDS / LOCAL LIFE',
+    metaRight: '',
+    title: 'A Pattern Made Together.',
+    subtitle: 'Leaves, flowers, cloth and patient hands turned an ordinary village room into a place for making, learning and sharing.',
+  },
+  beginning: {
+    eyebrow: '01 / A TABLE BECOMES A MEETING PLACE',
+    title: 'It began with simple materials.',
+    paragraphs: [
+      'The table was already covered when everyone sat down. Plain cloth bags lay beside green leaves and red flowers, while small dark mallets passed from one pair of hands to another.',
+      'At first, each person worked on a separate bag. Someone adjusted the position of a leaf. Someone else held the cloth steady. Before long, individual work became shared attention.',
+      'The room needed no formal stage. Its old timber, open windows and long table were enough. What gave the afternoon its shape was the life unfolding inside it.',
+    ],
+    images: [
+      { src: `${patternAsset}/hands-at-work.jpg`, alt: 'Hands arranging leaves and flowers on cloth' },
+      { src: `${patternAsset}/working-together.jpg`, alt: 'Participants making botanical prints together' },
+      { src: `${patternAsset}/table-work.jpg`, alt: 'The shared work table during the activity' },
+      { src: `${patternAsset}/leaf-detail.jpg`, alt: 'A close detail of a leaf prepared for printing' },
+    ],
+  },
+  turning: {
+    eyebrow: '02 / LEARNING THROUGH THE HANDS',
+    title: 'Every mark arrived\ndifferently.',
+    leftParagraphs: [
+      'The process was easy to enter. A leaf or flower was placed on the cloth, covered, and pressed with a mallet. Repeated strikes slowly transferred colour and shape onto the bag.',
+      'No two impressions appeared in exactly the same way. A leaf might leave a clear network of veins or only a soft field of green.',
+    ],
+    rightParagraphs: [
+      'The differences became part of the pleasure. Each unexpected mark prompted another look across the table, another adjustment and another attempt.',
+      'Knowledge moved through demonstration rather than instruction alone: watching a hand, hearing a suggestion, then finding a rhythm of one’s own.',
+    ],
+    images: [
+      { src: `${patternAsset}/leaf-detail.jpg`, alt: 'Botanical material ready to leave a pattern' },
+      { src: `${patternAsset}/hands-at-work.jpg`, alt: 'Hands transferring plant colour onto cloth' },
+      { src: `${patternAsset}/table-work.jpg`, alt: 'Tools and materials spread across the table' },
+    ],
+    captions: ['A pattern begins with attention.', 'Learning moves from hand to hand.'],
+  },
+  action: {
+    eyebrow: '03 / MAKING ALONGSIDE ONE ANOTHER',
+    title: 'Separate pieces.\nOne shared afternoon.',
+    paragraphs: [
+      'Hands moved constantly between individual work and shared attention. One person demonstrated a motion; another noticed where a flower had shifted; someone nearby offered to hold the fabric still.',
+      'People could join by watching, by trying a single mark or by completing an entire design. Participation did not depend on arriving with specialist knowledge.',
+      'The activity created an easy reason to sit together. Conversation, concentration and laughter accumulated around the same working surface.',
+    ],
+    images: [
+      { src: `${patternAsset}/leaf-detail.jpg`, alt: 'Leaves and flowers used as printing material' },
+      { src: `${patternAsset}/working-together.jpg`, alt: 'A group sharing the work around the table' },
+      { src: `${patternAsset}/table-work.jpg`, alt: 'A long table filled with people, cloth and botanical materials' },
+    ],
+  },
+  belief: {
+    eyebrow: '04 / WHAT THE ROOM HELD',
+    title: 'The pattern was\nmore than an object.',
+    paragraphs: [
+      'By the end of the session, the table held a collection of different patterns. The same leaves, flowers and tools had produced results shaped by the choices and movements of each maker.',
+      'The finished bags could be carried away, but the deeper record remained in the room: neighbours seated together, knowledge moving across the table and an existing village space holding a new shared activity.',
+    ],
+    sideParagraphs: [
+      'For TreeThousands, participation can begin at this human scale. It does not always need a large plan. Sometimes a table, a few materials and enough unhurried time are all that people need to begin making something together.',
+    ],
+    quote: 'The finished pattern belonged to one bag. The afternoon that produced it belonged to the whole table.',
+    images: [
+      { src: `${patternAsset}/working-together.jpg`, alt: 'Participants gathered in an old village room' },
+      { src: `${patternAsset}/hands-at-work.jpg`, alt: 'Close view of shared work at the table' },
+      { src: `${patternAsset}/leaf-detail.jpg`, alt: 'The natural detail behind each printed pattern' },
+    ],
+  },
+  closing: {
+    eyebrow: 'THE MAKING CONTINUES',
+    title: 'Made By Hand.\nRemembered Together.',
+    paragraph: 'What stayed was not only what each person made, but the exchange created while making it: attention offered freely, knowledge shared without ceremony, and an ordinary room made lively through use.',
+    image: { src: `${patternAsset}/closing.jpg`, alt: 'The village room after an afternoon of making together' },
+  },
+  recommendations: {
+    title: 'What We Are Explore',
+    description: 'Ongoing ways to learn, make and take part alongside local communities.',
+    backgroundImage: `${patternAsset}/table-work.jpg`,
+  },
+  cta: {
+    title: 'So, Ready to Make Something Together?',
+    buttonLabel: 'Explore Activities',
+    buttonHref: '/explore',
+    image: `${patternAsset}/working-together.jpg`,
+  },
+};
+
 export const ourStoryEditorialPages: Record<string, OurStoryEditorialContent> = {
   'why-we-started': whyWeStarted,
   'what-we-believe': whatWeBelieve,
   'our-way-of-travel': ourWayOfTravel,
+  'a-pattern-made-together': aPatternMadeTogether,
 };

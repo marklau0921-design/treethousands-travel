@@ -6,6 +6,8 @@ import EditorialBlocks from '@/components/EditorialBlocks';
 import { trpc } from '@/lib/trpc';
 import { useMediaObjectPosition } from '@/lib/media-position';
 import { inferStoryCategory, mergePublishedStories, normalizeStoryDetail, plainExcerpt, type EditorialStory } from '@/lib/story-content';
+import OurStoryEditorialTemplate from '@/components/OurStoryEditorialTemplate';
+import { ourStoryEditorialPages } from '@/content/ourStoryEditorialPages';
 
 const DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
@@ -35,6 +37,7 @@ export default function StoryDetail() {
   const next = storyIndex >= 0 ? stories[(storyIndex + 1) % stories.length] : undefined;
   const navigationTexture = homepageAssets?.cta?.url || '';
   const navigationTextureOpacity = Math.max(0, Math.min(1, Number(homepageAssets?.cta?.opacity ?? 28) / 100));
+  const editorialContent = params?.slug ? ourStoryEditorialPages[params.slug] : undefined;
 
   useEffect(() => {
     if (!story) return;
@@ -50,6 +53,8 @@ export default function StoryDetail() {
     const script = document.createElement('script'); script.type = 'application/ld+json'; script.dataset.storySchema = 'true'; script.text = JSON.stringify({ '@context': 'https://schema.org', '@type': 'BlogPosting', headline: story.title, description, datePublished: story.date, image: story.coverImage, mainEntityOfPage: canonical.href, publisher: { '@type': 'Organization', name: 'TreeThousands' } }); document.head.appendChild(script);
     return () => { script.remove(); };
   }, [story]);
+
+  if (editorialContent) return <OurStoryEditorialTemplate content={editorialContent} />;
 
   if (isLoading && !story) return <div style={{ minHeight: '100vh', background: '#fff' }}><Navigation /></div>;
   if (!story) return <div style={{ minHeight: '100vh', background: '#f5f1e8', paddingTop: 180, textAlign: 'center', fontFamily: SANS }}><Navigation /><h1 style={{ fontFamily: DISPLAY, fontSize: 72, textTransform: 'uppercase' }}>Story not found</h1><Link href="/stories">Return to Stories</Link></div>;
