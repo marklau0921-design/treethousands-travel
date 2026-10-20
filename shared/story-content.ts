@@ -871,7 +871,7 @@ This changes the work. We listen before proposing, return before deciding and ac
 }];
 
 export function mergePublishedStories(databaseStories: EditorialStory[]) {
-  const databaseSlugs = new Set(databaseStories.map((story) => story.slug));
+  const publishedSlugs = new Set(publishedEditorialStories.map((story) => story.slug));
   const fallbackCoverImages = [
     '/images/why-we-started-editorial/02-life.jpeg',
     '/images/why-we-started-editorial/01-opening.jpeg',
@@ -887,8 +887,11 @@ export function mergePublishedStories(databaseStories: EditorialStory[]) {
     '/images/why-we-started-editorial/06-closing.jpeg',
   ];
   const fallback = fallbackStories.map((story, index) => ({ ...story, coverImage: story.coverImage || fallbackCoverImages[index] }));
-  const editorialStories = publishedEditorialStories.filter((story) => !databaseSlugs.has(story.slug));
-  const realStories = [...editorialStories, ...databaseStories];
+  // A completed editorial article is the canonical version of its slug. Older
+  // CMS placeholders may still exist in production, but must not replace the
+  // finished page with a normalized one-image fallback.
+  const databaseOnlyStories = databaseStories.filter((story) => !publishedSlugs.has(story.slug));
+  const realStories = [...publishedEditorialStories, ...databaseOnlyStories];
   const realSlugs = new Set(realStories.map((story) => story.slug));
   const minimumPerCategory = 3;
   const fillersByCategory = new Map<StoryCategory, EditorialStory[]>();
