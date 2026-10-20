@@ -105,6 +105,19 @@ const beforeRouteImages = {
   enteringVillage: '/images/stories/before-a-journey-becomes-a-route/entering-village.jpg',
 };
 
+const relationshipsBeforeRoutesImages = {
+  hero: '/images/stories/relationships-before-routes/conversation-at-the-table.jpg',
+  fieldConversation: '/images/stories/relationships-before-routes/laughter-in-the-field.jpg',
+  courtyard: '/images/stories/relationships-before-routes/everyday-company.jpg',
+  harvest: '/images/stories/relationships-before-routes/reading-the-harvest.jpg',
+  villageTable: '/images/stories/relationships-before-routes/listening-at-the-table.jpg',
+  sharedMeal: '/images/stories/relationships-before-routes/shared-meal.jpg',
+  teaField: '/images/stories/relationships-before-routes/listening-in-the-tea-field.jpg',
+  underTheTree: '/images/stories/relationships-before-routes/tea-between-generations.jpg',
+  villageGarden: '/images/stories/relationships-before-routes/village-garden-conversation.jpg',
+  walkingTogether: '/images/stories/relationships-before-routes/walking-together.jpg',
+};
+
 export const publishedEditorialStories: EditorialStory[] = [{
   id: 'where-the-tea-hills-begin',
   slug: 'where-the-tea-hills-begin',
@@ -749,6 +762,109 @@ You remain a visitor, but not a distant observer. You begin to notice how a plac
           'This is the kind of travel TreeThousands wants to make possible: coming closer without claiming ownership, taking part where participation is welcomed, and allowing what we learn to change the way we understand rural China.',
           'Come closer. Take part. Carry the complexity of the place with you.',
         ], quote: '', images: ['/images/what-we-believe/everyday-company.jpg'], captions: ['Everyday life continuing in a familiar room'], backgroundColor: '#cbd1c1', textColor: '#1b2822', accentColor: '#74482f', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+    ],
+  },
+}, {
+  id: 'relationships-before-routes',
+  slug: 'relationships-before-routes',
+  title: 'Relationships Before Routes',
+  category: 'Brand Stories',
+  date: '2026-10-20',
+  location: 'Rural China',
+  excerpt: 'Before a place becomes a route, it begins as a relationship—built slowly through listening, returning and learning what should, and should not, be shared.',
+  coverImage: relationshipsBeforeRoutesImages.hero,
+  content: `A journey may eventually appear as a line on a map, but that is not where it begins. It begins with people: with introductions, repeated conversations and enough time for trust to grow.
+
+For TreeThousands, relationships are not a way to gain access to a place. They are the foundation that determines whether a journey should exist at all, what can be shared and how visitors can take part without asking local life to perform.
+
+This changes the work. We listen before proposing, return before deciding and accept that some stories, homes and moments should remain private. The route comes later. The relationship must come first.`,
+  pageContent: {
+    meta: {
+      category: 'Brand Stories', location: 'Rural China', publishedDate: '2026-10-20',
+      excerpt: 'Before a place becomes a route, it begins as a relationship—built slowly through listening, returning and learning what should, and should not, be shared.',
+    },
+    opening: {
+      contextLabel: 'How We Work', placeLabel: 'Perspective', chapterLabel: 'Brand Story', recordedLabel: 'Published',
+      paragraphs: [
+        'A journey may eventually appear as a line on a map, but that is not where it begins. It begins with people: with introductions, repeated conversations and enough time for trust to grow.',
+        'For TreeThousands, relationships are not a way to gain access to a place. They are the foundation that determines whether a journey should exist at all, what can be shared and how visitors can take part without asking local life to perform.',
+        'The route comes later. The relationship must come first.',
+      ],
+    },
+    inside: {
+      eyebrow: 'Before the Itinerary', title: 'We begin with conversation, not a list of places',
+      context: 'A map can show roads and distances. It cannot tell us who holds the knowledge of a place, how a day is organised, what a community values or where a visitor should be careful.',
+      body: 'Those things become visible slowly—around a table, during a walk, through repeated visits and through the ordinary work of remembering what people have told us. The itinerary is shaped only after these relationships begin to give the journey its boundaries and meaning.',
+      images: [relationshipsBeforeRoutesImages.hero, relationshipsBeforeRoutesImages.villageTable], backgroundColor: '#ded8cc',
+    },
+    quote: {
+      eyebrow: 'A Necessary Restraint', quote: 'Responsible storytelling also means knowing when not to tell a story.',
+      body: 'Trust does not turn every conversation into content. Some knowledge belongs to a family, some moments should remain private and some places are not improved by becoming a stop. Respect is measured not only by what we share, but by what we choose to leave undisturbed.',
+      images: [relationshipsBeforeRoutesImages.courtyard, relationshipsBeforeRoutesImages.underTheTree], backgroundColor: '#eee7dc',
+    },
+    closing: {
+      eyebrow: 'The Principle We Keep', title: 'Routes may change. Relationships are what allow them to mean something.',
+      paragraphs: [
+        'A road may close, the weather may alter a plan and the work of a season may change what is possible. A journey built only around fixed attractions becomes fragile when those conditions shift.',
+        'Relationships make another kind of journey possible—one that can respond to the place as it is now. They allow plans to be adjusted with care, participation to happen by invitation and local people to remain authors of how their home is represented.',
+        'We return because one visit is never enough. Each return adds context, corrects assumptions and reminds us that the most meaningful journeys are not extracted from a place. They are shaped with the people who live there.',
+      ],
+      image: relationshipsBeforeRoutesImages.walkingTogether, backgroundColor: '#cbd1c3',
+    },
+    related: { eyebrow: 'Continue Reading', title: 'More About How We Work', backgroundColor: '#e8e0d4' },
+    navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#17352d', textColor: '#ffffff' },
+    page: { backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#8d5b3f' },
+    contentBlocks: [
+      {
+        id: 'relationships-before-itinerary', type: 'our-story-sheet', eyebrow: '01 — Before the Itinerary', title: 'Every route begins with people.',
+        body: [
+          'Long before we decide where a visitor might walk or what they might do, we spend time learning who is already connected to the place. We sit down, ask questions and listen for the details that do not appear on a map.',
+          'The first conversations are not a transaction and they are not a request for people to perform their lives for us. They are the beginning of understanding: who wishes to be involved, what matters locally and what a thoughtful visit might contribute rather than consume.',
+        ], quote: '', images: [relationshipsBeforeRoutesImages.hero], captions: ['Conversation before planning'], backgroundColor: '#ded8cc', textColor: '#1b2822', accentColor: '#8d5b3f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'relationships-trust-time', type: 'story-spread', eyebrow: '02 — Trust Takes Time', title: 'One meeting can introduce a place. It cannot explain it.',
+        body: [
+          'Understanding grows through return visits and unhurried time together. A conversation continues where the last one ended. A detail that seemed small begins to reveal how work, family and landscape are connected.',
+          'Trust is not a step to complete before the “real” work begins. It is the work. It gives people room to change their minds, set limits and decide how they want to participate.',
+        ], quote: '', images: [relationshipsBeforeRoutesImages.villageTable, relationshipsBeforeRoutesImages.villageGarden], captions: ['Listening around a village table', 'Conversation in the garden'], backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#8d5b3f', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'relationships-not-every-story', type: 'story-photo-quote', eyebrow: '03 — Not Every Story Needs to Be Shared', title: 'Care includes the choice to leave something private.',
+        body: [
+          'A welcoming conversation does not automatically become material for a website, and an open doorway is not permission to enter with a camera. The people in a place must remain in control of how their lives are represented.',
+          'Sometimes the most respectful outcome of listening is not a photograph or a published story, but a clearer boundary. Knowing what not to share protects the dignity of the relationship and keeps trust from becoming a resource we extract.',
+        ], quote: 'Responsible storytelling also means knowing when not to tell a story.', images: [relationshipsBeforeRoutesImages.courtyard, relationshipsBeforeRoutesImages.underTheTree], captions: ['Everyday company outside the home', 'Tea shared between generations'], backgroundColor: '#20392f', textColor: '#f4f0e7', accentColor: '#d3aa86', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'relationships-shape-experience', type: 'magazine-columns', eyebrow: '04 — Let People Shape the Experience', title: 'Local people are not supporting characters in someone else’s journey.',
+        body: [
+          'A responsible experience is not designed elsewhere and placed over a village. It grows from what people are already doing, what they want to share and what makes sense within the rhythm of their work and home life.',
+          'This means the plan may remain flexible. A harvest, a meal or a walk through the fields matters because of the knowledge and relationships around it—not because we have turned it into a performance on demand.',
+        ], quote: '', images: [relationshipsBeforeRoutesImages.harvest], captions: ['Reading the harvest together'], backgroundColor: '#d7d8cc', textColor: '#1b2822', accentColor: '#795c3e', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'relationships-change-route', type: 'explore-details', eyebrow: '05 — What Relationships Change', title: 'The people we meet reshape how the journey is made.',
+        body: [
+          'Relationships reveal the difference between a photogenic scene and a meaningful encounter. They change timing, language, group size and the expectations we set before anyone arrives.',
+          'They also change us. Listening closely exposes assumptions in our own ideas and reminds us that good travel design is not about controlling every moment. It is about creating the conditions for attention, reciprocity and appropriate participation.',
+        ], quote: '', images: [relationshipsBeforeRoutesImages.fieldConversation, relationshipsBeforeRoutesImages.harvest, relationshipsBeforeRoutesImages.teaField, relationshipsBeforeRoutesImages.sharedMeal, relationshipsBeforeRoutesImages.villageGarden, relationshipsBeforeRoutesImages.underTheTree], captions: ['Laughter in the field', 'Looking closely at the harvest', 'Listening among the tea rows', 'A meal shared in the village', 'Conversation in a working garden', 'Tea between generations'], backgroundColor: '#e8e0d4', textColor: '#1b2822', accentColor: '#8d5b3f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'relationships-returning', type: 'explore-visual', eyebrow: '06 — Returning Matters', title: 'A relationship is sustained by showing up again.',
+        body: [
+          'A single visit can be warm and memorable, but continuity is built by returning. We come back to understand what has changed, to follow through on what was discussed and to make sure that plans still make sense for the people involved.',
+          'Returning also gives local partners the chance to correct us. It turns feedback into an ongoing part of the work and keeps a route responsive to seasons, households and the realities of village life.',
+        ], quote: '', images: [relationshipsBeforeRoutesImages.sharedMeal, relationshipsBeforeRoutesImages.villageTable, relationshipsBeforeRoutesImages.fieldConversation], captions: ['Sharing the rhythm of the day', 'A conversation continued', 'Meeting again in the field'], backgroundColor: '#f3efe6', textColor: '#1b2822', accentColor: '#795c3e', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'relationships-principle', type: 'story-closing', eyebrow: '07 — The Principle We Keep', title: 'Routes may change. Relationships are what allow them to mean something.',
+        body: [
+          'Weather changes, roads close and the work of a season alters what is possible. A journey grounded in relationships can respond without asking a community to keep performing a fixed version of itself.',
+          'This is why we begin with people and why we keep returning. The route is not the relationship. It is one careful expression of what the relationship has made possible at that moment.',
+          'We do not want to simply bring travellers into rural places. We want to create journeys in which attention is mutual, participation is welcomed and the people who live there remain authors of how their home is understood.',
+        ], quote: '', images: [relationshipsBeforeRoutesImages.walkingTogether], captions: ['Continuing the path together'], backgroundColor: '#cbd1c3', textColor: '#1b2822', accentColor: '#795c3e', imageSide: 'left', imageFit: 'cover', visible: true,
       },
     ],
   },
