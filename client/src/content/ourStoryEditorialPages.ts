@@ -862,6 +862,100 @@ const whereTheTeaHillsBegin: OurStoryEditorialContent = {
   },
 };
 
+const relationshipsAsset = '/images/stories/relationships-before-routes';
+
+const relationshipsBeforeRoutes: OurStoryEditorialContent = {
+  hero: {
+    image: `${relationshipsAsset}/conversation-at-the-table.jpg`,
+    alt: 'People sharing an unhurried conversation around a table in the countryside',
+    metaLeft: 'TREE THOUSANDS / BRAND STORIES',
+    metaRight: '',
+    title: 'Relationships Before Routes.',
+    subtitle: 'Before a place becomes a route, it begins as a relationship—built through listening, returning and learning what should, and should not, be shared.',
+  },
+  beginning: {
+    eyebrow: '01 / BEFORE THE ITINERARY',
+    title: 'Every route begins with people.',
+    paragraphs: [
+      'Long before we decide where a visitor might walk or what they might do, we spend time learning who is already connected to the place. We sit down, ask questions and listen for the details that do not appear on a map.',
+      'The first conversations are not a transaction and they are not a request for people to perform their lives for us. They are the beginning of understanding: who wishes to be involved, what matters locally and what a thoughtful visit might contribute rather than consume.',
+      'The itinerary comes later. The relationship must come first.',
+    ],
+    images: [
+      { src: `${relationshipsAsset}/listening-at-the-table.jpg`, alt: 'A conversation continuing around a village table' },
+      { src: `${relationshipsAsset}/village-garden-conversation.jpg`, alt: 'People listening to one another in a working garden' },
+      { src: `${relationshipsAsset}/tea-between-generations.jpg`, alt: 'Tea shared between generations outside a home' },
+      { src: `${relationshipsAsset}/reading-the-harvest.jpg`, alt: 'Two people looking closely at a harvest in the field' },
+    ],
+  },
+  turning: {
+    eyebrow: '02 / TRUST TAKES TIME',
+    title: 'One meeting cannot\nexplain a place.',
+    leftParagraphs: [
+      'Understanding grows through return visits and unhurried time together. A conversation continues where the last one ended. A detail that seemed small begins to reveal how work, family and landscape are connected.',
+      'Trust is not a step to complete before the real work begins. It is the work.',
+    ],
+    rightParagraphs: [
+      'Time gives people room to change their minds, set limits and decide how they want to participate. It also gives us the chance to correct our assumptions before they become part of a journey.',
+      'What emerges is not access to a place, but a clearer sense of responsibility toward the people who live there.',
+    ],
+    images: [
+      { src: `${relationshipsAsset}/laughter-in-the-field.jpg`, alt: 'A candid exchange between villagers and visitors in a field' },
+      { src: `${relationshipsAsset}/everyday-company.jpg`, alt: 'Women spending time together outside a rural home' },
+      { src: `${relationshipsAsset}/listening-in-the-tea-field.jpg`, alt: 'A conversation among people working in the tea fields' },
+    ],
+    captions: ['Trust grows through time spent together.', 'Listening changes how the place is understood.'],
+  },
+  action: {
+    eyebrow: '03 / LET PEOPLE SHAPE THE EXPERIENCE',
+    title: 'Local life is not\na supporting role.',
+    paragraphs: [
+      'A responsible experience is not designed elsewhere and placed over a village. It grows from what people are already doing, what they want to share and what makes sense within the rhythm of their work and home life.',
+      'A harvest, a meal or a walk through the fields matters because of the knowledge and relationships around it—not because it has been turned into a performance on demand.',
+      'The plan must remain flexible enough for local people to remain authors of how their home is represented.',
+    ],
+    images: [
+      { src: `${relationshipsAsset}/reading-the-harvest.jpg`, alt: 'Reading the harvest together in a rural field' },
+      { src: `${relationshipsAsset}/shared-meal.jpg`, alt: 'A meal shared outside village homes' },
+      { src: `${relationshipsAsset}/village-garden-conversation.jpg`, alt: 'A working garden where conversation shapes the visit' },
+    ],
+  },
+  belief: {
+    eyebrow: '04 / WHAT RELATIONSHIPS CHANGE',
+    title: 'Care includes knowing\nwhat not to share.',
+    paragraphs: [
+      'A welcoming conversation does not automatically become material for a website, and an open doorway is not permission to enter with a camera. The people in a place must remain in control of how their lives are represented.',
+      'Some knowledge belongs to a family, some moments should remain private and some places are not improved by becoming a stop. Respect is measured not only by what we share, but by what we choose to leave undisturbed.',
+    ],
+    sideParagraphs: [
+      'Relationships change timing, language, group size and the expectations we set before anyone arrives. They also change us—exposing assumptions and reminding us that good travel design begins with attention, reciprocity and restraint.',
+    ],
+    quote: 'Responsible storytelling also means knowing when not to tell a story.',
+    images: [
+      { src: `${relationshipsAsset}/tea-between-generations.jpg`, alt: 'Everyday conversation shared between generations' },
+      { src: `${relationshipsAsset}/conversation-at-the-table.jpg`, alt: 'People learning about one another around a table' },
+      { src: `${relationshipsAsset}/listening-in-the-tea-field.jpg`, alt: 'Listening carefully among the tea rows' },
+    ],
+  },
+  closing: {
+    eyebrow: 'THE PRINCIPLE WE KEEP',
+    title: 'Return. Listen.\nBegin Again.',
+    paragraph: 'Routes may change with weather, seasons and the realities of village life. Relationships are what allow a journey to remain responsive and meaningful. We return because one visit is never enough—and because the people who live here should continue to shape what happens next.',
+    image: { src: `${relationshipsAsset}/walking-together.jpg`, alt: 'A group continuing together along a mountain village path' },
+  },
+  recommendations: {
+    title: 'What We Are Explore',
+    description: 'Ongoing ways to meet, listen and take part with care.',
+    backgroundImage: `${relationshipsAsset}/everyday-company.jpg`,
+  },
+  cta: {
+    title: 'So, Ready to Begin With People?',
+    buttonLabel: 'Explore Activities',
+    buttonHref: '/explore',
+    image: `${relationshipsAsset}/shared-meal.jpg`,
+  },
+};
+
 export const ourStoryEditorialPages: Record<string, OurStoryEditorialContent> = {
   'why-we-started': whyWeStarted,
   'what-we-believe': whatWeBelieve,
@@ -873,4 +967,5 @@ export const ourStoryEditorialPages: Record<string, OurStoryEditorialContent> = 
   'beyond-visiting': beyondVisiting,
   'a-pattern-made-together': aPatternMadeTogether,
   'where-the-tea-hills-begin': whereTheTeaHillsBegin,
+  'relationships-before-routes': relationshipsBeforeRoutes,
 };
