@@ -84,9 +84,14 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
     introduction: 'Tea begins long before it reaches a table. This seasonal activity follows the working rhythm of a tea-growing day: reading the slope, learning which leaves are ready, picking alongside local growers and seeing how fresh leaves begin their transformation.',
     statement: 'The landscape becomes more meaningful when we understand the hands and knowledge that continue to shape it.', details: ['Tea Hills', 'Seasonal Picking', 'Local Knowledge', 'Fresh Leaves', 'Traditional Making', 'Shared Tea'],
   },
+  'walk-beneath-four-sisters': {
+    title: 'Walk Beneath the Four Sisters', subtitle: 'A slow highland walk through Changping Valley, where forest, meadow and mountain weather set the pace.',
+    introduction: 'This is a day hike shaped around attention rather than distance. We follow an official open route through Changping Valley, allowing time for the body to adjust to altitude and for the landscape to reveal itself gradually.',
+    statement: 'The mountain is not a backdrop to conquer, but a place to enter with care.', details: ['Mountain Forest', 'Open Meadow', 'Changing Weather', 'Trail Lunch', 'Local Guidance', 'Slow Return'],
+  },
 };
 
-export const defaultExploreSlugs = ['village-life', 'nature-landscape', 'people-culture', 'build-with-what-is-already-here', 'pick-tea-with-local-growers'];
+export const defaultExploreSlugs = ['village-life', 'nature-landscape', 'people-culture', 'build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters'];
 
 const emptyActivity: ExploreActivityInfo = {
   enabled: false, type: '', status: 'planning', statusLabel: 'By Arrangement', dateLabel: 'Arranged around the project and participants',
@@ -135,9 +140,120 @@ const teaActivityGallery = [
   'YT-25-wide-tea-landscape.png', 'YT-26-traditional-tea-fire.png', 'YT-27-spreading-fresh-leaves.png', 'YT-28-reading-processed-leaves.png', 'YT-29-tea-maker-portrait.png',
 ].map(name => `${teaActivityAsset}/${name}`);
 
+const fourSistersActivityAsset = '/images/explore/walk-beneath-four-sisters';
+const fourSistersActivityGallery = [
+  '01-misty-meadow-hike.jpg', '02-mountain-trail.jpg', '03-moss-forest.jpg', '04-stream-pause.jpg',
+  '05-alpine-meadow.jpg', '06-hiking-together.jpg', '07-winter-boardwalk.jpg',
+].map(name => `${fourSistersActivityAsset}/${name}`);
+
 export function createDefaultExplorePage(slug: string): ExplorePageContent {
   const copy = PAGE_COPY[slug] ?? PAGE_COPY['village-life'];
   const pageIndex = Math.max(0, defaultExploreSlugs.indexOf(slug));
+  if (slug === 'walk-beneath-four-sisters') return {
+    homepageCard: { title: 'Walk Beneath the Four Sisters', image: fourSistersActivityGallery[0] },
+    activity: {
+      ...emptyActivity, enabled: true, type: 'Highland Hiking', status: 'seasonal', statusLabel: 'Seasonal · By Arrangement',
+      dateLabel: 'April–November · Weather Dependent', duration: '5–6 hours', groupSize: '4–8 participants', difficulty: 'Moderate · High Altitude',
+      location: 'Changping Valley, Xiaojin County, Western Sichuan',
+      note: 'A guided day walk on an official open route. The final distance and turning point are confirmed around weather, trail conditions and the group’s response to altitude.',
+    },
+    activityDetail: {
+      category: 'Nature & Landscape',
+      excerpt: 'Walk slowly through the forests and meadows of Changping Valley, learning how altitude, weather and attention change the way we meet a mountain landscape.',
+      gallery: fourSistersActivityGallery,
+      purpose: {
+        eyebrow: 'Why This Walk Exists', title: 'A mountain becomes meaningful when we give it time.',
+        paragraphs: ['The Four Sisters are often encountered as an image: four sharp summits rising above the valleys of western Sichuan. This walk begins lower down, where water, forest, meadow and changing weather shape the experience long before any distant peak appears.', 'We walk to understand the landscape at human pace. Distance is secondary to acclimatisation, observation and the shared responsibility of moving safely through a highland environment.'],
+        image: fourSistersActivityGallery[4],
+      },
+      currentWork: {
+        eyebrow: 'What You Will Experience', title: 'Follow the valley from forest shade toward open mountain light.',
+        paragraphs: ['The day begins gently, with time to settle into the altitude and meet the guide. We enter the forest, follow water and timber paths, then continue toward more open ground as weather and group condition allow.', 'A simple trail lunch creates a natural pause. The return begins with enough time for changing afternoon conditions, following the same principle that shapes the whole day: notice first, then move.'],
+        images: [fourSistersActivityGallery[2], fourSistersActivityGallery[3]],
+      },
+      participation: {
+        eyebrow: 'The Rhythm of the Day', title: 'Five moments, with room for the mountain to change the plan.', introduction: 'The sequence is consistent, while the exact route and turning point remain responsive to real conditions.',
+        items: [
+          { title: 'Begin Slowly', description: 'Meet the guide, check equipment and allow breathing and pace to settle at altitude.' },
+          { title: 'Enter the Forest', description: 'Walk beneath conifers and moss, listening for water and noticing how the valley holds moisture.' },
+          { title: 'Walk With the Landscape', description: 'Move toward open meadow without treating distance or a photo point as the measure of success.' },
+          { title: 'Share a Trail Lunch', description: 'Pause somewhere suitable, keep food simple and carry every item back out.' },
+          { title: 'Return Before Conditions Turn', description: 'Leave time for a calm descent before afternoon weather or temperature changes.' },
+        ],
+      },
+      fit: {
+        eyebrow: 'Is This for You?', title: 'A steady pace matters more than hiking speed.', introduction: 'This is suitable for active travellers who can manage uneven highland paths and are willing to let safety and weather shape the day.',
+        items: ['You can walk for several hours on uneven ground with regular pauses.', 'You understand that altitude affects each person differently.', 'You are comfortable changing the route or turning back when the guide advises it.', 'You prefer observation and conversation to rushing between viewpoints.', 'You will remain on the agreed route and respect grazing animals, vegetation and other trail users.'],
+      },
+      flexibility: {
+        eyebrow: 'Shaped Around the Mountain', title: 'The turning point is a decision, not a promise.',
+        paragraphs: ['Changping Valley changes quickly. Rain, snow, wind, trail condition and each participant’s response to altitude may shorten or reshape the route. A responsible day leaves space for those decisions.', 'We confirm the plan close to departure and adjust the pace on the trail. The experience remains complete even when the group turns earlier than expected: the purpose is to encounter the valley well, not to collect distance.'],
+        points: ['Weather and trail notices', 'Altitude response', 'Group walking pace', 'Daylight and temperature', 'Official route access', 'Transport and meal needs'], image: fourSistersActivityGallery[6],
+      },
+      people: {
+        eyebrow: 'Walking Together', title: 'The group moves at the pace that keeps everyone present.',
+        paragraphs: ['A small group makes it possible to notice changes in weather, energy and breathing without turning the walk into a race. The guide sets safety boundaries and helps interpret the route, while every participant communicates honestly about how they feel.', 'Walking together also means making space for quiet. Conversation, photography and rest all belong to the day, but none should interrupt local life or place pressure on another person to keep moving.'],
+        images: [fourSistersActivityGallery[0], fourSistersActivityGallery[5]],
+      },
+      practical: {
+        eyebrow: 'Before You Join', title: 'Prepare for altitude and four seasons in one day.', introduction: 'Final guidance is confirmed before departure. These points apply to most walks in Changping Valley.',
+        items: [
+          { title: 'Physical Level', description: 'Moderate: approximately 7–10 km and 250–350 m of ascent over 5–6 hours, adjusted to conditions.' },
+          { title: 'Altitude', description: 'The walk is generally around 3,200–3,500 m. Tell us about medical concerns and never hide symptoms.' },
+          { title: 'Weather', description: 'Sun, cloud, rain, wind or snow can arrive quickly. The route may change or be cancelled.' },
+          { title: 'What to Wear', description: 'Layered clothing, waterproof outerwear and supportive non-slip walking shoes.' },
+          { title: 'What to Bring', description: 'Water, trail lunch, sun protection, warm layer, personal medication and a small day pack.' },
+          { title: 'Age & Access', description: 'Recommended from age 14. The route is not wheelchair accessible and is unsuitable for very young children.' },
+        ],
+      },
+      principles: { eyebrow: 'Our Shared Principles', title: 'Walk lightly and leave the valley whole.', items: ['Follow the guide and official open route.', 'Do not approach or feed grazing animals.', 'Carry out everything you carry in.', 'Keep drones and intrusive photography away.', 'Turn back early when conditions require it.'] },
+      closing: {
+        eyebrow: 'Begin a Conversation', title: 'Tell us when you hope to walk in western Sichuan.',
+        paragraphs: ['Share your travel dates, group size, hiking experience and any health or dietary needs. We will check current access and conditions before suggesting the most suitable form of the day.', 'This is not a summit programme, an overnight camp or the Changping-to-Bipeng traverse. It is a carefully paced day inside the open valley, designed to help people meet the mountain with attention.'],
+        image: fourSistersActivityGallery[1],
+      },
+      roles: {
+        eyebrow: 'Ways to Join the Day', title: 'There Is More Than One Way to Pay Attention', footer: 'You do not need to be an expert hiker. Bring curiosity, honest communication and respect for the route.', linkLabel: 'Tell Us About Your Group →',
+        items: [
+          { title: 'Steady Walker', description: 'Move at a sustainable pace and help the group remain together.', icon: 'hands' },
+          { title: 'Landscape Observer', description: 'Notice water, forest, weather and seasonal changes along the valley.', icon: 'plant' },
+          { title: 'Photographer', description: 'Document the day without leaving the route or directing people and animals.', icon: 'camera' },
+          { title: 'Writer / Storyteller', description: 'Record how the landscape changes when it is experienced slowly.', icon: 'writer' },
+          { title: 'Naturalist', description: 'Share careful observations while avoiding disturbance or unsupported claims.', icon: 'research' },
+          { title: 'Translator', description: 'Help route guidance and conversation remain clear across languages.', icon: 'languages' },
+          { title: 'Group Support', description: 'Notice energy, encourage honest rest and help maintain a calm rhythm.', icon: 'group' },
+          { title: 'Quiet Companion', description: 'Walk, listen and make space for other people to experience the valley.', icon: 'leaf' },
+          { title: 'Trail Lunch Host', description: 'Help make the shared pause simple, low-waste and considerate.', icon: 'cook' },
+          { title: 'First-time Highland Walker', description: 'Learn how to pace, layer and communicate at altitude.', icon: 'maker' },
+        ],
+      },
+      purposeStory: {
+        eyebrow: 'Why We Walk This Way', title: 'The Mountain Is Not a Backdrop to Conquer.',
+        paragraphs: ['Highland travel is often described through achievement: kilometres completed, viewpoints reached and photographs collected. Those measures can make a place feel interchangeable, as if the mountain exists only to confirm that we arrived.', 'This walk offers another relationship. We begin with the body adjusting to altitude, with the sound of water under trees and with attention to weather that may revise every plan. Slowing down is not a compromise; it is how the valley becomes legible.', 'The route passes through a living landscape rather than an empty wilderness. Grazing animals, local knowledge, protected habitats and official access rules all remind us that visitors are temporary. Our freedom to walk depends on accepting boundaries.', 'Tree Thousands designs the day around small groups, honest pacing and the possibility of turning back. A meaningful journey is not defined by how far we reach, but by whether our presence leaves the place—and one another—undiminished.'],
+        quote: 'We do not walk through the valley to claim it. We walk so that attention can replace conquest.', mainImage: fourSistersActivityGallery[4], insetImage: fourSistersActivityGallery[2],
+      },
+      placeStory: {
+        eyebrow: 'The Place Around the Walk', title: 'Changping Valley Changes With Altitude, Water and Weather.',
+        introduction: 'At the foot of the Four Sisters, a single day can move between moss-dark forest, open meadow, bright sun and sudden mountain cloud.',
+        paragraphs: ['The lower valley gathers water beneath conifers and along timber paths. As the canopy opens, broader views appear between meadow, shrubs and grazing ground, but the mountains remain partly concealed and change with every turn in the weather.', 'Altitude makes the landscape physically present. Breathing, temperature and pace become part of how the valley is understood. This is why the route is planned conservatively and why a shorter walk can still hold a complete experience.', 'Season alters both access and character. Spring and summer bring moisture and green growth; autumn sharpens colour and light; early or late snow can transform familiar paths. Every visit must respond to the valley that is actually there that day.'], image: fourSistersActivityGallery[0],
+      },
+    },
+    hero: { eyebrow: 'Explore / Nature & Landscape', title: copy.title, subtitle: copy.subtitle, image: fourSistersActivityGallery[0], backgroundColor: '#ffffff', overlayOpacity: 0 },
+    introduction: { eyebrow: 'A slow highland day', text: copy.introduction, backgroundColor: '#ffffff', textColor: '#171717' },
+    visual: { eyebrow: 'The experience', title: 'Forest, meadow and changing light.', paragraphs: [], images: [], backgroundColor: '#f5f5f5' },
+    details: { eyebrow: 'Activity Details', title: 'What the day may hold', description: 'The route remains responsive to altitude, weather and the group.', backgroundColor: '#f5f5f5', items: copy.details.map((title, index) => ({ title, image: fourSistersActivityGallery[index % fourSistersActivityGallery.length] })) },
+    statement: { eyebrow: 'A way of walking', text: copy.statement, backgroundColor: '#111111', textColor: '#ffffff' },
+    perspectives: { eyebrow: 'Continue Exploring', title: 'Walk Further Into the Landscape', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { title: 'Nature & Landscape', description: 'Explore other activities shaped by forest, water, season and terrain.', href: '/explore/nature-landscape', image: fourSistersActivityGallery[2] },
+      { title: 'Our Way of Travel', description: 'Learn why pace, attention and local context matter to every Tree Thousands journey.', href: '/our-story/our-way-of-travel', image: fourSistersActivityGallery[3] },
+      { title: 'Village Life', description: 'Look beyond the mountain view toward the everyday lives held within rural landscapes.', href: '/explore/village-life', image: fourSistersActivityGallery[4] },
+    ] },
+    stories: { eyebrow: 'From the Journal', title: 'Related Stories', viewAllLabel: 'View all stories →', viewAllHref: '/stories', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { category: 'Journal', title: 'Walking at the Pace of the Valley', href: '/stories', image: fourSistersActivityGallery[1] },
+    ] },
+    cta: { eyebrow: 'Take Part', title: 'Ready to walk beneath the Four Sisters?', buttonLabel: 'Register Your Interest', buttonHref: '/join-us/contact', backgroundColor: '#f5569b', textColor: '#ffffff', buttonBackgroundColor: '#111111', buttonTextColor: '#ffffff', textureImage: '', textureOpacity: 25 },
+    contentBlocks: [],
+  };
   if (slug === 'pick-tea-with-local-growers') return {
     homepageCard: { title: 'Pick Tea With Local Growers', image: teaActivityGallery[1] },
     activity: {
