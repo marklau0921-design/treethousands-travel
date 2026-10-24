@@ -1,5 +1,8 @@
 import { getPool } from './db';
 
+const DEFAULT_WHATSAPP_NUMBER = '+61 494788081';
+const PREVIOUS_WHATSAPP_NUMBER = '+6188888';
+
 export type ContactSettings = { email: string; whatsappNumber: string; emailBackgroundColor: string; emailTextColor: string; whatsappBackgroundColor: string; whatsappTextColor: string };
 
 const defaults = {
@@ -13,7 +16,7 @@ async function ensureContactSettingsTable() {
   await pool.execute(`CREATE TABLE IF NOT EXISTS site_contact_settings (
     id INT NOT NULL PRIMARY KEY,
     email VARCHAR(320) NOT NULL DEFAULT '',
-    whatsappNumber VARCHAR(40) NOT NULL DEFAULT '',
+    whatsappNumber VARCHAR(40) NOT NULL DEFAULT '+61 494788081',
     emailBackgroundColor VARCHAR(32) NOT NULL DEFAULT '#f5f1e8',
     emailTextColor VARCHAR(32) NOT NULL DEFAULT '#17251f',
     whatsappBackgroundColor VARCHAR(32) NOT NULL DEFAULT '#e5ddce',
@@ -27,12 +30,16 @@ async function ensureContactSettingsTable() {
     ['whatsappBackgroundColor', '#e5ddce'], ['whatsappTextColor', '#17251f'],
   ];
   for (const [column, value] of additions) if (!existing.has(column)) await pool.execute(`ALTER TABLE site_contact_settings ADD COLUMN ${column} VARCHAR(32) NOT NULL DEFAULT '${value}'`);
+  await pool.execute(
+    'UPDATE site_contact_settings SET whatsappNumber = ? WHERE id = 1 AND (whatsappNumber = ? OR whatsappNumber = ?)',
+    [DEFAULT_WHATSAPP_NUMBER, PREVIOUS_WHATSAPP_NUMBER, '']
+  );
   return pool;
 }
 
 export async function getContactSettings(): Promise<ContactSettings> {
   const pool = await ensureContactSettingsTable();
-  const fallback = { email: process.env.SMTP_TO || process.env.SMTP_USER || '', whatsappNumber: process.env.WHATSAPP_NUMBER || '', ...defaults };
+  const fallback = { email: process.env.SMTP_TO || process.env.SMTP_USER || '', whatsappNumber: DEFAULT_WHATSAPP_NUMBER, ...defaults };
   if (!pool) return fallback;
   await pool.execute('INSERT IGNORE INTO site_contact_settings (id, email, whatsappNumber, emailBackgroundColor, emailTextColor, whatsappBackgroundColor, whatsappTextColor) VALUES (1, ?, ?, ?, ?, ?, ?)', [fallback.email, fallback.whatsappNumber, fallback.emailBackgroundColor, fallback.emailTextColor, fallback.whatsappBackgroundColor, fallback.whatsappTextColor]);
   const [rows] = await pool.query('SELECT email, whatsappNumber, emailBackgroundColor, emailTextColor, whatsappBackgroundColor, whatsappTextColor FROM site_contact_settings WHERE id = 1 LIMIT 1');

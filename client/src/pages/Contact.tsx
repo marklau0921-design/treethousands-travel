@@ -740,8 +740,8 @@ export default function Contact() {
                 <div className="w-full flex flex-col items-center px-8 pt-6 pb-4">
                   <Phone className="w-6 h-6 text-[#1a1a1a] mb-2" />
                   <h3 className="font-bold uppercase tracking-widest text-sm mb-2 text-[#1a1a1a]">Call Us Today</h3>
-                  <a href="tel:+8613008122836" className="font-bold text-lg hover:underline block mb-2" style={{color:'#e0457b', fontFamily: 'Brandon Grotesque', letterSpacing: '0.12em'}}>
-                    +86 130 0812 2836
+                  <a href="tel:+61494788081" className="font-bold text-lg hover:underline block mb-2" style={{color:'#e0457b', fontFamily: 'Brandon Grotesque', letterSpacing: '0.12em'}}>
+                    +61 494788081
                   </a>
                   <p className="text-sm text-[#666666]" style={{letterSpacing: '0.03em'}}>
                     We're open at 9.00am

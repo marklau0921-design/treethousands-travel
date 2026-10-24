@@ -458,7 +458,7 @@ export type InsertExploreSection = typeof exploreSections.$inferInsert;
 export const siteContactSettings = mysqlTable("site_contact_settings", {
   id: int("id").primaryKey(),
   email: varchar("email", { length: 320 }).default("").notNull(),
-  whatsappNumber: varchar("whatsappNumber", { length: 40 }).default("").notNull(),
+  whatsappNumber: varchar("whatsappNumber", { length: 40 }).default("+61 494788081").notNull(),
   emailBackgroundColor: varchar("emailBackgroundColor", { length: 32 }).default("#f5f1e8").notNull(),
   emailTextColor: varchar("emailTextColor", { length: 32 }).default("#17251f").notNull(),
   whatsappBackgroundColor: varchar("whatsappBackgroundColor", { length: 32 }).default("#e5ddce").notNull(),
