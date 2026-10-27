@@ -89,9 +89,14 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
     introduction: 'This is a day hike shaped around attention rather than distance. We follow an official open route through Changping Valley, allowing time for the body to adjust to altitude and for the landscape to reveal itself gradually.',
     statement: 'The mountain is not a backdrop to conquer, but a place to enter with care.', details: ['Mountain Forest', 'Open Meadow', 'Changing Weather', 'Trail Lunch', 'Local Guidance', 'Slow Return'],
   },
+  'share-a-day-of-village-life': {
+    title: 'Share a Day of Village Life', subtitle: 'Join the ordinary rhythm of a village day through seasonal work, fresh food, shared time and unhurried conversation.',
+    introduction: 'This experience is not a performance of rural life. It is an invitation to enter a real day carefully: to follow what the season requires, help with an appropriate task, prepare a simple meal and understand how work, food and relationships hold village life together.',
+    statement: 'A village is not a scene arranged for visitors. It is a living place shaped by work, food, seasons and relationships.', details: ['Village Paths', 'Seasonal Garden', 'Fresh Ingredients', 'Shared Cooking', 'Local Market', 'Time Together'],
+  },
 };
 
-export const defaultExploreSlugs = ['village-life', 'nature-landscape', 'people-culture', 'build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters'];
+export const defaultExploreSlugs = ['village-life', 'nature-landscape', 'people-culture', 'build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life'];
 
 const emptyActivity: ExploreActivityInfo = {
   enabled: false, type: '', status: 'planning', statusLabel: 'By Arrangement', dateLabel: 'Arranged around the project and participants',
@@ -146,9 +151,120 @@ const fourSistersActivityGallery = [
   '05-alpine-meadow.jpg', '06-hiking-together.jpg', '07-winter-boardwalk.jpg',
 ].map(name => `${fourSistersActivityAsset}/${name}`);
 
+const villageDayActivityAsset = '/images/explore/share-a-day-of-village-life';
+const villageDayActivityGallery = [
+  '01-mountain-village.jpg', '02-garden-harvest.jpg', '03-kitchen-preparation.jpg', '04-washing-vegetables.jpg',
+  '05-courtyard-cooking.jpg', '06-village-lane.jpg', '07-village-market.jpg', '08-shared-lunch.jpg',
+].map(name => `${villageDayActivityAsset}/${name}`);
+
 export function createDefaultExplorePage(slug: string): ExplorePageContent {
   const copy = PAGE_COPY[slug] ?? PAGE_COPY['village-life'];
   const pageIndex = Math.max(0, defaultExploreSlugs.indexOf(slug));
+  if (slug === 'share-a-day-of-village-life') return {
+    homepageCard: { title: 'Share a Day of Village Life', image: villageDayActivityGallery[1] },
+    activity: {
+      ...emptyActivity, enabled: true, type: 'Village Life & Food', status: 'open', statusLabel: 'Ongoing · By Arrangement',
+      dateLabel: 'Year-round · Shaped by the Season', duration: '5–6 hours', groupSize: '2–8 participants', difficulty: 'Light',
+      location: 'Villages around Ya’an, Sichuan',
+      note: 'The day follows the season and the household or village activity already taking place. The exact tasks, meal and route are confirmed locally rather than staged in advance.',
+    },
+    activityDetail: {
+      category: 'Village Life',
+      excerpt: 'Spend an unhurried day within the ordinary rhythms of a village near Ya’an—gathering seasonal ingredients, preparing lunch and learning through shared time rather than a staged performance.',
+      gallery: villageDayActivityGallery,
+      purpose: {
+        eyebrow: 'Why This Experience Exists', title: 'Everyday life reveals a place more honestly than a list of sights.',
+        paragraphs: ['Village life is often reduced to scenery, nostalgia or a collection of photogenic traditions. The reality is more ordinary and more meaningful: food is grown and prepared, paths connect neighbours, weather changes the day’s work and relationships make practical life possible.', 'This activity creates enough time to participate without taking over. Guests follow local guidance, help with something genuinely appropriate and learn why a simple meal can carry knowledge about season, land and family.'],
+        image: villageDayActivityGallery[0],
+      },
+      currentWork: {
+        eyebrow: 'What You Will Experience', title: 'Move from the garden to the kitchen, then sit down together.',
+        paragraphs: ['Begin with a slow introduction to the village and the people hosting the day. Depending on season, the morning may include gathering vegetables, visiting a local market, sorting ingredients or another light task already needed.', 'The group then helps wash, cut and prepare a simple lunch. After eating together, the afternoon leaves room for a village walk, tea and conversation about how daily life is changing.'],
+        images: [villageDayActivityGallery[1], villageDayActivityGallery[4]],
+      },
+      participation: {
+        eyebrow: 'The Rhythm of the Day', title: 'A simple sequence shaped by what is already happening.', introduction: 'No household repeats the same programme every day. These moments provide a structure without turning ordinary life into a show.',
+        items: [
+          { title: 'Enter the Village Slowly', description: 'Meet the host, understand the setting and learn which spaces are private.' },
+          { title: 'Follow the Season', description: 'Gather vegetables, visit the market or help with another suitable task.' },
+          { title: 'Prepare Lunch Together', description: 'Wash, cut and cook under local guidance using ingredients connected to the day.' },
+          { title: 'Share the Table', description: 'Eat without rushing and let food open a wider conversation about place and family.' },
+          { title: 'Walk and Reflect', description: 'Finish along village paths with tea, conversation and time to notice ordinary details.' },
+        ],
+      },
+      fit: {
+        eyebrow: 'Is This for You?', title: 'Curiosity and consideration matter more than practical skill.', introduction: 'This is a gentle activity for people who are comfortable entering someone else’s everyday environment with patience and respect.',
+        items: ['You enjoy learning through ordinary tasks rather than staged demonstrations.', 'You are willing to eat a simple meal shaped by seasonal ingredients.', 'You can accept that the exact plan may change on the day.', 'You will ask before photographing people, homes or private spaces.', 'You understand that participation does not mean directing how local people work or live.'],
+      },
+      flexibility: {
+        eyebrow: 'Shaped Around Real Life', title: 'The season and the host decide what belongs in the day.',
+        paragraphs: ['Harvests, weather, household responsibilities and local events determine what is possible. One visit may spend more time in a garden, another at a market or around a kitchen table.', 'We learn about your group, dietary needs and interests beforehand, then confirm an activity that fits the real day. Flexibility protects the experience from becoming a repeated performance.'],
+        points: ['Seasonal ingredients', 'Weather and field conditions', 'Household availability', 'Dietary requirements', 'Children and mobility needs', 'Photography preferences'], image: villageDayActivityGallery[6],
+      },
+      people: {
+        eyebrow: 'Time With People', title: 'The activity is held together by conversation, not observation alone.',
+        paragraphs: ['Preparing food side by side creates a natural way to meet. Questions arise from the work itself: how a vegetable is grown, why a dish is prepared this way or how the village has changed within one generation.', 'Local hosts are not performers or anonymous examples of rural culture. They decide what to share, where guests may enter and when the day needs to return to private life.'],
+        images: [villageDayActivityGallery[3], villageDayActivityGallery[7]],
+      },
+      practical: {
+        eyebrow: 'Before You Join', title: 'Come prepared for an ordinary working day.', introduction: 'Final details are confirmed with the host. These guidelines apply to most village days.',
+        items: [
+          { title: 'Physical Level', description: 'Light walking with time standing in a garden, market, courtyard or kitchen.' },
+          { title: 'What to Wear', description: 'Comfortable closed shoes and practical layers suitable for weather and simple work.' },
+          { title: 'Food & Allergies', description: 'Share allergies, dietary needs and strong preferences before the visit.' },
+          { title: 'Children', description: 'Usually suitable with supervision; the exact tasks depend on age and the setting.' },
+          { title: 'Photography', description: 'Always ask before photographing people, homes, cooking areas or private possessions.' },
+          { title: 'Respect & Privacy', description: 'Stay within agreed spaces and accept when a person or part of the home is not available.' },
+        ],
+      },
+      principles: { eyebrow: 'Our Shared Principles', title: 'Participate without turning life into a performance.', items: ['Listen before helping.', 'Let the season shape the meal.', 'Ask before entering or photographing.', 'Waste neither food nor people’s time.', 'Leave room for privacy and ordinary life.'] },
+      closing: {
+        eyebrow: 'Begin a Conversation', title: 'Tell us what kind of village day you hope to understand.',
+        paragraphs: ['Share your travel dates, group size, dietary needs, mobility considerations and what interests you about village life. We will speak with local hosts before proposing the right arrangement.', 'The aim is not to promise a checklist of activities. It is to create a respectful day in which food, work and conversation can reveal how a place is actually lived.'],
+        image: villageDayActivityGallery[5],
+      },
+      roles: {
+        eyebrow: 'Ways to Join the Day', title: 'There Is More Than One Way to Take Part', footer: 'No rural experience is required. Bring attention, useful hands and a willingness to follow the day.', linkLabel: 'Tell Us About Your Group →',
+        items: [
+          { title: 'Garden Helper', description: 'Support a light seasonal task under guidance and care for the growing space.', icon: 'plant' },
+          { title: 'Market Companion', description: 'Notice ingredients, conversations and how a local market connects village life.', icon: 'hands' },
+          { title: 'Home Cook', description: 'Wash, prepare and cook ingredients as part of a shared meal.', icon: 'cook' },
+          { title: 'Photographer', description: 'Document only with permission and without rearranging people or work.', icon: 'camera' },
+          { title: 'Writer / Listener', description: 'Pay attention to the knowledge carried in recipes, memories and daily decisions.', icon: 'writer' },
+          { title: 'Translator', description: 'Help conversation remain comfortable and mutual across languages.', icon: 'languages' },
+          { title: 'Family Participant', description: 'Join with children through age-appropriate tasks and shared responsibility.', icon: 'group' },
+          { title: 'Food Learner', description: 'Explore how season, preservation and household habits shape local food.', icon: 'research' },
+          { title: 'Quiet Observer', description: 'Notice paths, objects and gestures without needing every moment explained.', icon: 'leaf' },
+          { title: 'Helping Hands', description: 'Take on a simple useful task wherever the host says help is welcome.', icon: 'maker' },
+        ],
+      },
+      purposeStory: {
+        eyebrow: 'Why We Do This', title: 'Rural Life Is Not a Backdrop for Someone Else’s Escape.',
+        paragraphs: ['Travellers often arrive in the countryside carrying an idea of simplicity. That idea can be comforting, but it can also flatten real lives into scenery: an old house, a field, a meal and a few photographs that seem to confirm what visitors hoped to find.', 'A village is more complicated and more alive. It contains work and rest, privacy and hospitality, continuity and change. Food comes from decisions about land, weather, money and time. A household may welcome conversation while still needing clear boundaries around family life.', 'Tree Thousands creates this activity around participation rather than access. Guests are not entitled to every room, story or image. They begin by listening, contribute only where help is useful and allow the host to decide what the day can hold.', 'A shared meal becomes meaningful because it follows real work and mutual attention. The goal is not to imitate village life for a few hours, but to leave with a more honest understanding of the relationships that sustain it.'],
+        quote: 'We do not enter a village to borrow an image of simplicity. We enter carefully enough to understand the lives already there.', mainImage: villageDayActivityGallery[2], insetImage: villageDayActivityGallery[3],
+      },
+      placeStory: {
+        eyebrow: 'The Place Around the Day', title: 'Rain, Gardens and Mountain Paths Shape Life Around Ya’an.',
+        introduction: 'Around Ya’an, cultivated ground and dense green hills meet beneath a climate known for moisture, mist and changing light.',
+        paragraphs: ['Village paths connect houses with gardens, markets and fields. Short distances are travelled repeatedly: to gather vegetables, exchange food, visit a neighbour or carry something needed for the day.', 'Rain supports abundant growth but also changes when people can work outdoors. Ingredients, preservation methods and household rhythms respond to these conditions, making weather part of the meal long before anyone sits at the table.', 'The villages are not fixed in the past. New roads, tools and livelihoods exist beside older houses, seasonal knowledge and familiar ways of helping one another. The activity makes room for that complexity instead of presenting rural life as either untouched tradition or a problem to be solved.'], image: villageDayActivityGallery[0],
+      },
+    },
+    hero: { eyebrow: 'Explore / Village Life', title: copy.title, subtitle: copy.subtitle, image: villageDayActivityGallery[1], backgroundColor: '#ffffff', overlayOpacity: 0 },
+    introduction: { eyebrow: 'An invitation to share the day', text: copy.introduction, backgroundColor: '#ffffff', textColor: '#171717' },
+    visual: { eyebrow: 'The experience', title: 'From garden to shared table.', paragraphs: [], images: [], backgroundColor: '#f5f5f5' },
+    details: { eyebrow: 'Activity Details', title: 'What the day may hold', description: 'The experience follows the season, the host and what is genuinely happening.', backgroundColor: '#f5f5f5', items: copy.details.map((title, index) => ({ title, image: villageDayActivityGallery[index % villageDayActivityGallery.length] })) },
+    statement: { eyebrow: 'A way of participating', text: copy.statement, backgroundColor: '#111111', textColor: '#ffffff' },
+    perspectives: { eyebrow: 'Continue Exploring', title: 'Understand Everyday Life', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { title: 'Village Life', description: 'Explore other activities shaped by homes, food and everyday work.', href: '/explore/village-life', image: villageDayActivityGallery[5] },
+      { title: 'People & Culture', description: 'Meet the knowledge and relationships carried through ordinary practices.', href: '/explore/people-culture', image: villageDayActivityGallery[3] },
+      { title: 'Our Way of Travel', description: 'Learn why pace, consent and local context matter to every journey.', href: '/our-story/our-way-of-travel', image: villageDayActivityGallery[7] },
+    ] },
+    stories: { eyebrow: 'From the Journal', title: 'Related Stories', viewAllLabel: 'View all stories →', viewAllHref: '/stories', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { category: 'Local Life', title: 'What a Shared Table Can Tell Us', href: '/stories', image: villageDayActivityGallery[7] },
+    ] },
+    cta: { eyebrow: 'Take Part', title: 'Ready to share an ordinary village day?', buttonLabel: 'Register Your Interest', buttonHref: '/join-us/contact', backgroundColor: '#f5569b', textColor: '#ffffff', buttonBackgroundColor: '#111111', buttonTextColor: '#ffffff', textureImage: '', textureOpacity: 25 },
+    contentBlocks: [],
+  };
   if (slug === 'walk-beneath-four-sisters') return {
     homepageCard: { title: 'Walk Beneath the Four Sisters', image: fourSistersActivityGallery[0] },
     activity: {
