@@ -94,9 +94,14 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
     introduction: 'This experience is not a performance of rural life. It is an invitation to enter a real day carefully: to follow what the season requires, help with an appropriate task, prepare a simple meal and understand how work, food and relationships hold village life together.',
     statement: 'A village is not a scene arranged for visitors. It is a living place shaped by work, food, seasons and relationships.', details: ['Village Paths', 'Seasonal Garden', 'Fresh Ingredients', 'Shared Cooking', 'Local Market', 'Time Together'],
   },
+  'read-the-colours-of-autumn': {
+    title: 'Read the Colours of Autumn', subtitle: 'Follow the eighty-li colour forest of Naizigou through mountain light, quiet villages and the changing reds and golds of western Sichuan.',
+    introduction: 'Autumn in Heishui does not arrive as one colour at one moment. It moves down the mountain with altitude, weather and light—turning broadleaf forest red and gold while evergreen trees hold the deeper structure of the valley.',
+    statement: 'Autumn is not one colour arriving at once. It is a landscape changing at different speeds.', details: ['Colour Forest', 'Mountain Valley', 'Village Landscape', 'Seasonal Light', 'Short Walks', 'Field Notes'],
+  },
 };
 
-export const defaultExploreSlugs = ['village-life', 'nature-landscape', 'people-culture', 'build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life'];
+export const defaultExploreSlugs = ['village-life', 'nature-landscape', 'people-culture', 'build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn'];
 
 const emptyActivity: ExploreActivityInfo = {
   enabled: false, type: '', status: 'planning', statusLabel: 'By Arrangement', dateLabel: 'Arranged around the project and participants',
@@ -157,9 +162,124 @@ const villageDayActivityGallery = [
   '05-courtyard-cooking.jpg', '06-village-lane.jpg', '07-village-market.jpg', '08-shared-lunch.jpg',
 ].map(name => `${villageDayActivityAsset}/${name}`);
 
+const autumnColoursActivityAsset = '/images/explore/read-the-colours-of-autumn/processed';
+const autumnColoursActivityGallery = [
+  '01-autumn-valley-road.jpg', '02-misty-colour-forest.jpg', '03-winding-road-fields.jpg', '04-village-in-cloud.jpg',
+  '05-river-village-autumn.jpg', '06-lake-road-tunnel.jpg', '07-river-road-forest.jpg', '08-snow-peaks-larch.jpg',
+  '09-misty-snow-mountains.jpg', '10-alpine-lake-hiker.jpg',
+  '11-snow-peak-gold-forest.jpg', '12-river-snow-range.jpg', '13-alpine-reflection.jpg', '14-golden-mountain-valley.jpg',
+  '15-solo-boardwalk.jpg', '16-traveller-stream.jpg', '17-boardwalk-mountain.jpg', '18-two-walkers.jpg',
+  '19-first-snow-boardwalk.jpg', '20-group-stream-bridge.jpg',
+].map(name => `${autumnColoursActivityAsset}/${name}`);
+
 export function createDefaultExplorePage(slug: string): ExplorePageContent {
   const copy = PAGE_COPY[slug] ?? PAGE_COPY['village-life'];
   const pageIndex = Math.max(0, defaultExploreSlugs.indexOf(slug));
+  if (slug === 'read-the-colours-of-autumn') return {
+    homepageCard: { title: 'Read the Colours of Autumn', image: autumnColoursActivityGallery[0] },
+    activity: {
+      ...emptyActivity, enabled: true, type: 'Seasonal Landscape Journey', status: 'seasonal', statusLabel: 'Seasonal · Small Groups',
+      dateLabel: 'Mid-October–Early November · Foliage Dependent', duration: '2 days / 1 night', groupSize: '4–8 participants', difficulty: 'Light to Moderate',
+      location: 'Naizigou Valley, Heishui County, Western Sichuan',
+      note: 'Autumn colour changes with altitude, temperature and the timing of the first snow. The route and walking stops are confirmed against current foliage, weather and road conditions.',
+    },
+    activityDetail: {
+      category: 'Nature & Landscape',
+      excerpt: 'Travel slowly through Naizigou’s eighty-li colour forest, using short walks, changing viewpoints and field notes to understand how altitude, weather and village life shape autumn in western Sichuan.',
+      gallery: autumnColoursActivityGallery,
+      purpose: {
+        eyebrow: 'Why This Journey Exists', title: 'Autumn becomes richer when we learn how to read its changes.',
+        paragraphs: ['Colour forests are often treated as a single photograph: the brightest slope, the clearest day, the most intense red. In reality, autumn moves unevenly through the valley. Different species respond to cold at different times, evergreen trees hold their colour and cloud can transform the same hillside within minutes.', 'This journey makes room for those differences. We stop at several elevations, walk short sections away from the vehicle and pay attention to how forest, water, settlement and seasonal work belong to one landscape.'],
+        image: autumnColoursActivityGallery[1],
+      },
+      currentWork: {
+        eyebrow: 'What You Will Experience', title: 'Follow colour from river valley to high mountain forest.',
+        paragraphs: ['The route enters Heishui through deep valleys before following Naizigou’s long band of mixed forest. Viewpoints are chosen for the conditions of the day rather than a fixed checklist, with time for short walks, photography and quiet observation.', 'Village stops introduce the lived landscape behind the view. The second day follows the colour higher, where gold larch, evergreen forest and early snow can meet beneath the ridges.'],
+        images: [autumnColoursActivityGallery[4], autumnColoursActivityGallery[7]],
+      },
+      participation: {
+        eyebrow: 'The Rhythm of the Journey', title: 'A seasonal route with enough time to notice the transitions.', introduction: 'The sequence stays flexible so the group can respond to foliage, light and weather without rushing between photo stops.',
+        items: [
+          { title: 'Enter the Valley', description: 'Follow the river and observe how elevation begins to change the forest.' },
+          { title: 'Walk Beneath the Colour', description: 'Leave the vehicle for a gentle section among broadleaf and evergreen trees.' },
+          { title: 'Meet the Village Landscape', description: 'See how homes, fields and roads sit within the forest rather than outside it.' },
+          { title: 'Read the Changing Light', description: 'Return to selected viewpoints as cloud, sun and afternoon colour reshape the slopes.' },
+          { title: 'Follow Autumn Higher', description: 'Continue toward colder forest where gold larch and possible early snow mark another stage of the season.' },
+        ],
+      },
+      fit: {
+        eyebrow: 'Is This for You?', title: 'This is for travellers who prefer observation to collecting viewpoints.', introduction: 'The journey combines road travel with gentle walks and patient stops. Curiosity and flexibility matter more than hiking experience.',
+        items: ['You enjoy landscape photography but do not need every stop to produce a perfect image.', 'You can walk for one to two hours in total on uneven forest and village paths.', 'You accept that foliage and weather cannot be guaranteed or staged.', 'You are comfortable with winding mountain roads and changing temperatures.', 'You will respect village privacy and ask before photographing people or homes.'],
+      },
+      flexibility: {
+        eyebrow: 'Shaped Around the Season', title: 'The best route is the one the forest offers that day.',
+        paragraphs: ['Peak colour shifts each year. A cold night may change a hillside quickly, while wind or rain can shorten one location’s season. The group therefore follows current conditions rather than a rigid list of stops.', 'We confirm the route close to departure and may spend longer in one valley, change a walking section or move to a different elevation when the light and foliage make that more meaningful.'],
+        points: ['Current foliage reports', 'Weather and first snow', 'Road and trail access', 'Group walking pace', 'Morning and afternoon light', 'Village activity and privacy'], image: autumnColoursActivityGallery[5],
+      },
+      people: {
+        eyebrow: 'Travelling Through a Lived Landscape', title: 'The forest is also home, road, field and seasonal workplace.',
+        paragraphs: ['Naizigou is not an empty scenic corridor. Villages, cultivated ground and everyday journeys remain part of the valley. We pause without blocking roads or turning private life into a backdrop.', 'When conversation is possible, local knowledge helps explain how weather, forest and travel change across the season. When privacy is needed, the group gives it without negotiation.'],
+        images: [autumnColoursActivityGallery[3], autumnColoursActivityGallery[2]],
+      },
+      practical: {
+        eyebrow: 'Before You Join', title: 'Prepare for mountain roads, cold mornings and changing light.', introduction: 'Final guidance is confirmed shortly before departure. These points apply to most autumn journeys in Heishui.',
+        items: [
+          { title: 'Physical Level', description: 'Light to moderate, with several short walks totalling roughly 2–4 km across two days.' },
+          { title: 'Altitude', description: 'Most stops are approximately 2,300–3,500 m. Move slowly and report symptoms early.' },
+          { title: 'Weather', description: 'Cold mornings, strong sun, rain or early snow are all possible during foliage season.' },
+          { title: 'What to Wear', description: 'Warm layers, windproof or waterproof outerwear and supportive non-slip shoes.' },
+          { title: 'What to Bring', description: 'Water, sun protection, personal medication, a small day pack and optional camera.' },
+          { title: 'Photography & Privacy', description: 'Stay within safe pull-offs and ask before photographing residents, homes or private land.' },
+        ],
+      },
+      principles: { eyebrow: 'Our Shared Principles', title: 'Let the season remain more important than the photograph.', items: ['Do not shake branches or collect leaves for a picture.', 'Use safe stopping places and keep roads clear.', 'Stay on existing paths in forest and village areas.', 'Ask before photographing people or homes.', 'Carry all waste out of the valley.'] },
+      closing: {
+        eyebrow: 'Begin a Conversation', title: 'Tell us when you hope to meet the autumn forest.',
+        paragraphs: ['Share your travel dates, group size, walking comfort and photography interests. We will compare them with current foliage and road conditions before recommending the strongest route.', 'The activity is seasonal and cannot promise a particular shade or snowfall. What it offers is a careful way to encounter the valley as it actually changes.'],
+        image: autumnColoursActivityGallery[9],
+      },
+      roles: {
+        eyebrow: 'Ways to Join the Journey', title: 'There Is More Than One Way to Read a Landscape', footer: 'Bring attention, patience and a willingness to let the season revise the plan.', linkLabel: 'Tell Us About Your Group →',
+        items: [
+          { title: 'Landscape Observer', description: 'Notice how species, altitude and exposure create different bands of colour.', icon: 'plant' },
+          { title: 'Photographer', description: 'Work with natural light without directing people or disturbing the forest.', icon: 'camera' },
+          { title: 'Writer / Storyteller', description: 'Record how a landscape changes across weather, distance and time.', icon: 'writer' },
+          { title: 'Naturalist', description: 'Share careful observations while leaving plants and habitats undisturbed.', icon: 'research' },
+          { title: 'Quiet Walker', description: 'Take part without needing to turn every moment into content.', icon: 'leaf' },
+          { title: 'Group Support', description: 'Help the group remain warm, communicative and considerate at each stop.', icon: 'group' },
+          { title: 'Translator', description: 'Help local guidance and shared observations remain clear across languages.', icon: 'languages' },
+          { title: 'First-time Visitor', description: 'Bring questions and learn how to travel responsibly in a highland valley.', icon: 'hands' },
+          { title: 'Field Note Keeper', description: 'Track elevation, weather, light and the changing character of the forest.', icon: 'maker' },
+          { title: 'Shared Table Companion', description: 'Make meals and evening reflection part of the journey rather than an interruption.', icon: 'cook' },
+        ],
+      },
+      purposeStory: {
+        eyebrow: 'Why We Travel This Way', title: 'A Season Is a Process, Not a Backdrop.',
+        paragraphs: ['The language of peak season can make autumn sound like a product with a precise delivery date. It encourages travellers to chase one ideal image and to regard every other condition as failure.', 'A forest tells a more complicated story. Species change at different speeds. Cold settles unevenly across slope and valley. Evergreen trees make the red and gold legible, while cloud and rain reveal forms that bright sun can hide.', 'Travelling slowly allows these differences to matter. It also redirects attention from scenery alone toward roads, villages and working land held within the same mountains. The landscape is beautiful because it is alive, not because it has been arranged for us.', 'Tree Thousands keeps the group small, changes the route with current conditions and treats photography as one way of paying attention—not as permission to disturb the forest or the people who live beside it.'],
+        quote: 'We are not chasing one perfect colour. We are learning to see how a whole landscape changes.', mainImage: autumnColoursActivityGallery[0], insetImage: autumnColoursActivityGallery[4],
+      },
+      placeStory: {
+        eyebrow: 'The Place Around the Journey', title: 'Naizigou Is an Eighty-Li Corridor of Forest, Water and Village Life.',
+        introduction: 'In Heishui County, the colour forest stretches along a high mountain valley where elevation gives autumn many different beginnings.',
+        paragraphs: ['Broadleaf trees bring scarlet, orange and gold, while conifers hold deep green through the slopes. Together they create the layered colour that gives Naizigou its reputation as an eighty-li gallery.', 'Water and road follow the valley floor. Above them, villages and fields occupy small areas of workable ground, making human life visible within the scale of the mountains.', 'Higher elevations introduce gold larch, colder air and the possibility of early snow. Within a short distance, the journey can move through several stages of autumn without pretending they occur at exactly the same time.'], image: autumnColoursActivityGallery[8],
+      },
+    },
+    hero: { eyebrow: 'Explore / Nature & Landscape', title: copy.title, subtitle: copy.subtitle, image: autumnColoursActivityGallery[0], backgroundColor: '#ffffff', overlayOpacity: 0 },
+    introduction: { eyebrow: 'A seasonal journey through Heishui', text: copy.introduction, backgroundColor: '#ffffff', textColor: '#171717' },
+    visual: { eyebrow: 'The experience', title: 'Forest, village and mountain light.', paragraphs: [], images: [], backgroundColor: '#f5f5f5' },
+    details: { eyebrow: 'Activity Details', title: 'What the journey may hold', description: 'The route follows the strongest current colour while respecting weather, access and village life.', backgroundColor: '#f5f5f5', items: copy.details.map((title, index) => ({ title, image: autumnColoursActivityGallery[index % autumnColoursActivityGallery.length] })) },
+    statement: { eyebrow: 'A way of seeing', text: copy.statement, backgroundColor: '#111111', textColor: '#ffffff' },
+    perspectives: { eyebrow: 'Continue Exploring', title: 'Follow the Landscape Further', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { title: 'Nature & Landscape', description: 'Explore other activities shaped by forest, water, season and terrain.', href: '/explore/nature-landscape', image: autumnColoursActivityGallery[1] },
+      { title: 'Walk Beneath the Four Sisters', description: 'Meet another western Sichuan valley at a slower human pace.', href: '/explore/activity/walk-beneath-four-sisters', image: autumnColoursActivityGallery[7] },
+      { title: 'Our Way of Travel', description: 'Learn why attention, flexibility and local context shape every Tree Thousands journey.', href: '/our-story/our-way-of-travel', image: autumnColoursActivityGallery[3] },
+    ] },
+    stories: { eyebrow: 'From the Journal', title: 'Related Stories', viewAllLabel: 'View all stories →', viewAllHref: '/stories', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { category: 'Journal', title: 'Learning to Read a Changing Season', href: '/stories', image: autumnColoursActivityGallery[4] },
+    ] },
+    cta: { eyebrow: 'Take Part', title: 'Ready to read the colours of autumn?', buttonLabel: 'Register Your Interest', buttonHref: '/join-us/contact', backgroundColor: '#f5569b', textColor: '#ffffff', buttonBackgroundColor: '#111111', buttonTextColor: '#ffffff', textureImage: '', textureOpacity: 25 },
+    contentBlocks: [],
+  };
   if (slug === 'share-a-day-of-village-life') return {
     homepageCard: { title: 'Share a Day of Village Life', image: villageDayActivityGallery[1] },
     activity: {
