@@ -1,7 +1,7 @@
 import { eq, desc, and, sql } from "drizzle-orm";
 import { normalizeOurStoryPage, ourWayOfTravelPageContent, whatWeBelievePageContent, whyWeStartedPageContent } from "../shared/our-story";
 import { defaultExploreSections, normalizeExplorePage } from "../shared/explore";
-import { inferStoryCategory, normalizeStoryDetail, plainExcerpt, type EditorialStory } from "../shared/story-content";
+import { inferStoryCategory, normalizeStoryDetail, plainExcerpt, publishedEditorialStories, type EditorialStory } from "../shared/story-content";
 import { defaultHomepageSections, normalizeHomepageSection, type HomepageSectionKey } from "../shared/homepage";
 import { getDb, getPool } from "./db";
 import {
@@ -684,6 +684,28 @@ async function ensureStoryDetailContent() {
   if (!columns.has("pageContent")) await pool.execute("ALTER TABLE `stories` ADD COLUMN `pageContent` json");
 }
 
+async function ensurePublishedStoriesInCms() {
+  const db = await getDb();
+  if (!db) return;
+  for (let sortOrder = 0; sortOrder < publishedEditorialStories.length; sortOrder += 1) {
+    const story = publishedEditorialStories[sortOrder];
+    const existing = await db.select().from(stories).where(eq(stories.slug, story.slug)).limit(1);
+    if (!existing[0]) {
+      await db.insert(stories).values({
+        title: story.title, slug: story.slug, content: story.content, coverImage: story.coverImage,
+        pageContent: story.pageContent ?? null, isActive: true, sortOrder,
+      });
+      continue;
+    }
+    if (!existing[0].pageContent && story.pageContent) {
+      await db.update(stories).set({
+        pageContent: story.pageContent, coverImage: existing[0].coverImage || story.coverImage,
+        content: existing[0].content || story.content, updatedAt: new Date(),
+      }).where(eq(stories.id, existing[0].id));
+    }
+  }
+}
+
 function withStoryDetail<T extends typeof stories.$inferSelect>(row: T, index = 0) {
   const base: EditorialStory = { id: row.id, slug: row.slug, title: row.title, category: inferStoryCategory(row.title, index), date: row.createdAt.toISOString(), location: 'Rural China', excerpt: plainExcerpt(row.content), content: row.content || '', coverImage: row.coverImage || '' };
   return { ...row, pageContent: normalizeStoryDetail(row.pageContent, base) };
@@ -691,6 +713,7 @@ function withStoryDetail<T extends typeof stories.$inferSelect>(row: T, index = 
 
 export async function listStories(includeInactive = false) {
   await ensureStoryDetailContent();
+  await ensurePublishedStoriesInCms();
   const db = await getDb();
   if (!db) return [];
   if (!includeInactive) {
@@ -1470,6 +1493,9 @@ export async function listExploreSections() {
   const wasCreated = await ensureExploreSectionsTable();
   const db = await getDb();
   if (!db) return defaultExploreSections.map((item, id) => ({ ...item, id: id + 1, createdAt: new Date(), updatedAt: new Date() }));
+  for (const legacyCategorySlug of ['village-life', 'nature-landscape', 'people-culture']) {
+    await db.delete(exploreSections).where(eq(exploreSections.slug, legacyCategorySlug));
+  }
   let rows = await db.select().from(exploreSections).orderBy(exploreSections.sortOrder);
   if (wasCreated || rows.length === 0) {
     try { await db.insert(exploreSections).values(defaultExploreSections); } catch (error: any) { if (error?.code !== "ER_DUP_ENTRY") throw error; }

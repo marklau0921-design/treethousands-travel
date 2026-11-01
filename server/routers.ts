@@ -209,6 +209,7 @@ const storyInput = z.object({
   slug: z.string().optional(),
   content: z.string().optional(),
   coverImage: z.string().optional(),
+  pageContent: z.unknown().optional(),
   isActive: z.boolean().default(true),
   sortOrder: z.number().default(0),
   tagIds: z.array(z.number()).default([]),

@@ -101,7 +101,9 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
   },
 };
 
-export const defaultExploreSlugs = ['village-life', 'nature-landscape', 'people-culture', 'build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn'];
+// Explore has one overview page. Category names are filters within that page,
+// not standalone CMS pages or routes.
+export const defaultExploreSlugs = ['build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn'];
 
 const emptyActivity: ExploreActivityInfo = {
   enabled: false, type: '', status: 'planning', statusLabel: 'By Arrangement', dateLabel: 'Arranged around the project and participants',
@@ -711,10 +713,29 @@ export function normalizeExplorePage(value: unknown, slug: string): ExplorePageC
   if (typeof value === 'string') { try { value = JSON.parse(value); } catch { return defaults; } }
   if (!value || typeof value !== 'object') return defaults;
   const page = value as Partial<ExplorePageContent>;
+  const suppliedDetail = page.activityDetail;
+  const activityDetail = suppliedDetail ? {
+    ...defaultActivityDetail,
+    ...defaults.activityDetail,
+    ...suppliedDetail,
+    gallery: suppliedDetail.gallery?.length ? suppliedDetail.gallery : defaults.activityDetail?.gallery ?? [],
+    purpose: { ...defaultActivityDetail.purpose, ...defaults.activityDetail?.purpose, ...suppliedDetail.purpose, paragraphs: suppliedDetail.purpose?.paragraphs ?? defaults.activityDetail?.purpose.paragraphs ?? [] },
+    currentWork: { ...defaultActivityDetail.currentWork, ...defaults.activityDetail?.currentWork, ...suppliedDetail.currentWork, paragraphs: suppliedDetail.currentWork?.paragraphs ?? defaults.activityDetail?.currentWork.paragraphs ?? [], images: suppliedDetail.currentWork?.images ?? defaults.activityDetail?.currentWork.images ?? [] },
+    participation: { ...defaultActivityDetail.participation, ...defaults.activityDetail?.participation, ...suppliedDetail.participation, items: suppliedDetail.participation?.items ?? defaults.activityDetail?.participation.items ?? [] },
+    fit: { ...defaultActivityDetail.fit, ...defaults.activityDetail?.fit, ...suppliedDetail.fit, items: suppliedDetail.fit?.items ?? defaults.activityDetail?.fit.items ?? [] },
+    flexibility: { ...defaultActivityDetail.flexibility, ...defaults.activityDetail?.flexibility, ...suppliedDetail.flexibility, paragraphs: suppliedDetail.flexibility?.paragraphs ?? defaults.activityDetail?.flexibility.paragraphs ?? [], points: suppliedDetail.flexibility?.points ?? defaults.activityDetail?.flexibility.points ?? [] },
+    people: { ...defaultActivityDetail.people, ...defaults.activityDetail?.people, ...suppliedDetail.people, paragraphs: suppliedDetail.people?.paragraphs ?? defaults.activityDetail?.people.paragraphs ?? [], images: suppliedDetail.people?.images ?? defaults.activityDetail?.people.images ?? [] },
+    practical: { ...defaultActivityDetail.practical, ...defaults.activityDetail?.practical, ...suppliedDetail.practical, items: suppliedDetail.practical?.items ?? defaults.activityDetail?.practical.items ?? [] },
+    principles: { ...defaultActivityDetail.principles, ...defaults.activityDetail?.principles, ...suppliedDetail.principles, items: suppliedDetail.principles?.items ?? defaults.activityDetail?.principles.items ?? [] },
+    closing: { ...defaultActivityDetail.closing, ...defaults.activityDetail?.closing, ...suppliedDetail.closing, paragraphs: suppliedDetail.closing?.paragraphs ?? defaults.activityDetail?.closing.paragraphs ?? [] },
+    roles: { ...defaultActivityDetail.roles, ...defaults.activityDetail?.roles, ...suppliedDetail.roles, items: suppliedDetail.roles?.items ?? defaults.activityDetail?.roles.items ?? [] },
+    purposeStory: { ...defaultActivityDetail.purposeStory, ...defaults.activityDetail?.purposeStory, ...suppliedDetail.purposeStory, paragraphs: suppliedDetail.purposeStory?.paragraphs ?? defaults.activityDetail?.purposeStory.paragraphs ?? [] },
+    placeStory: { ...defaultActivityDetail.placeStory, ...defaults.activityDetail?.placeStory, ...suppliedDetail.placeStory, paragraphs: suppliedDetail.placeStory?.paragraphs ?? defaults.activityDetail?.placeStory.paragraphs ?? [] },
+  } : defaults.activityDetail;
   return {
     homepageCard: { ...defaults.homepageCard, ...(page.homepageCard ?? {}) },
     activity: { ...defaults.activity, ...(page.activity ?? {}) },
-    activityDetail: page.activityDetail ? { ...defaultActivityDetail, ...defaults.activityDetail, ...page.activityDetail, gallery: page.activityDetail.gallery?.length ? page.activityDetail.gallery : defaults.activityDetail?.gallery ?? [] } : defaults.activityDetail,
+    activityDetail,
     hero: { ...defaults.hero, ...(page.hero ?? {}) },
     introduction: { ...defaults.introduction, ...(page.introduction ?? {}) },
     visual: { ...defaults.visual, ...(page.visual ?? {}), paragraphs: page.visual?.paragraphs ?? defaults.visual.paragraphs, images: page.visual?.images ?? defaults.visual.images },

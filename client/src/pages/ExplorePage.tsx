@@ -37,21 +37,19 @@ function toPreview(item:Activity):ActivityPreview{
 
 export default function ExplorePage() {
   const [, activityParams] = useRoute('/explore/activity/:slug');
-  const [, legacyParams] = useRoute('/explore/:category');
   const {data:sections=[],isLoading}=trpc.explore.listPublicSections.useQuery();
   const activities = useMemo<Activity[]>(()=>sections.map(section=>({slug:section.slug,title:section.title,content:normalizeExplorePage(section.pageContent,section.slug)})).filter(item=>item.content.activity.enabled),[sections]);
-  const requestedSlug = activityParams?.slug || legacyParams?.category;
+  const requestedSlug = activityParams?.slug;
   const activity = requestedSlug ? activities.find(item=>item.slug===requestedSlug) : undefined;
-  const selectedCategory = !activity && legacyParams?.category ? slugCategory[legacyParams.category] : undefined;
   if(isLoading)return <div className="min-h-screen bg-white"><Navigation/></div>;
   if(activity)return <ExploreActivityDetail content={activity.content}/>;
-  if(legacyParams?.category&&!selectedCategory)return <><Navigation/><main style={{minHeight:'70vh',padding:'180px 24px',textAlign:'center'}}><h1>Explore page not found</h1></main><Footer/></>;
-  return <ExploreIndex activities={activities} selectedCategory={selectedCategory}/>;
+  if(requestedSlug)return <><Navigation/><main style={{minHeight:'70vh',padding:'180px 24px',textAlign:'center'}}><h1>Activity not found</h1></main><Footer/></>;
+  return <ExploreIndex activities={activities}/>;
 }
 
-function ExploreIndex({activities,selectedCategory}:{activities:Activity[];selectedCategory?:ExploreCategory}){
+function ExploreIndex({activities}:{activities:Activity[]}){
   const position=useMediaObjectPosition();
-  const isOverview=!selectedCategory;
+  const isOverview=true;
   const [currentSection,setCurrentSection]=useState<ExploreCategory>('Village Life');
   const [visibleCounts,setVisibleCounts]=useState<Record<ExploreCategory,number>>({
     'Village Life':3,
@@ -68,8 +66,8 @@ function ExploreIndex({activities,selectedCategory}:{activities:Activity[];selec
     const items=allPreviewsFor(category);
     return isOverview?items.slice(0,visibleCounts[category]):items;
   };
-  const title=selectedCategory||'Explore';
-  const intro=selectedCategory?categoryCopy[selectedCategory].description:'Ways to take part in the work, seasons and everyday life of rural communities—shaped around what is happening locally and what participants hope to understand or contribute.';
+  const title='Explore';
+  const intro='Ways to take part in the work, seasons and everyday life of rural communities—shaped around what is happening locally and what participants hope to understand or contribute.';
   useEffect(()=>{
     if(!isOverview)return;
     const sections=EXPLORE_CATEGORIES.map(category=>document.getElementById(exploreCategorySlug[category])).filter(Boolean) as HTMLElement[];
@@ -110,12 +108,12 @@ function ExploreIndex({activities,selectedCategory}:{activities:Activity[];selec
     <Navigation/>
     <main style={{paddingTop:'clamp(118px,11vw,158px)'}}>
       <header className="wrap explore-intro"><p className="eyebrow" style={{color:ACCENT,margin:'0 0 18px'}}>Participation / Rural China</p><h1 className="display" style={{fontSize:'clamp(62px,9vw,124px)',margin:0}}>{title}</h1><p className="summary">{intro}</p></header>
-      {isOverview?<nav className="wrap tabs" aria-label="Explore categories" style={{paddingBottom:34}}>{EXPLORE_CATEGORIES.map(category=><button type="button" className={`tab ${currentSection===category?'active':''}`} onClick={()=>scrollToCategory(category)} key={category}>{category}</button>)}</nav>:<nav className="wrap tabs" aria-label="Explore categories" style={{paddingBottom:34}}>{EXPLORE_CATEGORIES.map(category=><Link href={`/explore/${exploreCategorySlug[category]}`} className={`tab ${selectedCategory===category?'active':''}`} key={category}>{category}</Link>)}</nav>}
-      {isOverview?EXPLORE_CATEGORIES.map((category,index)=>{
+      <nav className="wrap tabs" aria-label="Explore categories" style={{paddingBottom:34}}>{EXPLORE_CATEGORIES.map(category=><button type="button" className={`tab ${currentSection===category?'active':''}`} onClick={()=>scrollToCategory(category)} key={category}>{category}</button>)}</nav>
+      {EXPLORE_CATEGORIES.map((category,index)=>{
         const items=previewsFor(category);
         const hasMore=items.length<allPreviewsFor(category).length;
         return <section id={exploreCategorySlug[category]} className="category-section" key={category}><div className="wrap"><div className="category-head"><div><p className="eyebrow" style={{color:ACCENT,margin:'0 0 14px'}}>0{index+1} / {categoryCopy[category].kicker}</p><h2 className="display" style={{fontSize:'clamp(44px,6vw,78px)',margin:0}}>{category}</h2></div><p className="summary" style={{margin:'0 0 4px'}}>{categoryCopy[category].description}</p></div><ActivityList category={category} items={items} position={position}/>{hasMore&&<button type="button" className="view-more" onClick={()=>loadMore(category)}>Load More {category} <span>↓</span></button>}</div></section>;
-      }):<section className="category-section"><div className="wrap"><div className="category-head"><div><p className="eyebrow" style={{color:ACCENT,margin:'0 0 14px'}}>Ongoing / By Arrangement</p><h2 className="display" style={{fontSize:'clamp(44px,6vw,78px)',margin:0}}>Ways to Take Part</h2></div><p className="summary" style={{margin:'0 0 4px'}}>Activities remain flexible rather than tied to fixed departures. We shape each visit around the work underway and the needs of the people joining.</p></div><ActivityList category={selectedCategory} items={previewsFor(selectedCategory)} position={position}/></div></section>}
+      })}
     </main><Footer/>
   </div>;
 }
