@@ -708,7 +708,10 @@ async function ensurePublishedStoriesInCms() {
 
 function withStoryDetail<T extends typeof stories.$inferSelect>(row: T, index = 0) {
   const base: EditorialStory = { id: row.id, slug: row.slug, title: row.title, category: inferStoryCategory(row.title, index), date: row.createdAt.toISOString(), location: 'Rural China', excerpt: plainExcerpt(row.content), content: row.content || '', coverImage: row.coverImage || '' };
-  return { ...row, pageContent: normalizeStoryDetail(row.pageContent, base) };
+  const pageContent = normalizeStoryDetail(row.pageContent, base);
+  const rawPage = row.pageContent && typeof row.pageContent === 'object' ? row.pageContent as { admin?: { origin?: string } } : null;
+  if (!rawPage?.admin?.origin && publishedEditorialStories.some(story => story.slug === row.slug)) pageContent.admin = { origin: 'confirmed' };
+  return { ...row, pageContent };
 }
 
 export async function listStories(includeInactive = false) {

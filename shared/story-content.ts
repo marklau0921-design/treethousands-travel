@@ -1,4 +1,5 @@
 import { normalizeEditorialBlocks, type EditorialBlock } from './editorial-blocks';
+import { normalizeContentOrigin, type ContentOrigin } from './content-origin';
 
 export const STORY_CATEGORIES = ['All Stories', 'Brand Stories', 'Village Notes', 'Local Life', 'Journal'] as const;
 export type StoryCategory = Exclude<(typeof STORY_CATEGORIES)[number], 'All Stories'>;
@@ -17,6 +18,7 @@ export type EditorialStory = {
 };
 
 export interface StoryDetailPageContent {
+  admin?: { origin: ContentOrigin };
   meta: { category: StoryCategory; location: string; publishedDate: string; excerpt: string };
   opening: { contextLabel: string; placeLabel: string; chapterLabel: string; recordedLabel: string; paragraphs: string[] };
   inside: { eyebrow: string; title: string; context: string; body: string; images: string[]; backgroundColor: string };
@@ -1087,6 +1089,7 @@ export function createDefaultStoryDetail(story: Pick<EditorialStory, 'title'|'ca
   const prose = paragraphs.filter(p => !p.trim().startsWith('>'));
   const copy = detailCopy[story.category];
   return {
+    admin: { origin: 'confirmed' },
     meta: { category: story.category, location: story.location, publishedDate: story.date.slice(0,10), excerpt: story.excerpt },
     opening: { contextLabel: 'Story Context', placeLabel: 'Place', chapterLabel: 'Chapter', recordedLabel: 'Recorded', paragraphs: prose.slice(0,2) },
     inside: { eyebrow: 'Inside the Story', title: copy.title, context: copy.context, body: prose[2] || story.excerpt, images: [story.coverImage, story.coverImage], backgroundColor: '#e9e3d7' },
@@ -1105,6 +1108,7 @@ export function normalizeStoryDetail(value: unknown, story: Pick<EditorialStory,
   if (!value || typeof value !== 'object') return defaults;
   const page = value as Partial<StoryDetailPageContent>;
   return {
+    admin: { origin: normalizeContentOrigin(page.admin?.origin, 'review') },
     meta: { ...defaults.meta, ...(page.meta ?? {}) }, opening: { ...defaults.opening, ...(page.opening ?? {}), paragraphs: page.opening?.paragraphs ?? defaults.opening.paragraphs },
     inside: { ...defaults.inside, ...(page.inside ?? {}), images: page.inside?.images ?? defaults.inside.images }, quote: { ...defaults.quote, ...(page.quote ?? {}), images: page.quote?.images ?? defaults.quote.images },
     closing: { ...defaults.closing, ...(page.closing ?? {}), paragraphs: page.closing?.paragraphs ?? defaults.closing.paragraphs }, related: { ...defaults.related, ...(page.related ?? {}) },

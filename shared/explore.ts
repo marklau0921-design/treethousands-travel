@@ -1,4 +1,5 @@
 import { normalizeEditorialBlocks, type EditorialBlock } from './editorial-blocks';
+import { normalizeContentOrigin, type ContentOrigin } from './content-origin';
 
 export interface ExploreLinkCard { title: string; description: string; href: string; image: string }
 export interface ExploreStoryCard { category: string; title: string; href: string; image: string }
@@ -40,6 +41,7 @@ export interface ExploreActivityInfo {
 }
 
 export interface ExplorePageContent {
+  admin?: { origin: ContentOrigin };
   homepageCard: { title: string; image: string };
   activity: ExploreActivityInfo;
   activityDetail?: ExploreActivityDetail;
@@ -685,6 +687,7 @@ export function createDefaultExplorePage(slug: string): ExplorePageContent {
     ],
   };
   return {
+    admin: { origin: defaultExploreSlugs.includes(slug) ? 'confirmed' : 'system' },
     homepageCard: { title: copy.title, image: images[(pageIndex % 3) + 1] },
     activity: { ...emptyActivity },
     activityDetail: undefined,
@@ -733,6 +736,7 @@ export function normalizeExplorePage(value: unknown, slug: string): ExplorePageC
     placeStory: { ...defaultActivityDetail.placeStory, ...defaults.activityDetail?.placeStory, ...suppliedDetail.placeStory, paragraphs: suppliedDetail.placeStory?.paragraphs ?? defaults.activityDetail?.placeStory.paragraphs ?? [] },
   } : defaults.activityDetail;
   return {
+    admin: { origin: normalizeContentOrigin(page.admin?.origin, defaultExploreSlugs.includes(slug) ? 'confirmed' : 'review') },
     homepageCard: { ...defaults.homepageCard, ...(page.homepageCard ?? {}) },
     activity: { ...defaults.activity, ...(page.activity ?? {}) },
     activityDetail,
