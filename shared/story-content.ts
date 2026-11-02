@@ -26,6 +26,8 @@ export interface StoryDetailPageContent {
   navigation: { previousLabel: string; nextLabel: string; backgroundColor: string; textColor: string };
   page: { backgroundColor: string; textColor: string; accentColor: string };
   contentBlocks: EditorialBlock[];
+  /** Content for the single shared Our Story / Stories editorial template. */
+  editorialTemplate?: unknown;
 }
 
 const patternStoryImages = {
@@ -1106,6 +1108,6 @@ export function normalizeStoryDetail(value: unknown, story: Pick<EditorialStory,
     meta: { ...defaults.meta, ...(page.meta ?? {}) }, opening: { ...defaults.opening, ...(page.opening ?? {}), paragraphs: page.opening?.paragraphs ?? defaults.opening.paragraphs },
     inside: { ...defaults.inside, ...(page.inside ?? {}), images: page.inside?.images ?? defaults.inside.images }, quote: { ...defaults.quote, ...(page.quote ?? {}), images: page.quote?.images ?? defaults.quote.images },
     closing: { ...defaults.closing, ...(page.closing ?? {}), paragraphs: page.closing?.paragraphs ?? defaults.closing.paragraphs }, related: { ...defaults.related, ...(page.related ?? {}) },
-    navigation: { ...defaults.navigation, ...(page.navigation ?? {}) }, page: { ...defaults.page, ...(page.page ?? {}) }, contentBlocks: normalizeEditorialBlocks(page.contentBlocks),
+    navigation: { ...defaults.navigation, ...(page.navigation ?? {}) }, page: { ...defaults.page, ...(page.page ?? {}) }, contentBlocks: normalizeEditorialBlocks(page.contentBlocks), editorialTemplate: page.editorialTemplate,
   };
 }

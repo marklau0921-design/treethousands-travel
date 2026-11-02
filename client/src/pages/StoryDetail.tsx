@@ -1,40 +1,39 @@
 import { useEffect, useMemo } from 'react';
 import { Link, useRoute } from 'wouter';
 import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
-import EditorialBlocks from '@/components/EditorialBlocks';
 import { trpc } from '@/lib/trpc';
-import { useMediaObjectPosition } from '@/lib/media-position';
 import { inferStoryCategory, mergePublishedStories, normalizeStoryDetail, plainExcerpt, type EditorialStory } from '@/lib/story-content';
+import OurStoryEditorialTemplate from '@/components/OurStoryEditorialTemplate';
+import { ourStoryEditorialPages, type OurStoryEditorialContent } from '@/content/ourStoryEditorialPages';
 
 const DISPLAY = "var(--font-travel-condensed, 'League Gothic', 'Arial Narrow', Impact, sans-serif)";
 const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-serif)";
 
-const supplements = {
-  'Brand Stories': { label: 'The thought behind the journey', context: 'The ideas behind Tree Thousands are shaped on the road. Each encounter asks us to think again about how stories are shared, how trust is built, and what responsible curiosity can look like.', notes: ['Purpose before itinerary', 'Relationships before reach', 'Curiosity without hurry'], reflection: 'We keep returning to the same belief: travel becomes meaningful when attention turns into understanding.' },
-  'Village Notes': { label: 'Observed along the way', context: 'Village life rarely presents itself as a single scene. Meaning accumulates through familiar paths, open courtyards, seasonal work, and conversations that continue while the day moves around them.', notes: ['A path used every morning', 'A door left open', 'A conversation without a schedule'], reflection: 'A village is never a single view. It is a collection of small moments held together by memory and daily use.' },
-  'Local Life': { label: 'Details of the everyday', context: 'Daily life carries knowledge in practical forms: a recipe adjusted by season, a tool held in a familiar way, or a custom repeated without needing to be explained.', notes: ['Knowledge carried by hand', 'Food shaped by season', 'Traditions kept through practice'], reflection: 'Culture remains alive when it belongs to everyday life—not behind glass, but in gestures, work, humour, and hospitality.' },
-  Journal: { label: 'From the field notebook', context: 'A field journal makes room for what falls between destinations: changing weather, an unexpected stop, a half-finished conversation, or a landscape seen differently on the return journey.', notes: ['Weather changing the route', 'A pause between destinations', 'The detail we nearly passed'], reflection: 'Field notes remind us that the unexpected is not a distraction from the journey. Very often, it is the journey.' },
-};
-
-function formatDate(value: string | Date) { return new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(value)); }
+function legacyStoryToSharedTemplate(story:EditorialStory,page:ReturnType<typeof normalizeStoryDetail>):OurStoryEditorialContent {
+  const blockImages=page.contentBlocks.flatMap(block=>block.images||[]);
+  const pool=[story.coverImage,...blockImages,...page.inside.images,...page.quote.images,page.closing.image].filter(Boolean);
+  const image=(index:number)=>({src:pool[index%Math.max(pool.length,1)]||story.coverImage,alt:story.title});
+  const opening=page.opening.paragraphs.length?page.opening.paragraphs:[story.excerpt];
+  return {
+    hero:{image:story.coverImage,alt:story.title,metaLeft:`TREE THOUSANDS / ${page.meta.category.toUpperCase()}`,metaRight:'',title:story.title,subtitle:page.meta.excerpt},
+    beginning:{eyebrow:'01 / THE BEGINNING',title:page.inside.title||story.title,paragraphs:opening,images:[image(1),image(2),image(3),image(4)]},
+    turning:{eyebrow:'02 / THE TURNING POINT',title:page.inside.title||'A Different Way of Seeing.',leftParagraphs:[page.inside.context].filter(Boolean),rightParagraphs:[page.inside.body].filter(Boolean),images:[image(5),image(6),image(7)],captions:['','']},
+    action:{eyebrow:'03 / TAKING PART',title:page.quote.eyebrow||'What Happened Next.',paragraphs:[page.quote.body].filter(Boolean),images:[image(8),image(9),image(10)]},
+    belief:{eyebrow:'04 / WHAT IT MEANS',title:page.closing.eyebrow||'What Stayed With Us.',paragraphs:page.closing.paragraphs.length?page.closing.paragraphs:[story.excerpt],sideParagraphs:[page.inside.context].filter(Boolean),quote:page.quote.quote,images:[image(11),image(12),image(13)]},
+    closing:{eyebrow:'THE STORY CONTINUES',title:page.closing.title,paragraph:page.closing.paragraphs.join(' '),image:image(14)},
+    recommendations:{title:page.related.title||'What We Are Explore',description:'Ongoing ways to take part with care.',backgroundImage:image(15).src},
+    cta:{title:'So, Ready to Take Part?',buttonLabel:'Explore Activities',buttonHref:'/explore',image:image(16).src},
+  };
+}
 
 export default function StoryDetail() {
   const [, params] = useRoute('/stories/article/:slug');
   const { data = [], isLoading } = trpc.cms.listStories.useQuery();
-  const { data: homepageAssets } = trpc.media.getHomepageAssets.useQuery();
-  const getObjectPosition = useMediaObjectPosition();
   const stories = useMemo<EditorialStory[]>(() => {
     const databaseStories = data.map((item, index) => { const detail = item.pageContent; return { id: item.id, slug: item.slug, title: item.title, category: detail.meta.category || inferStoryCategory(item.title, index), date: detail.meta.publishedDate || new Date(item.createdAt).toISOString(), location: detail.meta.location, excerpt: detail.meta.excerpt || plainExcerpt(item.content), content: item.content || '', coverImage: item.coverImage || '', pageContent: detail }; });
     return mergePublishedStories(databaseStories);
   }, [data]);
   const story = stories.find((item) => item.slug === params?.slug);
-  const related = story ? stories.filter((item) => item.slug !== story.slug && (item.category === story.category || relatedFallback(item, story))).slice(0, 3) : [];
-  const storyIndex = story ? stories.findIndex((item) => item.slug === story.slug) : -1;
-  const previous = storyIndex >= 0 ? stories[(storyIndex - 1 + stories.length) % stories.length] : undefined;
-  const next = storyIndex >= 0 ? stories[(storyIndex + 1) % stories.length] : undefined;
-  const navigationTexture = homepageAssets?.cta?.url || '';
-  const navigationTextureOpacity = Math.max(0, Math.min(1, Number(homepageAssets?.cta?.opacity ?? 28) / 100));
 
   useEffect(() => {
     if (!story) return;
@@ -54,37 +53,7 @@ export default function StoryDetail() {
   if (isLoading && !story) return <div style={{ minHeight: '100vh', background: '#fff' }}><Navigation /></div>;
   if (!story) return <div style={{ minHeight: '100vh', background: '#f5f1e8', paddingTop: 180, textAlign: 'center', fontFamily: SANS }}><Navigation /><h1 style={{ fontFamily: DISPLAY, fontSize: 72, textTransform: 'uppercase' }}>Story not found</h1><Link href="/stories">Return to Stories</Link></div>;
   const page = normalizeStoryDetail(story.pageContent, story);
+  const sharedTemplate = (page.editorialTemplate as OurStoryEditorialContent | undefined) || ourStoryEditorialPages[story.slug] || legacyStoryToSharedTemplate(story,page);
+  return <OurStoryEditorialTemplate content={sharedTemplate} />;
 
-  return <div className="story-detail" style={{ fontFamily: SANS, background: page.page.backgroundColor, color: page.page.textColor }}>
-    <style>{`.story-detail .wrap{width:min(1320px,calc(100% - 64px));margin:0 auto}.story-detail .display{font-family:${DISPLAY};font-weight:400;letter-spacing:.04em;line-height:.92;text-transform:uppercase}.story-detail .eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}.story-detail .prose p{font-size:18px;line-height:1.85;letter-spacing:.025em;color:#424b45;margin:0 0 32px}.story-detail .opening-grid{display:grid;grid-template-columns:.38fr 1fr;gap:clamp(45px,8vw,130px);align-items:start}.story-detail .magazine-sheet{width:min(1180px,calc(100% - 64px));margin:0 auto}.story-detail .magazine-collage{display:grid;grid-template-columns:1fr 1.12fr;gap:clamp(24px,5vw,70px);align-items:start}.story-detail .magazine-collage .one{position:static;width:100%;height:auto;aspect-ratio:4/5}.story-detail .magazine-collage .two{position:static;width:100%;height:auto;aspect-ratio:5/4;margin-top:150px}.story-detail .magazine-copy{width:min(880px,82%);margin:70px auto 0}.story-detail .magazine-columns{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,7vw,95px)}.story-detail .photo-pair{display:grid;grid-template-columns:1.08fr .82fr;gap:22px;align-items:start}.story-detail .quote-notes{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(55px,8vw,115px);align-items:start}.story-detail .closing-spread{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(45px,7vw,100px);align-items:center}.story-detail .related{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}.story-detail .adjacent{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.25)}@media(max-width:767px){.story-detail .wrap,.story-detail .magazine-sheet{width:calc(100% - 40px)}.story-detail .prose p{font-size:17px}.story-detail .opening-grid,.story-detail .magazine-columns,.story-detail .photo-pair,.story-detail .quote-notes,.story-detail .closing-spread,.story-detail .related,.story-detail .adjacent,.story-detail .magazine-collage{display:block}.story-detail .magazine-collage .one,.story-detail .magazine-collage .two{position:static;width:100%;height:auto;aspect-ratio:4/3;margin:0 0 20px}.story-detail .magazine-copy{width:100%;margin-top:48px}.story-detail .photo-pair img{height:auto!important;aspect-ratio:4/3;margin-bottom:20px}.story-detail .closing-spread img{height:auto!important;aspect-ratio:4/3;margin-top:40px}.story-detail .related article{margin-bottom:42px}.story-detail .adjacent a{display:block;border-bottom:1px solid rgba(255,255,255,.25)}}`}</style>
-    <style>{`.story-detail .philosophy-copy{width:min(930px,84%);margin:70px auto 0}.story-detail .philosophy-body{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(45px,7vw,90px);align-items:start}@media(max-width:767px){.story-detail .philosophy-copy{width:100%;margin-top:48px}.story-detail .philosophy-body{display:block}}`}</style>
-    <Navigation />
-    <main>
-      <header className="wrap text-center" style={{ padding: 'clamp(145px,16vw,210px) 0 clamp(65px,8vw,105px)' }}>
-        <p className="eyebrow" style={{ color: page.page.accentColor, margin: '0 0 28px' }}>{page.meta.category}</p>
-        <h1 className="display" style={{ fontSize: 'clamp(62px,9.5vw,132px)', maxWidth: 1120, margin: '0 auto 32px' }}>{story.title}</h1>
-        <p className="eyebrow" style={{ margin: 0 }}>{formatDate(page.meta.publishedDate)} · {page.meta.location}</p>
-      </header>
-      <figure className="wrap" style={{ marginBottom: 'clamp(80px,10vw,140px)' }}><img src={story.coverImage} alt={story.title} style={{ width: '100%', height: 'clamp(480px,67vw,850px)', objectFit: 'cover', objectPosition: getObjectPosition(story.coverImage), display: 'block' }} /></figure>
-
-      <section className="wrap opening-grid" style={{ paddingBottom: 'clamp(90px,12vw,170px)' }}>
-        <aside><p className="eyebrow" style={{ color: page.page.accentColor, margin: '0 0 28px' }}>{page.opening.contextLabel}</p><dl style={{ margin: 0 }}><dt className="eyebrow" style={{ opacity: .55, marginBottom: 7 }}>{page.opening.placeLabel}</dt><dd style={{ margin: '0 0 24px', fontSize: 16 }}>{page.meta.location}</dd><dt className="eyebrow" style={{ opacity: .55, marginBottom: 7 }}>{page.opening.chapterLabel}</dt><dd style={{ margin: '0 0 24px', fontSize: 16 }}>{page.meta.category}</dd><dt className="eyebrow" style={{ opacity: .55, marginBottom: 7 }}>{page.opening.recordedLabel}</dt><dd style={{ margin: 0, fontSize: 16 }}>{formatDate(page.meta.publishedDate)}</dd></dl></aside>
-        <div><p style={{ fontSize: 'clamp(27px,3.2vw,44px)', lineHeight: 1.3, letterSpacing: '-.012em', margin: '0 0 55px', maxWidth: 850 }}>{page.meta.excerpt}</p><div className="prose">{page.opening.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div></div>
-      </section>
-
-      {page.contentBlocks.length > 0 ? <EditorialBlocks blocks={page.contentBlocks} /> : <>
-      <section style={{ background: page.inside.backgroundColor, padding: 'clamp(85px,10vw,145px) 0' }}><div className="magazine-sheet"><div className="magazine-collage">{page.inside.images[0] && <img className="one" src={page.inside.images[0]} alt={`A detail from ${page.meta.location}`} onError={event => { event.currentTarget.style.display = 'none'; }} style={{ objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(page.inside.images[0]) }} />}{page.inside.images[1] && <img className="two" src={page.inside.images[1]} alt={`Life around ${page.meta.location}`} onError={event => { event.currentTarget.style.display = 'none'; }} style={{ objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(page.inside.images[1]) }} />}</div><div className="magazine-copy"><p className="eyebrow" style={{ color: page.page.accentColor, margin: '0 0 22px' }}>{page.inside.eyebrow}</p><h2 className="display" style={{ fontSize: 'clamp(48px,6vw,82px)', margin: '0 0 38px' }}>{page.inside.title}</h2><div className="magazine-columns"><p style={{ fontSize: 18, lineHeight: 1.78, letterSpacing: '.025em', margin: 0 }}>{page.inside.context}</p><p style={{ fontSize: 18, lineHeight: 1.78, letterSpacing: '.025em', margin: 0 }}>{page.inside.body}</p></div></div></div></section>
-
-      <section style={{ background: page.quote.backgroundColor, padding: 'clamp(90px,11vw,155px) 0' }}><div className="magazine-sheet"><div className="photo-pair"><img src={page.quote.images[0]} alt={`A wider view of ${page.meta.location}`} style={{ width: '100%', height: 560, objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(page.quote.images[0]) }} /><img src={page.quote.images[1]} alt={`An observed moment in ${page.meta.location}`} style={{ width: '100%', height: 470, objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(page.quote.images[1]) }} /></div><div className="philosophy-copy"><p className="eyebrow" style={{ color: page.page.accentColor, margin: '0 0 24px' }}>{page.quote.eyebrow}</p><blockquote style={{ margin: '0 0 48px' }}><p style={{ fontSize: 'clamp(34px,4.7vw,62px)', lineHeight: 1.12, letterSpacing: '-.025em', margin: 0 }}>“{page.quote.quote}”</p></blockquote><p style={{ maxWidth: 720, fontSize: 17, lineHeight: 1.78, letterSpacing: '.025em', margin: 0 }}>{page.quote.body}</p></div></div></section>
-
-      <section style={{ background: page.closing.backgroundColor, padding: 'clamp(90px,11vw,155px) 0' }}><div className="magazine-sheet closing-spread"><div><p className="eyebrow" style={{ color: page.page.accentColor, margin: '0 0 24px' }}>{page.closing.eyebrow}</p><p style={{ fontSize: 'clamp(28px,3.4vw,47px)', lineHeight: 1.24, letterSpacing: '-.018em', margin: '0 0 38px' }}>{page.closing.title}</p><div className="prose">{page.closing.paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}</div></div><img src={page.closing.image} alt={`A final view from ${page.meta.location}`} style={{ width: '100%', height: 650, objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(page.closing.image) }} /></div></section>
-      </>}
-
-      <section style={{ background: page.related.backgroundColor, padding: 'clamp(85px,10vw,140px) 0' }}><div className="wrap"><p className="eyebrow" style={{ color: page.page.accentColor, margin: '0 0 18px' }}>{page.related.eyebrow}</p><h2 className="display" style={{ fontSize: 'clamp(50px,7vw,88px)', margin: '0 0 52px' }}>{page.related.title}</h2><div className="related">{related.map((item) => <article key={item.slug}><Link href={`/stories/article/${item.slug}`}><img src={item.coverImage} alt={item.title} style={{ width: '100%', height: 340, objectFit: 'cover', display: 'block', objectPosition: getObjectPosition(item.coverImage) }} /><p className="eyebrow" style={{ color: page.page.accentColor, margin: '20px 0 10px' }}>{item.category}</p><h3 style={{ fontSize: 25, lineHeight: 1.25, fontWeight: 500, margin: 0 }}>{item.title}</h3></Link></article>)}</div></div></section>
-      <nav className="adjacent" style={{ position: 'relative', overflow: 'hidden', background: page.navigation.backgroundColor, color: page.navigation.textColor }}>{navigationTexture && <div aria-hidden="true" style={{ position: 'absolute', inset: 0, backgroundImage: `url(${navigationTexture})`, backgroundSize: '420px 420px', backgroundRepeat: 'repeat', opacity: navigationTextureOpacity, pointerEvents: 'none' }} />}{previous && <Link href={`/stories/article/${previous.slug}`} style={{ position: 'relative', zIndex: 1, padding: 'clamp(48px,7vw,95px)' }}><p className="eyebrow" style={{ opacity: .7, margin: '0 0 18px' }}>{page.navigation.previousLabel}</p><h3 className="display" style={{ fontSize: 'clamp(35px,4vw,58px)', margin: 0 }}>{previous.title}</h3></Link>}{next && <Link href={`/stories/article/${next.slug}`} style={{ position: 'relative', zIndex: 1, padding: 'clamp(48px,7vw,95px)', textAlign: 'right' }}><p className="eyebrow" style={{ opacity: .7, margin: '0 0 18px' }}>{page.navigation.nextLabel}</p><h3 className="display" style={{ fontSize: 'clamp(35px,4vw,58px)', margin: 0 }}>{next.title}</h3></Link>}</nav>
-    </main>
-    <Footer />
-  </div>;
 }
-
-function relatedFallback(item: EditorialStory, story: EditorialStory) { return Math.abs(String(item.id).length - String(story.id).length) < 3; }
