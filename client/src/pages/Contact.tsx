@@ -272,6 +272,7 @@ const COUNTRIES = [
 ];
 
 export default function Contact() {
+  const { data: contactSettings } = trpc.contactSettings.get.useQuery();
   const [formData, setFormData] = useState({
     destination: '',
     month: '',
@@ -438,7 +439,7 @@ export default function Contact() {
               Plan Your Journey
             </h1>
             <p className="text-[#555555] max-w-2xl mx-auto text-lg leading-relaxed" style={{color: '#6b6b6b', fontSize: '15px', fontFamily: 'Lato, sans-serif'}}>
-              We'll be in touch shortly after you submit the form, matching you with a Travel Expert and setting up a time to talk – over email, phone or video call. For an immediate conversation, simply call us.
+              We'll be in touch shortly after you submit the form, matching you with a Travel Expert and setting up a time to talk – over email, phone or video call. For an immediate conversation, message us on WhatsApp.
             </p>
           </div>
 
@@ -739,10 +740,11 @@ export default function Contact() {
                 {/* Call Today Section */}
                 <div className="w-full flex flex-col items-center px-8 pt-6 pb-4">
                   <Phone className="w-6 h-6 text-[#1a1a1a] mb-2" />
-                  <h3 className="font-bold uppercase tracking-widest text-sm mb-2 text-[#1a1a1a]">Call Us Today</h3>
-                  <a href="tel:+61494788081" className="font-bold text-lg hover:underline block mb-2" style={{color:'#e0457b', fontFamily: 'Brandon Grotesque', letterSpacing: '0.12em'}}>
-                    +61 494788081
+                  <h3 className="font-bold uppercase tracking-widest text-sm mb-2 text-[#1a1a1a]">Contact Us Today</h3>
+                  <a href={`https://wa.me/${(contactSettings?.whatsappNumber || '').replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="font-bold text-lg hover:underline block mb-2" style={{color:'#e0457b', fontFamily: 'Brandon Grotesque', letterSpacing: '0.12em'}}>
+                    {contactSettings?.whatsappNumber || '+61 494788081'}
                   </a>
+                  {contactSettings?.email && <a href={`mailto:${contactSettings.email}`} className="text-sm hover:underline mb-2" style={{color:'#666'}}>{contactSettings.email}</a>}
                   <p className="text-sm text-[#666666]" style={{letterSpacing: '0.03em'}}>
                     We're open at 9.00am
                   </p>

@@ -97,9 +97,9 @@ export default function Home() {
     ? heroBackgroundImages
     : (apiBanners && apiBanners.length > 0) ? apiBanners.map((b) => b.url) : [];
   const explorationCategories: Trip[] = explorePages?.length
-    ? explorePages.flatMap((item)=>{const page=normalizeExplorePage(item.pageContent,item.slug);if(!page.activity.enabled)return[];const card=page.homepageCard;const image=item.slug==='build-with-what-is-already-here'?'/images/explore/build-together/reference/10-group-roof.jpg':(card.image||page.hero.image);return[{id:item.id,title:card.title||page.hero.title,buttonText:'View Activity',image,href:`/explore/activity/${item.slug}`}]})
+    ? explorePages.flatMap((item)=>{const page=normalizeExplorePage(item.pageContent,item.slug);if(!page.activity.enabled)return[];const card=page.homepageCard;return[{id:item.id,title:card.title||page.hero.title,buttonText:page.activity.registrationLabel||'View Activity',image:card.image||page.hero.image,href:`/explore/activity/${item.slug}`}]})
     : exploreSection.content.cards.map((card,index)=>({id:index,title:card.title,buttonText:card.buttonLabel,image:card.image,href:card.href}));
-  const exploreBackgroundImage = activeBanners[1] || activeBanners[0] || exploreSection.content.backgroundImage;
+  const exploreBackgroundImage = exploreSection.content.backgroundImage || activeBanners[1] || activeBanners[0];
   const heroTitle = heroSection.content.title;
   const heroSubtitle = heroSection.content.subtitle;
 

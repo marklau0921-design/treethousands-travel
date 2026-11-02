@@ -18,8 +18,6 @@ const categoryCopy: Record<ExploreCategory,{kicker:string;description:string}> =
 };
 type Activity = { slug:string; title:string; content:ExplorePageContent };
 type ActivityPreview = { id:string; title:string; category:ExploreCategory; status:string; excerpt:string; image:string; href:string; sample?:boolean };
-const BUILD_SLUG='build-with-what-is-already-here';
-const BUILD_ARCHIVE_IMAGE='/images/explore/build-together/reference/02-opening-work.jpg';
 const SAMPLE_ACTIVITIES:ActivityPreview[]=[
   {id:'sample-village-day',title:'Share a Day of Village Life',category:'Village Life',status:'Ongoing · Small Groups',excerpt:'Walk familiar paths, prepare food and spend unhurried time within the ordinary life of the village.',image:'/images/our-way-of-travel/entering-village.jpg',href:'/join-us/contact',sample:true},
   {id:'sample-nature-forest',title:'Walk Into the Forest Together',category:'Nature & Landscape',status:'Seasonal · Half Day',excerpt:'Enter the mountain forest slowly, noticing its plants, water, changing light and local knowledge.',image:'/images/stories/into-the-forest-together/group-in-forest.jpg',href:'/join-us/contact',sample:true},
@@ -32,7 +30,7 @@ const SAMPLE_ACTIVITIES:ActivityPreview[]=[
 
 function toPreview(item:Activity):ActivityPreview{
   const category=item.content.activityDetail?.category??'Village Life';
-  return {id:item.slug,title:item.title,category,status:item.content.activity.statusLabel,excerpt:item.content.activityDetail?.excerpt??item.content.hero.subtitle,image:item.slug===BUILD_SLUG?BUILD_ARCHIVE_IMAGE:(item.content.homepageCard.image||item.content.hero.image),href:`/explore/activity/${item.slug}`};
+  return {id:item.slug,title:item.title,category,status:item.content.activity.statusLabel,excerpt:item.content.activityDetail?.excerpt??item.content.hero.subtitle,image:item.content.homepageCard.image||item.content.hero.image,href:`/explore/activity/${item.slug}`};
 }
 
 export default function ExplorePage() {
@@ -123,5 +121,5 @@ function ActivityList({category,items,position}:{category:ExploreCategory;items:
 }
 
 function ActivityCard({item,className='',position}:{item:ActivityPreview;className?:string;position:(url:string)=>string}){
-  return <article className={`activity-card ${className}`}><Link href={item.href} className="activity-link"><div className="activity-frame"><img src={item.image} alt={item.title} className="image" style={{objectPosition:item.id===BUILD_SLUG?'center center':position(item.image)}}/></div><p className="eyebrow activity-meta">{item.category} · {item.status}</p><h3 className="activity-title">{item.title}</h3><p className="summary" style={{margin:'0 0 19px'}}>{item.excerpt}</p><p className="eyebrow activity-action">{item.sample?'Register Interest →':'Explore Activity →'}</p></Link></article>;
+  return <article className={`activity-card ${className}`}><Link href={item.href} className="activity-link"><div className="activity-frame"><img src={item.image} alt={item.title} className="image" style={{objectPosition:position(item.image)}}/></div><p className="eyebrow activity-meta">{item.category} · {item.status}</p><h3 className="activity-title">{item.title}</h3><p className="summary" style={{margin:'0 0 19px'}}>{item.excerpt}</p><p className="eyebrow activity-action">{item.sample?'Register Interest →':'Explore Activity →'}</p></Link></article>;
 }
