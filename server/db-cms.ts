@@ -873,8 +873,11 @@ export async function listHomepageSections(){
   }
   const storiesRow=rows.find(row=>row.sectionKey==='stories');
   if(storiesRow){
+    let rawContent:Record<string,unknown>={};
+    if(typeof storiesRow.content==='string'){try{rawContent=JSON.parse(storiesRow.content)}catch{rawContent={}}}
+    else if(storiesRow.content&&typeof storiesRow.content==='object')rawContent=storiesRow.content as Record<string,unknown>;
     const content=normalizeHomepageSection('stories',storiesRow.content) as HomepageStoriesContent;
-    if(!content.categoryCoversSynced){
+    if(rawContent.categoryCoversSynced!==true){
       const syncedContent={...content,categoryCoversSynced:true,cards:content.cards.map(card=>({...card,image:HOMEPAGE_STORY_CATEGORY_COVERS[card.title]||card.image}))};
       await db.update(homepageSections).set({content:syncedContent,updatedAt:new Date()}).where(eq(homepageSections.id,storiesRow.id));
       storiesRow.content=syncedContent;
