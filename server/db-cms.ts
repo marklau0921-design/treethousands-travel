@@ -2,7 +2,7 @@ import { eq, desc, and, sql } from "drizzle-orm";
 import { normalizeOurStoryPage, ourWayOfTravelPageContent, whatWeBelievePageContent, whyWeStartedPageContent } from "../shared/our-story";
 import { defaultExploreSections, normalizeExplorePage } from "../shared/explore";
 import { inferStoryCategory, normalizeStoryDetail, plainExcerpt, publishedEditorialStories, type EditorialStory } from "../shared/story-content";
-import { defaultHomepageSections, normalizeHomepageSection, type HomepageSectionKey } from "../shared/homepage";
+import { defaultHomepageSections, HOMEPAGE_STORY_CATEGORY_COVERS, normalizeHomepageSection, type HomepageSectionKey, type HomepageStoriesContent } from "../shared/homepage";
 import { getDb, getPool } from "./db";
 import {
   cities, tags, experiences, experienceTags, experienceTypes, experienceDetails, experienceLabels,
@@ -870,6 +870,15 @@ export async function listHomepageSections(){
     if(hero&&legacyHero){let heroImages:string[]=[];try{const parsed=JSON.parse(legacyHero.backgroundImage||'');heroImages=Array.isArray(parsed)?parsed.filter(Boolean):[]}catch{if(legacyHero.backgroundImage)heroImages=[legacyHero.backgroundImage]}hero.content={...(hero.content as any),title:legacyHero.title,subtitle:legacyHero.subtitle,...(heroImages.length?{images:heroImages}:{})};hero.isVisible=legacyHero.isVisible}
     const intro=seed.find(item=>item.sectionKey==='introduction');if(intro&&legacyIntro){intro.content={...(intro.content as any),title:legacyIntro.title,content:legacyIntro.content};intro.isVisible=legacyIntro.isVisible}
     try{await db.insert(homepageSections).values(seed)}catch(error:any){if(error?.code!=="ER_DUP_ENTRY")throw error}rows=await db.select().from(homepageSections).orderBy(homepageSections.sortOrder)
+  }
+  const storiesRow=rows.find(row=>row.sectionKey==='stories');
+  if(storiesRow){
+    const content=normalizeHomepageSection('stories',storiesRow.content) as HomepageStoriesContent;
+    if(!content.categoryCoversSynced){
+      const syncedContent={...content,categoryCoversSynced:true,cards:content.cards.map(card=>({...card,image:HOMEPAGE_STORY_CATEGORY_COVERS[card.title]||card.image}))};
+      await db.update(homepageSections).set({content:syncedContent,updatedAt:new Date()}).where(eq(homepageSections.id,storiesRow.id));
+      storiesRow.content=syncedContent;
+    }
   }
   return rows.map(row=>({...row,content:normalizeHomepageSection(row.sectionKey as HomepageSectionKey,row.content)}));
 }
