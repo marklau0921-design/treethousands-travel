@@ -1,4 +1,5 @@
 import { normalizeEditorialBlocks, type EditorialBlock } from './editorial-blocks';
+import { normalizeContentOrigin, type ContentOrigin } from './content-origin';
 
 export interface OurStoryPillar {
   title: string;
@@ -14,6 +15,7 @@ export type OurStoryExtraSection =
   | ({ id: string; type: 'closing' } & OurStoryPageContent['closing']);
 
 export interface OurStoryPageContent {
+  admin?: { origin: ContentOrigin };
   hero: {
     eyebrow: string;
     title: string;
@@ -341,6 +343,7 @@ export function createDefaultOurStoryPage(title: string, summary: string, image 
   if (title === 'Our Way of Travel') return ourWayOfTravelPageContent;
   const isOriginal = title === 'Why We Started';
   return {
+    admin: { origin: 'confirmed' },
     hero: {
       eyebrow: isOriginal ? 'The beginning of TreeThousands' : 'The TreeThousands story',
       title,
@@ -419,6 +422,7 @@ export function normalizeOurStoryPage(value: unknown, title: string, summary: st
   if (!value || typeof value !== 'object') return defaults;
   const page = value as Partial<OurStoryPageContent>;
   return {
+    admin: { origin: normalizeContentOrigin(page.admin?.origin, ['Why We Started', 'What We Believe', 'Our Way of Travel'].includes(title) ? 'confirmed' : 'review') },
     hero: { ...defaults.hero, ...(page.hero ?? {}) },
     introduction: { ...defaults.introduction, ...(page.introduction ?? {}), paragraphs: page.introduction?.paragraphs ?? defaults.introduction.paragraphs },
     quote: { ...defaults.quote, ...(page.quote ?? {}) },
