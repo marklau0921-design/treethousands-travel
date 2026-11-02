@@ -412,6 +412,8 @@ export function createDefaultOurStoryPage(title: string, summary: string, image 
 
 export function normalizeOurStoryPage(value: unknown, title: string, summary: string, image = ''): OurStoryPageContent {
   const defaults = createDefaultOurStoryPage(title, summary, image);
+  const knownFillerPage = ['Why Rural China', 'Growing Together'].includes(title);
+  if (knownFillerPage) defaults.admin = { origin: 'placeholder' };
   if (typeof value === 'string') {
     try {
       value = JSON.parse(value);
@@ -422,7 +424,7 @@ export function normalizeOurStoryPage(value: unknown, title: string, summary: st
   if (!value || typeof value !== 'object') return defaults;
   const page = value as Partial<OurStoryPageContent>;
   return {
-    admin: { origin: normalizeContentOrigin(page.admin?.origin, ['Why We Started', 'What We Believe', 'Our Way of Travel'].includes(title) ? 'confirmed' : 'placeholder') },
+    admin: { origin: knownFillerPage ? 'placeholder' : normalizeContentOrigin(page.admin?.origin, ['Why We Started', 'What We Believe', 'Our Way of Travel'].includes(title) ? 'confirmed' : 'placeholder') },
     hero: { ...defaults.hero, ...(page.hero ?? {}) },
     introduction: { ...defaults.introduction, ...(page.introduction ?? {}), paragraphs: page.introduction?.paragraphs ?? defaults.introduction.paragraphs },
     quote: { ...defaults.quote, ...(page.quote ?? {}) },
