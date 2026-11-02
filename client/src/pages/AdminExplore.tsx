@@ -15,8 +15,7 @@ const ROLE_ICON_OPTIONS=[
 const panel:React.CSSProperties={background:'#fff',border:'1px solid #e6e6e6',padding:28,marginBottom:20};
 const input:React.CSSProperties={width:'100%',padding:'10px 12px',fontSize:13,background:'#f5f5f5',border:'1px solid #ddd',outline:'none',boxSizing:'border-box'};
 const label:React.CSSProperties={display:'block',fontSize:11,fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',color:'#777',marginBottom:7};
-const originColors:Record<ContentOrigin,{color:string;background:string}>={confirmed:{color:'#237a3b',background:'#eaf7ed'},placeholder:{color:'#a25b00',background:'#fff3df'},system:{color:'#555',background:'#ececec'},review:{color:'#8b3aa8',background:'#f6eafb'}};
-function OriginBadge({origin}:{origin:ContentOrigin}){const option=CONTENT_ORIGIN_OPTIONS.find(item=>item.value===origin)!;return <span style={{display:'inline-flex',padding:'4px 8px',fontSize:10,fontWeight:700,letterSpacing:'.05em',textTransform:'uppercase',...originColors[origin]}}>{option.label}</span>}
+function OriginBadge({origin}:{origin:ContentOrigin|'review'}){return origin==='confirmed'?null:<span style={{display:'inline-flex',padding:'4px 8px',fontSize:10,fontWeight:700,letterSpacing:'.05em',textTransform:'uppercase',color:'#a25b00',background:'#fff3df'}}>Filler</span>}
 type Form={slug:string;title:string;isVisible:boolean;sortOrder:number;pageContent:ExplorePageContent};
 function Field({name,help,children}:{name:string;help?:string;children:React.ReactNode}){return <div><label style={label}>{name}</label>{children}{help&&<p style={{fontSize:11,color:'#999',lineHeight:1.5,margin:'6px 0 0'}}>{help}</p>}</div>}
 function Text({value,onChange,area=false,rows=3}:{value:string;onChange:(v:string)=>void;area?:boolean;rows?:number}){return area?<textarea rows={rows} value={value} onChange={e=>onChange(e.target.value)} style={{...input,resize:'vertical'}}/>:<input value={value} onChange={e=>onChange(e.target.value)} style={input}/>}

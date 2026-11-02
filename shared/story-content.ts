@@ -1108,7 +1108,7 @@ export function normalizeStoryDetail(value: unknown, story: Pick<EditorialStory,
   if (!value || typeof value !== 'object') return defaults;
   const page = value as Partial<StoryDetailPageContent>;
   return {
-    admin: { origin: normalizeContentOrigin(page.admin?.origin, 'review') },
+    admin: { origin: normalizeContentOrigin(page.admin?.origin, 'placeholder') },
     meta: { ...defaults.meta, ...(page.meta ?? {}) }, opening: { ...defaults.opening, ...(page.opening ?? {}), paragraphs: page.opening?.paragraphs ?? defaults.opening.paragraphs },
     inside: { ...defaults.inside, ...(page.inside ?? {}), images: page.inside?.images ?? defaults.inside.images }, quote: { ...defaults.quote, ...(page.quote ?? {}), images: page.quote?.images ?? defaults.quote.images },
     closing: { ...defaults.closing, ...(page.closing ?? {}), paragraphs: page.closing?.paragraphs ?? defaults.closing.paragraphs }, related: { ...defaults.related, ...(page.related ?? {}) },

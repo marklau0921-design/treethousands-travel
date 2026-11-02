@@ -687,7 +687,7 @@ export function createDefaultExplorePage(slug: string): ExplorePageContent {
     ],
   };
   return {
-    admin: { origin: defaultExploreSlugs.includes(slug) ? 'confirmed' : 'system' },
+    admin: { origin: defaultExploreSlugs.includes(slug) ? 'confirmed' : 'placeholder' },
     homepageCard: { title: copy.title, image: images[(pageIndex % 3) + 1] },
     activity: { ...emptyActivity },
     activityDetail: undefined,
@@ -736,7 +736,7 @@ export function normalizeExplorePage(value: unknown, slug: string): ExplorePageC
     placeStory: { ...defaultActivityDetail.placeStory, ...defaults.activityDetail?.placeStory, ...suppliedDetail.placeStory, paragraphs: suppliedDetail.placeStory?.paragraphs ?? defaults.activityDetail?.placeStory.paragraphs ?? [] },
   } : defaults.activityDetail;
   return {
-    admin: { origin: normalizeContentOrigin(page.admin?.origin, defaultExploreSlugs.includes(slug) ? 'confirmed' : 'review') },
+    admin: { origin: normalizeContentOrigin(page.admin?.origin, defaultExploreSlugs.includes(slug) ? 'confirmed' : 'placeholder') },
     homepageCard: { ...defaults.homepageCard, ...(page.homepageCard ?? {}) },
     activity: { ...defaults.activity, ...(page.activity ?? {}) },
     activityDetail,
