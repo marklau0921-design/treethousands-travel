@@ -17,16 +17,7 @@ const categoryCopy: Record<ExploreCategory,{kicker:string;description:string}> =
   'People & Culture': { kicker:'Craft / Knowledge / Seasons', description:'Learn alongside people whose skills, materials and seasonal practices continue through everyday use.' },
 };
 type Activity = { slug:string; title:string; content:ExplorePageContent };
-type ActivityPreview = { id:string; title:string; category:ExploreCategory; status:string; excerpt:string; image:string; href:string; sample?:boolean };
-const SAMPLE_ACTIVITIES:ActivityPreview[]=[
-  {id:'sample-village-day',title:'Share a Day of Village Life',category:'Village Life',status:'Ongoing · Small Groups',excerpt:'Walk familiar paths, prepare food and spend unhurried time within the ordinary life of the village.',image:'/images/our-way-of-travel/entering-village.jpg',href:'/join-us/contact',sample:true},
-  {id:'sample-nature-forest',title:'Walk Into the Forest Together',category:'Nature & Landscape',status:'Seasonal · Half Day',excerpt:'Enter the mountain forest slowly, noticing its plants, water, changing light and local knowledge.',image:'/images/stories/into-the-forest-together/group-in-forest.jpg',href:'/join-us/contact',sample:true},
-  {id:'sample-nature-water',title:'Follow Water Through the Valley',category:'Nature & Landscape',status:'Weather Dependent',excerpt:'Trace the relationship between rainfall, forest, cultivated land and the villages below.',image:'/images/our-way-of-travel/waterfall.jpg',href:'/join-us/contact',sample:true},
-  {id:'sample-nature-land',title:'Read the Mountain Landscape',category:'Nature & Landscape',status:'Flexible · By Arrangement',excerpt:'Look across tea slopes, cloud seas and working land to understand how altitude shapes everyday life.',image:'/images/explore/build-together/place/yaan-mountain-panorama.jpg',href:'/join-us/contact',sample:true},
-  {id:'sample-culture-clay',title:'Meet the Hands Behind Local Clay',category:'People & Culture',status:'Small Groups · 3 Hours',excerpt:'Spend time with practiced hands and learn how useful objects carry technique, memory and place.',image:'/images/stories/the-rhythm-of-clay/craftsman-with-lids.jpg',href:'/join-us/contact',sample:true},
-  {id:'sample-culture-table',title:'Cook and Share a Village Meal',category:'People & Culture',status:'By Arrangement · Half Day',excerpt:'Prepare a meal together and discover how recipes, ingredients and hospitality hold local stories.',image:'/images/what-we-believe/preparing-together.jpg',href:'/join-us/contact',sample:true},
-  {id:'sample-culture-pattern',title:'Make a Pattern Together',category:'People & Culture',status:'Workshop · Small Groups',excerpt:'Learn through repetition, material and conversation while making something collectively.',image:'/images/stories/a-pattern-made-together/working-together.jpg',href:'/join-us/contact',sample:true},
-];
+type ActivityPreview = { id:string; title:string; category:ExploreCategory; status:string; excerpt:string; image:string; href:string };
 
 function toPreview(item:Activity):ActivityPreview{
   const category=item.content.activityDetail?.category??'Village Life';
@@ -55,11 +46,7 @@ function ExploreIndex({activities}:{activities:Activity[]}){
     'People & Culture':3,
   });
   const realPreviews=activities.map(toPreview);
-  const allPreviewsFor=(category:ExploreCategory)=>{
-    const real=realPreviews.filter(item=>item.category===category);
-    const samples=SAMPLE_ACTIVITIES.filter(item=>item.category===category&&!real.some(entry=>entry.title===item.title));
-    return [...real,...samples];
-  };
+  const allPreviewsFor=(category:ExploreCategory)=>realPreviews.filter(item=>item.category===category);
   const previewsFor=(category:ExploreCategory)=>{
     const items=allPreviewsFor(category);
     return isOverview?items.slice(0,visibleCounts[category]):items;
@@ -121,5 +108,5 @@ function ActivityList({category,items,position}:{category:ExploreCategory;items:
 }
 
 function ActivityCard({item,className='',position}:{item:ActivityPreview;className?:string;position:(url:string)=>string}){
-  return <article className={`activity-card ${className}`}><Link href={item.href} className="activity-link"><div className="activity-frame"><img src={item.image} alt={item.title} className="image" style={{objectPosition:position(item.image)}}/></div><p className="eyebrow activity-meta">{item.category} · {item.status}</p><h3 className="activity-title">{item.title}</h3><p className="summary" style={{margin:'0 0 19px'}}>{item.excerpt}</p><p className="eyebrow activity-action">{item.sample?'Register Interest →':'Explore Activity →'}</p></Link></article>;
+  return <article className={`activity-card ${className}`}><Link href={item.href} className="activity-link"><div className="activity-frame"><img src={item.image} alt={item.title} className="image" style={{objectPosition:position(item.image)}}/></div><p className="eyebrow activity-meta">{item.category} · {item.status}</p><h3 className="activity-title">{item.title}</h3><p className="summary" style={{margin:'0 0 19px'}}>{item.excerpt}</p><p className="eyebrow activity-action">Explore Activity →</p></Link></article>;
 }
