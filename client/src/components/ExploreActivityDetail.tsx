@@ -156,7 +156,7 @@ export default function ExploreActivityDetail({
     title: item.title,
     summary: item.description,
     description: item.description,
-    image: gallery[index] || gallery[0],
+    image: item.image || gallery[index] || gallery[0],
     note: detail.currentWork.paragraphs[index % Math.max(1, detail.currentWork.paragraphs.length)] || detail.participation.introduction,
   }));
 

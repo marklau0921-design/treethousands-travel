@@ -14,7 +14,7 @@ export interface ExploreActivityDetail {
   gallery: string[];
   purpose: { eyebrow: string; title: string; paragraphs: string[]; image: string };
   currentWork: { eyebrow: string; title: string; paragraphs: string[]; images: string[] };
-  participation: { eyebrow: string; title: string; introduction: string; items: Array<{ title: string; description: string }> };
+  participation: { eyebrow: string; title: string; introduction: string; items: Array<{ title: string; description: string; image?: string }> };
   fit: { eyebrow: string; title: string; introduction: string; items: string[] };
   flexibility: { eyebrow: string; title: string; paragraphs: string[]; points: string[]; image: string };
   people: { eyebrow: string; title: string; paragraphs: string[]; images: string[] };
@@ -233,11 +233,11 @@ export function createDefaultExplorePage(slug: string): ExplorePageContent {
       participation: {
         eyebrow: 'The Rhythm of the Day', title: 'See conservation through the work that sustains it.', introduction: 'The exact sequence follows the base schedule and the needs of the animals.',
         items: [
-          { title: 'Meet the Keepers', description: 'Receive an introduction to safety, hygiene, animal welfare and the day’s approved tasks.' },
-          { title: 'Prepare the Habitat', description: 'Help clean a designated unoccupied area and understand why hygiene matters.' },
-          { title: 'Work With Bamboo', description: 'Sort, carry or prepare fresh bamboo according to keeper instructions.' },
-          { title: 'Make Nutritional Food', description: 'Learn how supplementary food is prepared and portioned for panda care.' },
-          { title: 'Observe Quietly', description: 'Watch feeding or natural behaviour from an approved distance without disturbing the animal.' },
+          { title: 'Meet the Keepers', description: 'Receive an introduction to safety, hygiene, animal welfare and the day’s approved tasks.', image: pandaConservationGallery[3] },
+          { title: 'Prepare the Habitat', description: 'Help clean a designated unoccupied area and understand why hygiene matters.', image: pandaConservationGallery[0] },
+          { title: 'Work With Bamboo', description: 'Sort, carry or prepare fresh bamboo according to keeper instructions.', image: pandaConservationGallery[2] },
+          { title: 'Make Nutritional Food', description: 'Learn how supplementary food is prepared and portioned for panda care.', image: pandaConservationGallery[1] },
+          { title: 'Observe Quietly', description: 'Watch feeding or natural behaviour from an approved distance without disturbing the animal.', image: pandaConservationGallery[6] },
         ],
       },
       fit: { eyebrow: 'Is This for You?', title: 'Curiosity must be matched by patience and respect.', introduction: 'No animal-care experience is required, but participants must be comfortable following strict instructions.', items: ['You can follow hygiene and safety procedures without exception.', 'You understand that animal welfare takes priority over photographs or contact.', 'You can complete light cleaning, carrying and food-preparation tasks.', 'You are comfortable with a schedule that may change on the day.', 'You are willing to observe quietly and respect staff-only areas.'] },
@@ -939,7 +939,15 @@ export function normalizeExplorePage(value: unknown, slug: string): ExplorePageC
     gallery: slug === 'a-day-with-giant-panda-keepers' ? defaults.activityDetail?.gallery ?? [] : suppliedDetail.gallery?.length ? suppliedDetail.gallery : defaults.activityDetail?.gallery ?? [],
     purpose: { ...defaultActivityDetail.purpose, ...defaults.activityDetail?.purpose, ...suppliedDetail.purpose, paragraphs: suppliedDetail.purpose?.paragraphs ?? defaults.activityDetail?.purpose.paragraphs ?? [] },
     currentWork: { ...defaultActivityDetail.currentWork, ...defaults.activityDetail?.currentWork, ...suppliedDetail.currentWork, paragraphs: suppliedDetail.currentWork?.paragraphs ?? defaults.activityDetail?.currentWork.paragraphs ?? [], images: suppliedDetail.currentWork?.images ?? defaults.activityDetail?.currentWork.images ?? [] },
-    participation: { ...defaultActivityDetail.participation, ...defaults.activityDetail?.participation, ...suppliedDetail.participation, items: suppliedDetail.participation?.items ?? defaults.activityDetail?.participation.items ?? [] },
+    participation: {
+      ...defaultActivityDetail.participation,
+      ...defaults.activityDetail?.participation,
+      ...suppliedDetail.participation,
+      items: (suppliedDetail.participation?.items ?? defaults.activityDetail?.participation.items ?? []).map((item, index) => ({
+        ...item,
+        image: item.image || defaults.activityDetail?.participation.items[index]?.image,
+      })),
+    },
     fit: { ...defaultActivityDetail.fit, ...defaults.activityDetail?.fit, ...suppliedDetail.fit, items: suppliedDetail.fit?.items ?? defaults.activityDetail?.fit.items ?? [] },
     flexibility: { ...defaultActivityDetail.flexibility, ...defaults.activityDetail?.flexibility, ...suppliedDetail.flexibility, paragraphs: suppliedDetail.flexibility?.paragraphs ?? defaults.activityDetail?.flexibility.paragraphs ?? [], points: suppliedDetail.flexibility?.points ?? defaults.activityDetail?.flexibility.points ?? [] },
     people: { ...defaultActivityDetail.people, ...defaults.activityDetail?.people, ...suppliedDetail.people, paragraphs: suppliedDetail.people?.paragraphs ?? defaults.activityDetail?.people.paragraphs ?? [], images: suppliedDetail.people?.images ?? defaults.activityDetail?.people.images ?? [] },
