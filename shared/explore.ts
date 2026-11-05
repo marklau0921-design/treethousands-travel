@@ -101,6 +101,11 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
     introduction: 'Farm work changes with the season, weather and needs of each household. Rather than offering a staged list of tasks, this activity begins with what genuinely needs doing that day—from preparing soil and tending plants to harvesting, sorting or carrying produce.',
     statement: 'To understand a working landscape, begin with the people whose repeated labour keeps it alive.', details: ['Seasonal Work', 'Field Paths', 'Local Guidance', 'Useful Hands', 'Shared Break', 'Harvest Knowledge'],
   },
+  'a-day-with-giant-panda-keepers': {
+    title: 'A Day With Giant Panda Keepers', subtitle: 'Step behind the visitor path to learn how daily care, clean habitats, fresh bamboo and careful observation support giant panda conservation.',
+    introduction: 'This experience offers a closer view of panda conservation through the practical routines that happen every day. Under professional guidance, participants may help prepare bamboo, clean designated working areas, make nutritional food and observe pandas from an approved distance.',
+    statement: 'A close encounter begins with care, restraint and respect for the animal.', details: ['Habitat Care', 'Fresh Bamboo', 'Keeper Guidance', 'Food Preparation', 'Panda Observation', 'Conservation Learning'],
+  },
   'read-the-colours-of-autumn': {
     title: 'Read the Colours of Autumn', subtitle: 'Follow the eighty-li colour forest of Naizigou through mountain light, quiet villages and the changing reds and golds of western Sichuan.',
     introduction: 'Autumn in Heishui does not arrive as one colour at one moment. It moves down the mountain with altitude, weather and light—turning broadleaf forest red and gold while evergreen trees hold the deeper structure of the valley.',
@@ -110,7 +115,7 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
 
 // Explore has one overview page. Category names are filters within that page,
 // not standalone CMS pages or routes.
-export const defaultExploreSlugs = ['build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn', 'work-the-fields-with-local-farmers'];
+export const defaultExploreSlugs = ['build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn', 'work-the-fields-with-local-farmers', 'a-day-with-giant-panda-keepers'];
 
 const emptyActivity: ExploreActivityInfo = {
   enabled: false, type: '', status: 'planning', statusLabel: 'By Arrangement', dateLabel: 'Arranged around the project and participants',
@@ -181,6 +186,14 @@ const farmWithVillagersGallery = [
   '/images/explore/share-a-day-of-village-life/07-village-market.jpg',
 ];
 
+const pandaConservationAsset = '/images/explore/panda-conservation-day/processed';
+const pandaConservationGallery = [
+  '02-habitat-cleaning.jpg', '03-bamboo-team.jpg', '09-panda-cake.jpg', '10-bamboo-cleanup.jpg',
+  '11-bamboo-delivery.jpg', '12-health-monitoring.jpg', '13-young-panda-care.jpg', '05-cub-care.jpg',
+  '07-panda-bamboo.jpg', '08-panda-bamboo-habitat.jpg', '14-cub-tree.jpg', '15-bifengxia-cub.jpg',
+  '16-panda-eating.jpg', '04-panda-feeding.jpg', '06-cub-special-care.jpg',
+].map(name => `${pandaConservationAsset}/${name}`);
+
 const autumnColoursActivityAsset = '/images/explore/read-the-colours-of-autumn/processed';
 const autumnColoursActivityGallery = [
   '01-autumn-valley-road.jpg', '02-misty-colour-forest.jpg', '03-winding-road-fields.jpg', '04-village-in-cloud.jpg',
@@ -194,6 +207,89 @@ const autumnColoursActivityGallery = [
 export function createDefaultExplorePage(slug: string): ExplorePageContent {
   const copy = PAGE_COPY[slug] ?? PAGE_COPY['village-life'];
   const pageIndex = Math.max(0, defaultExploreSlugs.indexOf(slug));
+  if (slug === 'a-day-with-giant-panda-keepers') return {
+    admin: { origin: 'confirmed' },
+    homepageCard: { title: copy.title, image: pandaConservationGallery[8] },
+    activity: {
+      ...emptyActivity, enabled: true, type: 'Wildlife Conservation', status: 'open', statusLabel: 'By Arrangement · Subject to Base Approval',
+      dateLabel: 'Selected Dates · Programme Confirmed in Advance', duration: 'Full day', groupSize: 'Small group', difficulty: 'Light to Moderate',
+      location: 'Giant panda conservation base in Sichuan', registrationLabel: 'Register Your Interest', registrationHref: '/join-us/contact',
+      note: 'Tasks, observation distance and participant eligibility are determined by the conservation base. Direct contact with pandas is never guaranteed and animal welfare always comes first.',
+    },
+    activityDetail: {
+      category: 'Nature & Landscape',
+      excerpt: 'Learn what responsible panda care looks like through habitat cleaning, bamboo preparation, food making and quiet observation under professional guidance.',
+      gallery: pandaConservationGallery,
+      purpose: {
+        eyebrow: 'Why This Activity Exists', title: 'The memorable moment is built on careful work.',
+        paragraphs: ['Pandas may be the reason people arrive, but the work behind their wellbeing is broader than a single encounter. Clean spaces, fresh food, behavioural observation and strict routines shape every day at a conservation base.', 'This experience moves attention from simply seeing an animal to understanding the care, knowledge and restraint required to protect it. Participation takes place only where it is useful, safe and approved by professional staff.'],
+        image: pandaConservationGallery[4],
+      },
+      currentWork: {
+        eyebrow: 'What You May Do', title: 'Support the routines around panda care.',
+        paragraphs: ['Depending on the base programme, participants may help remove old bamboo from a designated area, sweep and rinse working spaces, carry and sort fresh bamboo, or prepare nutritional food under instruction.', 'Pandas are powerful wild animals. Participants never enter an occupied enclosure, cross safety barriers or initiate contact. Keepers decide every task and may change the programme according to animal health, weather and operational needs.'],
+        images: [pandaConservationGallery[0], pandaConservationGallery[2]],
+      },
+      participation: {
+        eyebrow: 'The Rhythm of the Day', title: 'See conservation through the work that sustains it.', introduction: 'The exact sequence follows the base schedule and the needs of the animals.',
+        items: [
+          { title: 'Meet the Keepers', description: 'Receive an introduction to safety, hygiene, animal welfare and the day’s approved tasks.' },
+          { title: 'Prepare the Habitat', description: 'Help clean a designated unoccupied area and understand why hygiene matters.' },
+          { title: 'Work With Bamboo', description: 'Sort, carry or prepare fresh bamboo according to keeper instructions.' },
+          { title: 'Make Nutritional Food', description: 'Learn how supplementary food is prepared and portioned for panda care.' },
+          { title: 'Observe Quietly', description: 'Watch feeding or natural behaviour from an approved distance without disturbing the animal.' },
+        ],
+      },
+      fit: { eyebrow: 'Is This for You?', title: 'Curiosity must be matched by patience and respect.', introduction: 'No animal-care experience is required, but participants must be comfortable following strict instructions.', items: ['You can follow hygiene and safety procedures without exception.', 'You understand that animal welfare takes priority over photographs or contact.', 'You can complete light cleaning, carrying and food-preparation tasks.', 'You are comfortable with a schedule that may change on the day.', 'You are willing to observe quietly and respect staff-only areas.'] },
+      flexibility: { eyebrow: 'Shaped Around Animal Welfare', title: 'The pandas decide what the day can include.', paragraphs: ['The base may alter or cancel individual tasks because of animal health, breeding, quarantine, weather or operational requirements.', 'We confirm the current programme, age requirements and health documentation before registration. No direct touching, holding or unrestricted feeding is promised.'], points: ['Base approval and availability', 'Animal health and behaviour', 'Age and health requirements', 'Weather and enclosure conditions', 'Group size and language needs', 'Current hygiene procedures'], image: pandaConservationGallery[7] },
+      people: { eyebrow: 'Learning Alongside', title: 'Keepers translate routine into knowledge.', paragraphs: ['Experienced keepers notice appetite, movement, waste, mood and subtle changes in behaviour. Their daily observations connect practical care with veterinary and conservation work.', 'Participants are invited to ask thoughtful questions while respecting the concentration and timing required by animal care.'], images: [pandaConservationGallery[5], pandaConservationGallery[6]] },
+      practical: {
+        eyebrow: 'Before You Join', title: 'Prepare for a controlled wildlife-care environment.', introduction: 'Final requirements depend on the base and are confirmed before the visit.',
+        items: [
+          { title: 'Physical Level', description: 'Light to moderate activity including sweeping, bending, carrying bamboo and standing for periods.' },
+          { title: 'What to Wear', description: 'Long practical trousers and closed non-slip shoes; protective clothing is provided when required.' },
+          { title: 'Health Requirements', description: 'Participants may need health declarations or recent medical checks under current base rules.' },
+          { title: 'Age Requirements', description: 'Minimum age and supervision rules are confirmed by the base for each programme.' },
+          { title: 'Photography', description: 'Photography is allowed only in approved areas and never at the expense of animal welfare or staff privacy.' },
+          { title: 'Safety Boundary', description: 'Never cross barriers, enter an occupied enclosure or feed an animal without direct keeper instruction.' },
+        ],
+      },
+      principles: { eyebrow: 'Our Shared Principles', title: 'Care comes before closeness.', items: ['Follow every keeper instruction.', 'Keep a safe and approved distance.', 'Do not seek touch, posing or performance.', 'Work quietly and leave spaces orderly.', 'Accept changes made for animal welfare.'] },
+      closing: { eyebrow: 'Begin a Conversation', title: 'Tell us when you would like to learn alongside panda keepers.', paragraphs: ['Share your preferred dates, group size, ages, language needs and any relevant health information. We will check the current programme and eligibility requirements.', 'The activity is confirmed only after the conservation base approves availability and the scope of participation.'], image: pandaConservationGallery[9] },
+      roles: {
+        eyebrow: 'Ways to Take Part', title: 'Conservation Includes More Than Observation', footer: 'Every task is small, supervised and connected to the wellbeing of the animals.', linkLabel: 'Ask About Available Dates →',
+        items: [
+          { title: 'Habitat Helper', description: 'Clean an approved unoccupied space under keeper guidance.', icon: 'hands' },
+          { title: 'Bamboo Helper', description: 'Carry, sort and prepare fresh bamboo for daily feeding.', icon: 'plant' },
+          { title: 'Food Preparation', description: 'Help make measured nutritional food in a controlled workspace.', icon: 'cook' },
+          { title: 'Quiet Observer', description: 'Watch natural behaviour and learn how keepers read it.', icon: 'research' },
+          { title: 'Conservation Learner', description: 'Connect daily care with habitat and species protection.', icon: 'leaf' },
+        ],
+      },
+      purposeStory: {
+        eyebrow: 'Why We Do This', title: 'Seeing a Panda Should Lead to Understanding Its Protection.',
+        paragraphs: ['The popularity of giant pandas creates attention, but attention alone does not protect a species. Conservation depends on habitat, science, trained people and routines repeated long after visitors leave.', 'By entering through the work rather than through spectacle, participants begin to see the panda as a wild animal with specific needs—not a character arranged for a photograph.', 'Closeness is therefore measured differently. It is found in noticing the freshness of bamboo, the cleanliness of a habitat, the keeper’s careful observation and the boundaries that allow an animal to remain undisturbed.', 'Our aim is to turn affection into informed respect and to connect one memorable day with the larger work of wildlife conservation.'],
+        quote: 'The most responsible way to come closer is to understand when to keep your distance.', mainImage: pandaConservationGallery[10], insetImage: pandaConservationGallery[3],
+      },
+      placeStory: {
+        eyebrow: 'The Place Around the Activity', title: 'Sichuan’s Forests Are the Larger Home Behind Every Panda Base.', introduction: 'Panda conservation begins beyond the enclosure, in mountain forests where bamboo, water, altitude and connected habitat determine whether wild populations can endure.',
+        paragraphs: ['Conservation bases support rescue, veterinary care, breeding research and public education, but they are only one part of the story. Protecting and reconnecting habitat remains essential for wild pandas and the many other species sharing these forests.', 'A responsible visit should therefore leave participants interested not only in an individual panda, but also in the landscape and long-term systems that make survival possible.'], image: pandaConservationGallery[11],
+      },
+    },
+    hero: { eyebrow: 'Explore / Wildlife & Conservation', title: copy.title, subtitle: copy.subtitle, image: pandaConservationGallery[8], backgroundColor: '#ffffff', overlayOpacity: 0 },
+    introduction: { eyebrow: 'An invitation to learn', text: copy.introduction, backgroundColor: '#ffffff', textColor: '#171717' },
+    visual: { eyebrow: 'The experience', title: 'Care begins before the panda enters view.', paragraphs: [], images: [], backgroundColor: '#f5f5f5' },
+    details: { eyebrow: 'Activity Details', title: 'What the day may include', description: 'The final programme follows current conservation-base rules and animal-care priorities.', backgroundColor: '#f5f5f5', items: copy.details.map((title, index) => ({ title, image: pandaConservationGallery[index % pandaConservationGallery.length] })) },
+    statement: { eyebrow: 'A responsible encounter', text: copy.statement, backgroundColor: '#111111', textColor: '#ffffff' },
+    perspectives: { eyebrow: 'Continue Exploring', title: 'Go Deeper Into Sichuan', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { title: 'Walk Beneath the Four Sisters', description: 'Enter a highland landscape through forest, meadow and mountain weather.', href: '/explore/activity/walk-beneath-four-sisters', image: pandaConservationGallery[10] },
+      { title: 'Relationships Before Routes', description: 'Understand why attention and trust come before a visitor programme.', href: '/stories/article/relationships-before-routes', image: pandaConservationGallery[3] },
+      { title: 'Our Way of Travel', description: 'Read how consent, context and local guidance shape participation.', href: '/our-story/our-way-of-travel', image: pandaConservationGallery[11] },
+    ] },
+    stories: { eyebrow: 'From the Journal', title: 'Related Stories', viewAllLabel: 'View all stories →', viewAllHref: '/stories', backgroundColor: '#ffffff', selectedStoryIds: [], items: [] },
+    cta: { eyebrow: 'Take Part', title: 'Ready to learn what panda care really involves?', buttonLabel: 'Register Your Interest', buttonHref: '/join-us/contact', backgroundColor: '#f5569b', textColor: '#ffffff', buttonBackgroundColor: '#111111', buttonTextColor: '#ffffff', textureImage: '', textureOpacity: 25 },
+    contentBlocks: [],
+  };
   if (slug === 'work-the-fields-with-local-farmers') return {
     admin: { origin: 'confirmed' },
     homepageCard: { title: copy.title, image: farmWithVillagersGallery[0] },
