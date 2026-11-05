@@ -916,13 +916,27 @@ export function normalizeExplorePage(value: unknown, slug: string): ExplorePageC
   const defaults = createDefaultExplorePage(slug);
   if (typeof value === 'string') { try { value = JSON.parse(value); } catch { return defaults; } }
   if (!value || typeof value !== 'object') return defaults;
-  const page = value as Partial<ExplorePageContent>;
+  let page = value as Partial<ExplorePageContent>;
+  if (slug === 'a-day-with-giant-panda-keepers') {
+    const removedImages = new Map([
+      ['/images/explore/panda-conservation-day/processed/01-bamboo-preparation.jpg', '/images/explore/panda-conservation-day/processed/02-habitat-cleaning.jpg'],
+      ['/images/explore/panda-conservation-day/processed/03-bamboo-team.jpg', '/images/explore/panda-conservation-day/processed/11-bamboo-delivery.jpg'],
+      ['/images/explore/panda-conservation-day/processed/10-bamboo-cleanup.jpg', '/images/explore/panda-conservation-day/processed/09-panda-cake.jpg'],
+    ]);
+    const sanitizeImages = (input: unknown): unknown => {
+      if (typeof input === 'string') return removedImages.get(input) ?? input;
+      if (Array.isArray(input)) return input.map(sanitizeImages);
+      if (input && typeof input === 'object') return Object.fromEntries(Object.entries(input).map(([key, item]) => [key, sanitizeImages(item)]));
+      return input;
+    };
+    page = sanitizeImages(page) as Partial<ExplorePageContent>;
+  }
   const suppliedDetail = page.activityDetail;
   const activityDetail = suppliedDetail ? {
     ...defaultActivityDetail,
     ...defaults.activityDetail,
     ...suppliedDetail,
-    gallery: suppliedDetail.gallery?.length ? suppliedDetail.gallery : defaults.activityDetail?.gallery ?? [],
+    gallery: slug === 'a-day-with-giant-panda-keepers' ? defaults.activityDetail?.gallery ?? [] : suppliedDetail.gallery?.length ? suppliedDetail.gallery : defaults.activityDetail?.gallery ?? [],
     purpose: { ...defaultActivityDetail.purpose, ...defaults.activityDetail?.purpose, ...suppliedDetail.purpose, paragraphs: suppliedDetail.purpose?.paragraphs ?? defaults.activityDetail?.purpose.paragraphs ?? [] },
     currentWork: { ...defaultActivityDetail.currentWork, ...defaults.activityDetail?.currentWork, ...suppliedDetail.currentWork, paragraphs: suppliedDetail.currentWork?.paragraphs ?? defaults.activityDetail?.currentWork.paragraphs ?? [], images: suppliedDetail.currentWork?.images ?? defaults.activityDetail?.currentWork.images ?? [] },
     participation: { ...defaultActivityDetail.participation, ...defaults.activityDetail?.participation, ...suppliedDetail.participation, items: suppliedDetail.participation?.items ?? defaults.activityDetail?.participation.items ?? [] },
