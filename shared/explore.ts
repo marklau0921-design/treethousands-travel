@@ -96,6 +96,11 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
     introduction: 'This experience is not a performance of rural life. It is an invitation to enter a real day carefully: to follow what the season requires, help with an appropriate task, prepare a simple meal and understand how work, food and relationships hold village life together.',
     statement: 'A village is not a scene arranged for visitors. It is a living place shaped by work, food, seasons and relationships.', details: ['Village Paths', 'Seasonal Garden', 'Fresh Ingredients', 'Shared Cooking', 'Local Market', 'Time Together'],
   },
+  'work-the-fields-with-local-farmers': {
+    title: 'Work the Fields With Local Farmers', subtitle: 'Join a real seasonal farming day in the countryside around Ya’an, learning through useful work, shared breaks and local guidance.',
+    introduction: 'Farm work changes with the season, weather and needs of each household. Rather than offering a staged list of tasks, this activity begins with what genuinely needs doing that day—from preparing soil and tending plants to harvesting, sorting or carrying produce.',
+    statement: 'To understand a working landscape, begin with the people whose repeated labour keeps it alive.', details: ['Seasonal Work', 'Field Paths', 'Local Guidance', 'Useful Hands', 'Shared Break', 'Harvest Knowledge'],
+  },
   'read-the-colours-of-autumn': {
     title: 'Read the Colours of Autumn', subtitle: 'Follow the eighty-li colour forest of Naizigou through mountain light, quiet villages and the changing reds and golds of western Sichuan.',
     introduction: 'Autumn in Heishui does not arrive as one colour at one moment. It moves down the mountain with altitude, weather and light—turning broadleaf forest red and gold while evergreen trees hold the deeper structure of the valley.',
@@ -105,7 +110,7 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
 
 // Explore has one overview page. Category names are filters within that page,
 // not standalone CMS pages or routes.
-export const defaultExploreSlugs = ['build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn'];
+export const defaultExploreSlugs = ['build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn', 'work-the-fields-with-local-farmers'];
 
 const emptyActivity: ExploreActivityInfo = {
   enabled: false, type: '', status: 'planning', statusLabel: 'By Arrangement', dateLabel: 'Arranged around the project and participants',
@@ -165,6 +170,16 @@ const villageDayActivityGallery = [
   '01-mountain-village.jpg', '02-garden-harvest.jpg', '03-kitchen-preparation.jpg', '04-washing-vegetables.jpg',
   '05-courtyard-cooking.jpg', '06-village-lane.jpg', '07-village-market.jpg', '08-shared-lunch.jpg',
 ].map(name => `${villageDayActivityAsset}/${name}`);
+const farmWithVillagersGallery = [
+  '/images/stories/relationships-before-routes/laughter-in-the-field.jpg',
+  '/images/stories/relationships-before-routes/village-garden-conversation.jpg',
+  '/images/stories/relationships-before-routes/reading-the-harvest.jpg',
+  '/images/explore/share-a-day-of-village-life/02-garden-harvest.jpg',
+  '/images/explore/share-a-day-of-village-life/04-washing-vegetables.jpg',
+  '/images/stories/relationships-before-routes/listening-in-the-tea-field.jpg',
+  '/images/explore/share-a-day-of-village-life/06-village-lane.jpg',
+  '/images/explore/share-a-day-of-village-life/07-village-market.jpg',
+];
 
 const autumnColoursActivityAsset = '/images/explore/read-the-colours-of-autumn/processed';
 const autumnColoursActivityGallery = [
@@ -179,6 +194,96 @@ const autumnColoursActivityGallery = [
 export function createDefaultExplorePage(slug: string): ExplorePageContent {
   const copy = PAGE_COPY[slug] ?? PAGE_COPY['village-life'];
   const pageIndex = Math.max(0, defaultExploreSlugs.indexOf(slug));
+  if (slug === 'work-the-fields-with-local-farmers') return {
+    admin: { origin: 'confirmed' },
+    homepageCard: { title: copy.title, image: farmWithVillagersGallery[0] },
+    activity: {
+      ...emptyActivity, enabled: true, type: 'Seasonal Farm Work', status: 'open', statusLabel: 'Seasonal · By Arrangement',
+      dateLabel: 'Year-round · Tasks Depend on the Season', duration: 'Half day or full day', groupSize: '2–8 participants', difficulty: 'Light to Moderate',
+      location: 'Rural villages around Ya’an, Sichuan', registrationLabel: 'Register Your Interest', registrationHref: '/join-us/contact',
+      note: 'The village, household and task are confirmed close to the date according to weather, the farming calendar and work that is genuinely useful.',
+    },
+    activityDetail: {
+      category: 'Village Life',
+      excerpt: 'Work alongside villagers on an appropriate seasonal task and understand how weather, land and repeated everyday decisions shape rural livelihoods around Ya’an.',
+      gallery: farmWithVillagersGallery,
+      purpose: {
+        eyebrow: 'Why This Activity Exists', title: 'A cultivated landscape is made through repeated, practical care.',
+        paragraphs: ['Fields and gardens can look effortless from a distance. Their shape is actually maintained through decisions repeated across the year: when to prepare soil, what to plant, how to respond to rain, and when a crop is ready to gather.', 'This activity gives participants a careful way to enter that working rhythm. The purpose is not to perform rural life, but to assist with a suitable real task and learn from the people whose knowledge keeps the land productive.'],
+        image: farmWithVillagersGallery[2],
+      },
+      currentWork: {
+        eyebrow: 'What You May Do', title: 'The useful task comes before the visitor programme.',
+        paragraphs: ['Depending on the season, the day may involve preparing a planting bed, weeding, watering, gathering vegetables, carrying produce, sorting a harvest or cleaning tools and work areas.', 'The host decides which tasks are appropriate. Machinery, chemicals, heavy lifting and specialist work remain with experienced people.'],
+        images: [farmWithVillagersGallery[3], farmWithVillagersGallery[4]],
+      },
+      participation: {
+        eyebrow: 'The Rhythm of the Day', title: 'Follow the work from introduction to shared rest.', introduction: 'The sequence provides structure while allowing weather and the needs of the field to change the plan.',
+        items: [
+          { title: 'Meet the Household', description: 'Understand the farm, the day’s priorities and which spaces or activities are private.' },
+          { title: 'Read the Field', description: 'Learn what is growing, what the weather has changed and why today’s task matters.' },
+          { title: 'Learn the Task', description: 'Watch a demonstration, use suitable hand tools and begin at a careful pace.' },
+          { title: 'Work Alongside', description: 'Join a real task without rushing, competing or creating extra work for the host.' },
+          { title: 'Sort and Reflect', description: 'Help finish the task, clean the working area and share a break or simple meal together.' },
+        ],
+      },
+      fit: { eyebrow: 'Is This for You?', title: 'Useful hands matter more than farming experience.', introduction: 'No agricultural background is required. A good fit begins with patience, practical clothing and willingness to follow local guidance.', items: ['You are comfortable outdoors on uneven or muddy ground.', 'You can repeat a simple physical task at a steady pace.', 'You accept that weather may change or cancel outdoor work.', 'You are interested in learning rather than directing the task.', 'You respect homes, fields, tools and people as part of a real workplace.'] },
+      flexibility: { eyebrow: 'Shaped Around the Season', title: 'The farming calendar decides what belongs in the day.', paragraphs: ['We first learn about your group, available time, mobility and interests. We then match these with a household and task that can genuinely welcome participation.', 'Rain, heat, crop readiness or an urgent change in farm work may alter the activity. A flexible plan is part of working responsibly with agriculture.'], points: ['Season and crop stage', 'Recent and forecast weather', 'Group size and ages', 'Mobility and physical needs', 'Household availability', 'Meal and transport arrangements'], image: farmWithVillagersGallery[6] },
+      people: { eyebrow: 'Learning Alongside', title: 'Local knowledge sets the pace.', paragraphs: ['Farm knowledge often appears in small judgements: how wet the soil feels, where shade lasts, which plant needs attention or when a basket is full enough to carry safely.', 'Participants are invited to notice this knowledge without treating the host as a performer. Conversation grows around the work, with translation provided where needed.'], images: [farmWithVillagersGallery[1], farmWithVillagersGallery[5]] },
+      practical: {
+        eyebrow: 'Before You Join', title: 'Prepare for weather, physical work and a real rural workplace.', introduction: 'Exact guidance is confirmed after the task and location are known. These points apply to most farm days.',
+        items: [
+          { title: 'Physical Level', description: 'Light to moderate activity including bending, carrying small loads and walking on uneven ground.' },
+          { title: 'Weather', description: 'Rain, heat and field conditions can change the task, timing or suitability of the visit.' },
+          { title: 'What to Wear', description: 'Long practical trousers, layers, sun or rain protection and closed non-slip shoes that can become muddy.' },
+          { title: 'What to Bring', description: 'Water, personal medication, sun protection and a small towel; tools and gloves are confirmed locally.' },
+          { title: 'Children', description: 'Suitability depends on age, supervision, weather, tools and the specific work taking place.' },
+          { title: 'Safety & Privacy', description: 'Follow tool boundaries, do not enter private areas and ask before photographing people or homes.' },
+        ],
+      },
+      principles: { eyebrow: 'Our Shared Principles', title: 'Help without turning work into a performance.', items: ['Listen before beginning.', 'Let the host decide what is useful.', 'Use tools only as instructed.', 'Ask before photographing people or private spaces.', 'Finish carefully and leave the work area orderly.'] },
+      closing: { eyebrow: 'Begin a Conversation', title: 'Tell us when and how you would like to join.', paragraphs: ['Share your dates, group size, ages, physical needs and any farming interests. We will match these with seasonal work and a household able to welcome participation.', 'The final arrangement is confirmed only when the task, weather and local availability are clear.'], image: farmWithVillagersGallery[0] },
+      roles: {
+        eyebrow: 'Ways to Take Part', title: 'There Is More Than One Way to Be Useful', footer: 'No experience is required. Bring attention, patience and willingness to follow the work.', linkLabel: 'Tell Us About Your Group →',
+        items: [
+          { title: 'Field Helper', description: 'Join an appropriate planting, tending or harvesting task.', icon: 'hands' },
+          { title: 'Garden Learner', description: 'Observe how season, soil and weather guide everyday decisions.', icon: 'plant' },
+          { title: 'Harvest Sorter', description: 'Help gather, clean or organise produce after it leaves the field.', icon: 'maker' },
+          { title: 'Cook', description: 'Help turn available seasonal ingredients into a shared meal.', icon: 'cook' },
+          { title: 'Photographer', description: 'Document with permission and without interrupting the work.', icon: 'camera' },
+          { title: 'Writer / Listener', description: 'Record knowledge and conversations with context and care.', icon: 'writer' },
+          { title: 'Translator', description: 'Help instructions and conversation move comfortably across languages.', icon: 'languages' },
+          { title: 'Family Participant', description: 'Support age-appropriate tasks and shared responsibility.', icon: 'group' },
+          { title: 'Plant Observer', description: 'Notice crop health, insects, water and the surrounding ecology.', icon: 'research' },
+          { title: 'Quiet Companion', description: 'Take part without needing to turn every moment into content.', icon: 'leaf' },
+        ],
+      },
+      purposeStory: {
+        eyebrow: 'Why We Do This', title: 'Rural Beauty Is Also the Result of Labour.',
+        paragraphs: ['Travellers often encounter the countryside as a finished view: green terraces, neat vegetable beds and baskets of fresh produce. What disappears from that view is the repeated labour required to maintain it.', 'Working beside villagers, even for a short time, changes the relationship between visitor and landscape. A field is no longer scenery; it becomes a place of judgement, weather, livelihood and physical effort.', 'Participation must remain modest. A visitor cannot understand a farming life in one day, and unskilled help is not automatically useful. That is why the host chooses the task, sets the boundaries and decides when conditions are not suitable.', 'Our aim is to create an exchange in which curiosity becomes attention, and attention becomes respect for the people whose everyday work sustains the landscape.'],
+        quote: 'We do not come to imitate a farming life. We come to understand the care and labour that make the landscape possible.', mainImage: farmWithVillagersGallery[2], insetImage: farmWithVillagersGallery[4],
+      },
+      placeStory: {
+        eyebrow: 'The Place Around the Fields', title: 'Rain, Hills and Small Plots Shape Farming Around Ya’an.', introduction: 'The countryside around Ya’an is formed by frequent rain, forested hills and cultivated land fitted into valleys, slopes and village edges.',
+        paragraphs: ['Small fields and household gardens connect directly with kitchens, markets and neighbours. What is planted depends not only on climate, but on family needs, available labour and where produce may be used or sold.', 'Moisture supports abundant growth while making paths slippery and timing uncertain. Farming requires continual response rather than a fixed schedule, which is why every visit must remain flexible.', 'The activity takes place within a lived village landscape. Roads, tools and livelihoods continue to change, while seasonal knowledge and familiar forms of mutual help remain part of everyday work.'], image: farmWithVillagersGallery[6],
+      },
+    },
+    hero: { eyebrow: 'Explore / Village Life', title: copy.title, subtitle: copy.subtitle, image: farmWithVillagersGallery[0], backgroundColor: '#ffffff', overlayOpacity: 0 },
+    introduction: { eyebrow: 'An invitation to take part', text: copy.introduction, backgroundColor: '#ffffff', textColor: '#171717' },
+    visual: { eyebrow: 'The experience', title: 'Follow the work the season requires.', paragraphs: [], images: [], backgroundColor: '#f5f5f5' },
+    details: { eyebrow: 'Activity Details', title: 'What the day may hold', description: 'The task is confirmed according to season, weather and genuine local need.', backgroundColor: '#f5f5f5', items: copy.details.map((title, index) => ({ title, image: farmWithVillagersGallery[index % farmWithVillagersGallery.length] })) },
+    statement: { eyebrow: 'A way of taking part', text: copy.statement, backgroundColor: '#111111', textColor: '#ffffff' },
+    perspectives: { eyebrow: 'Continue Exploring', title: 'Understand the Working Landscape', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { title: 'Share a Day of Village Life', description: 'Follow farm work into the kitchen, shared table and ordinary village day.', href: '/explore/activity/share-a-day-of-village-life', image: farmWithVillagersGallery[4] },
+      { title: 'Relationships Before Routes', description: 'Read why listening and trust come before an itinerary.', href: '/stories/article/relationships-before-routes', image: farmWithVillagersGallery[1] },
+      { title: 'Our Way of Travel', description: 'Learn how pace, consent and local context guide participation.', href: '/our-story/our-way-of-travel', image: farmWithVillagersGallery[6] },
+    ] },
+    stories: { eyebrow: 'From the Journal', title: 'Related Stories', viewAllLabel: 'View all stories →', viewAllHref: '/stories', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { category: 'Brand Stories', title: 'Relationships Before Routes', href: '/stories/article/relationships-before-routes', image: farmWithVillagersGallery[1] },
+    ] },
+    cta: { eyebrow: 'Take Part', title: 'Ready to work alongside the village?', buttonLabel: 'Register Your Interest', buttonHref: '/join-us/contact', backgroundColor: '#f5569b', textColor: '#ffffff', buttonBackgroundColor: '#111111', buttonTextColor: '#ffffff', textureImage: '', textureOpacity: 25 },
+    contentBlocks: [],
+  };
   if (slug === 'read-the-colours-of-autumn') return {
     homepageCard: { title: 'Read the Colours of Autumn', image: autumnColoursActivityGallery[0] },
     activity: {
