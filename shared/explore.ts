@@ -188,8 +188,8 @@ const farmWithVillagersGallery = [
 
 const pandaConservationAsset = '/images/explore/panda-conservation-day/processed';
 const pandaConservationGallery = [
-  '02-habitat-cleaning.jpg', '03-bamboo-team.jpg', '09-panda-cake.jpg', '10-bamboo-cleanup.jpg',
-  '11-bamboo-delivery.jpg', '12-health-monitoring.jpg', '13-young-panda-care.jpg', '05-cub-care.jpg',
+  '02-habitat-cleaning.jpg', '09-panda-cake.jpg', '11-bamboo-delivery.jpg',
+  '12-health-monitoring.jpg', '13-young-panda-care.jpg', '05-cub-care.jpg',
   '07-panda-bamboo.jpg', '08-panda-bamboo-habitat.jpg', '14-cub-tree.jpg', '15-bifengxia-cub.jpg',
   '16-panda-eating.jpg', '04-panda-feeding.jpg', '06-cub-special-care.jpg',
 ].map(name => `${pandaConservationAsset}/${name}`);
