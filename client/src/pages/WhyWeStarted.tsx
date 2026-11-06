@@ -20,7 +20,10 @@ export default function WhyWeStarted() {
   const section = sections?.find(item => item.slug === slug);
   const meta = section;
 
-  const editorialContent = ourStoryEditorialPages[slug];
+  const savedTemplate = section?.pageContent && typeof section.pageContent === 'object'
+    ? (section.pageContent as { editorialTemplate?: unknown }).editorialTemplate
+    : undefined;
+  const editorialContent = (savedTemplate as typeof ourStoryEditorialPages[string] | undefined) || ourStoryEditorialPages[slug];
   if (editorialContent) return <OurStoryEditorialTemplate content={editorialContent} />;
 
   if (!meta && !isLoading) {

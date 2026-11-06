@@ -15,6 +15,8 @@ export type OurStoryExtraSection =
   | ({ id: string; type: 'closing' } & OurStoryPageContent['closing']);
 
 export interface OurStoryPageContent {
+  /** The single shared visual template used by both Our Story and Stories. */
+  editorialTemplate?: unknown;
   admin?: { origin: ContentOrigin };
   hero: {
     eyebrow: string;
@@ -424,6 +426,7 @@ export function normalizeOurStoryPage(value: unknown, title: string, summary: st
   if (!value || typeof value !== 'object') return defaults;
   const page = value as Partial<OurStoryPageContent>;
   return {
+    editorialTemplate: page.editorialTemplate,
     admin: { origin: knownFillerPage ? 'placeholder' : normalizeContentOrigin(page.admin?.origin, ['Why We Started', 'What We Believe', 'Our Way of Travel'].includes(title) ? 'confirmed' : 'placeholder') },
     hero: { ...defaults.hero, ...(page.hero ?? {}) },
     introduction: { ...defaults.introduction, ...(page.introduction ?? {}), paragraphs: page.introduction?.paragraphs ?? defaults.introduction.paragraphs },
