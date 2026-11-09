@@ -106,6 +106,11 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
     introduction: 'This experience offers a closer view of panda conservation through the practical routines that happen every day. Under professional guidance, participants may help prepare bamboo, clean designated working areas, make nutritional food and observe pandas from an approved distance.',
     statement: 'A close encounter begins with care, restraint and respect for the animal.', details: ['Habitat Care', 'Fresh Bamboo', 'Keeper Guidance', 'Food Preparation', 'Panda Observation', 'Conservation Learning'],
   },
+  'a-day-at-the-shared-house': {
+    title: 'A Day at the Shared House', subtitle: 'Listen, repair and share an ordinary village evening in a house being brought carefully back into use.',
+    introduction: 'This is a real working day rather than a staged workshop. We begin with the people and history around the house, take part in suitable repair tasks, then slow down over food and conversation. The evening programme is available only when an overnight arrangement has been confirmed.',
+    statement: 'A house becomes shared through the time, care and relationships gathered around it.', details: ['Welcome & Listening', 'House Reading', 'Practical Repair', 'Shared Reflection', 'Village Meal', 'Evening Together'],
+  },
   'read-the-colours-of-autumn': {
     title: 'Read the Colours of Autumn', subtitle: 'Follow the eighty-li colour forest of Naizigou through mountain light, quiet villages and the changing reds and golds of western Sichuan.',
     introduction: 'Autumn in Heishui does not arrive as one colour at one moment. It moves down the mountain with altitude, weather and light—turning broadleaf forest red and gold while evergreen trees hold the deeper structure of the valley.',
@@ -115,7 +120,7 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
 
 // Explore has one overview page. Category names are filters within that page,
 // not standalone CMS pages or routes.
-export const defaultExploreSlugs = ['build-with-what-is-already-here', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn', 'work-the-fields-with-local-farmers', 'a-day-with-giant-panda-keepers'];
+export const defaultExploreSlugs = ['build-with-what-is-already-here', 'a-day-at-the-shared-house', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn', 'work-the-fields-with-local-farmers', 'a-day-with-giant-panda-keepers'];
 
 const emptyActivity: ExploreActivityInfo = {
   enabled: false, type: '', status: 'planning', statusLabel: 'By Arrangement', dateLabel: 'Arranged around the project and participants',
@@ -204,9 +209,70 @@ const autumnColoursActivityGallery = [
   '19-first-snow-boardwalk.jpg', '20-group-stream-bridge.jpg',
 ].map(name => `${autumnColoursActivityAsset}/${name}`);
 
+const sharedHouseDayAsset = '/images/projects/shared-house-day/processed';
+const sharedHouseDayGallery = [
+  '08-reading-the-house.jpg', '10-plastering-doorway.jpg', '11-cleaning-timber.jpg', '21-address-plate-together.jpg',
+  '12-villagers-at-window.jpg', '09-cooking-together.jpg', '14-community-meal.jpg', '15-villager-home-dinner.jpg',
+  '06-campfire-circle.jpg', '01-campfire-close.jpg', '02-forest-road.jpg', '07-suspension-bridge.jpg',
+].map(name => `${sharedHouseDayAsset}/${name}`);
+
 export function createDefaultExplorePage(slug: string): ExplorePageContent {
   const copy = PAGE_COPY[slug] ?? PAGE_COPY['village-life'];
   const pageIndex = Math.max(0, defaultExploreSlugs.indexOf(slug));
+  if (slug === 'a-day-at-the-shared-house') return {
+    admin: { origin: 'confirmed' },
+    homepageCard: { title: copy.title, image: sharedHouseDayGallery[0] },
+    activity: {
+      ...emptyActivity, enabled: true, type: 'Village Co-building', status: 'open', statusLabel: 'By Arrangement',
+      dateLabel: 'Selected project days', duration: 'Half day · Optional overnight', groupSize: 'Small group', difficulty: 'Light to Moderate',
+      location: 'A village near Ya’an, Sichuan', registrationLabel: 'Register Your Interest', registrationHref: '/join-us/contact',
+      note: 'Dinner, campfire and accommodation are included only in a confirmed overnight programme. Work and evening arrangements may change with weather, site progress and local needs.',
+    },
+    activityDetail: {
+      category: 'Village Life',
+      excerpt: 'Spend an afternoon listening, working and sharing time around a village house being carefully returned to use.',
+      gallery: sharedHouseDayGallery,
+      purpose: { eyebrow: 'Why This Day Exists', title: 'Repair can hold a house, a memory and a future use together.', paragraphs: ['The shared house is not a backdrop prepared for visitors. It is an existing village building whose next chapter depends on careful decisions, practical work and the people who remain connected to it.', 'Participation begins with listening. By understanding the house before touching it, we can contribute without replacing its character or turning village life into a performance.'], image: sharedHouseDayGallery[0] },
+      currentWork: { eyebrow: 'The Flow of the Day', title: 'The programme follows the real work.', paragraphs: ['13:30–14:00 · Welcome, conversation and an introduction to the shared house.\n14:00–17:00 · Small-group repair or documentation tasks selected for the current project stage.\n17:00 · Reflection and a group photograph.', 'For confirmed overnight groups, the day may continue with a village or camp dinner, a campfire from about 18:00–20:00, and camping or youth-hostel accommodation. In rain, the fire is replaced by conversation and tabletop games indoors.'], images: [sharedHouseDayGallery[1], sharedHouseDayGallery[2]] },
+      participation: { eyebrow: 'What You’ll Experience', title: 'Useful work, shared at a human pace.', introduction: 'The precise tasks change with the house, weather and people present.', items: [
+        { title: 'Meet the House', description: 'Hear why the house matters, who is connected to it and what the current stage of work requires.', image: sharedHouseDayGallery[0] },
+        { title: 'Read Before Repairing', description: 'Look closely at timber, plaster, openings and traces of earlier use before any task begins.', image: sharedHouseDayGallery[4] },
+        { title: 'Work Alongside the Project', description: 'Join suitable low-risk tasks such as cleaning, simple surface work, sorting or documentation.', image: sharedHouseDayGallery[2] },
+        { title: 'Cook and Eat Together', description: 'For programmes that include a meal, help prepare food and share the table without turning hospitality into a performance.', image: sharedHouseDayGallery[5] },
+        { title: 'Close the Day Slowly', description: 'When an overnight programme is confirmed, gather around the fire—or indoors in rain—for conversation and reflection.', image: sharedHouseDayGallery[8] },
+      ] },
+      fit: { eyebrow: 'Is This for You?', title: 'Come ready to listen as well as help.', introduction: 'No construction experience is required for general participation.', items: ['People interested in village life, repair, design or material culture', 'Participants comfortable with uneven ground, dust and changing weather', 'Small groups willing to follow site and privacy guidance', 'Children only with prior agreement and close adult supervision'] },
+      flexibility: { eyebrow: 'A Real Project', title: 'The schedule can change because the work is real.', paragraphs: ['Tasks are selected on the day according to safety, project progress and local priorities. Specialist construction remains with experienced craftspeople.', 'Dinner and the evening programme are not part of the standard half-day visit. They are offered only when an overnight format and budget have been confirmed in advance.'], points: ['Rain may move work or the evening indoors', 'Campfire depends on weather and fire-safety conditions', 'Camping and youth-hostel options must be booked in advance'], image: sharedHouseDayGallery[11] },
+      people: { eyebrow: 'Working Alongside', title: 'Local knowledge remains at the centre.', paragraphs: ['Residents, project workers and craftspeople determine what is useful and appropriate. Visitors enter that rhythm rather than directing it.', 'Photography is discussed before it happens. A welcome into the project is not automatic permission to photograph every person, home or private moment.'], images: [sharedHouseDayGallery[4], sharedHouseDayGallery[6]] },
+      practical: { eyebrow: 'Before You Join', title: 'Prepare for an active village work site.', introduction: 'Final details are confirmed for each group.', items: [
+        { title: 'What to Wear', description: 'Closed non-slip footwear and practical clothes that may become dusty.' },
+        { title: 'What to Bring', description: 'Water, sun or rain protection and any personal medication.' },
+        { title: 'Physical Level', description: 'Light to moderate activity on uneven surfaces; tell us about mobility needs early.' },
+        { title: 'Meals & Overnight', description: 'Available only when explicitly included in the confirmed programme.' },
+        { title: 'Respect & Safety', description: 'Follow the site briefing and ask before photographing people or homes.' },
+      ] },
+      principles: { eyebrow: 'Our Shared Principles', title: 'Contribute without taking over.', items: ['Listen before acting', 'Keep useful work ahead of staged activity', 'Respect private village life', 'Let weather and local needs change the plan'] },
+      closing: { eyebrow: 'Begin a Conversation', title: 'Tell us what you can bring to the day.', paragraphs: ['Share your dates, group size, interests, practical experience and whether you are considering the overnight format. We will match the visit to a real stage of work.', 'Registration begins a conversation; it does not guarantee a fixed task, meal, campfire or overnight stay until the project team confirms the full arrangement.'], image: sharedHouseDayGallery[9] },
+      roles: { eyebrow: 'Bring What You Know', title: 'There Is More Than One Way to Help', footer: 'Not sure where you fit? Start with a conversation.', linkLabel: 'Tell Us What You Can Bring →', items: [
+        { title: 'Designer / Architect', description: 'Observe space, materials and possible future use.', icon: 'ruler' },
+        { title: 'Carpenter / Maker', description: 'Support suitable repair and making tasks.', icon: 'hammer' },
+        { title: 'Photographer', description: 'Document carefully and with consent.', icon: 'camera' },
+        { title: 'Cook', description: 'Help prepare food when a shared meal is included.', icon: 'cooking-pot' },
+        { title: 'Helping Hands', description: 'Learn, observe and join suitable everyday tasks.', icon: 'hand-heart' },
+      ] },
+      purposeStory: { eyebrow: 'Why We Do This', title: 'A village house can remain useful without losing the life already held inside it.', paragraphs: ['Repair is not only about extending the physical life of a building. It is a way to ask what should remain visible, whose knowledge guides the work and how a place can support new relationships without being stripped of its history.', 'A participant does not arrive as a rescuer. The meaningful role is smaller and more demanding: listen, work within limits, value practiced knowledge and leave something useful behind.'], quote: 'The aim is not to finish the most work in one afternoon, but to join the right work with care.', mainImage: sharedHouseDayGallery[1], insetImage: sharedHouseDayGallery[3] },
+      placeStory: { eyebrow: 'Around the Shared House', title: 'The forest road, village paths and evening table are part of the same place.', introduction: 'The house belongs to a wider rhythm of landscape, work and neighbourly life.', paragraphs: ['Arrival begins along a green mountain road and continues through the ordinary spaces around the house. These surroundings are not scenery added to the programme; they shape how materials age, how people move and how a working day unfolds.', 'When a meal or overnight evening is included, the pace changes. Cooking, conversation and rest give participants time to understand that the project is held together by relationships as much as by tools.'], image: sharedHouseDayGallery[10] },
+    },
+    hero: { eyebrow: 'Explore / Village Life', title: copy.title, subtitle: copy.subtitle, image: sharedHouseDayGallery[0], backgroundColor: '#ffffff', overlayOpacity: 0 },
+    introduction: { eyebrow: 'An invitation to take part', text: copy.introduction, backgroundColor: '#ffffff', textColor: '#171717' },
+    visual: { eyebrow: 'The experience', title: 'Listen, work and share the day.', paragraphs: [], images: [], backgroundColor: '#f5f5f5' },
+    details: { eyebrow: 'Activity Details', title: 'What the day may hold', description: 'Every visit responds to the house, weather and participating group.', backgroundColor: '#f5f5f5', items: copy.details.map((title, index) => ({ title, image: sharedHouseDayGallery[index] })) },
+    statement: { eyebrow: 'A way of taking part', text: copy.statement, backgroundColor: '#111111', textColor: '#ffffff' },
+    perspectives: { eyebrow: 'Continue Exploring', title: 'Related Ways to Take Part', backgroundColor: '#ffffff', selectedStoryIds: [], items: [] },
+    stories: { eyebrow: 'From the Journal', title: 'Related Story', viewAllLabel: 'View all stories →', viewAllHref: '/stories', backgroundColor: '#ffffff', selectedStoryIds: [], items: [{ category: 'Village Notes', title: 'A House Shared Again', href: '/stories/article/a-house-shared-again', image: sharedHouseDayGallery[0] }] },
+    cta: { eyebrow: 'Take Part', title: 'Ready to spend a day at the shared house?', buttonLabel: 'Register Your Interest', buttonHref: '/join-us/contact', backgroundColor: '#f5569b', textColor: '#ffffff', buttonBackgroundColor: '#111111', buttonTextColor: '#ffffff', textureImage: '', textureOpacity: 25 },
+    contentBlocks: [],
+  };
   if (slug === 'a-day-with-giant-panda-keepers') return {
     admin: { origin: 'confirmed' },
     homepageCard: { title: copy.title, image: pandaConservationGallery[8] },
