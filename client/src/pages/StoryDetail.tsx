@@ -11,7 +11,10 @@ const SANS = "var(--font-travel-sans, 'Cabin', 'Helvetica Neue', Arial, sans-ser
 
 function legacyStoryToSharedTemplate(story:EditorialStory,page:ReturnType<typeof normalizeStoryDetail>):OurStoryEditorialContent {
   const blockImages=page.contentBlocks.flatMap(block=>block.images||[]);
-  const pool=[story.coverImage,...blockImages,...page.inside.images,...page.quote.images,page.closing.image].filter(Boolean);
+  // Keep each source image in the pool only once. The shared template consumes
+  // this list in page order, so duplicate entries here otherwise surface in
+  // neighbouring editorial sections even when more distinct photos exist.
+  const pool=Array.from(new Set([story.coverImage,...blockImages,...page.inside.images,...page.quote.images,page.closing.image].filter(Boolean)));
   const image=(index:number)=>({src:pool[index%Math.max(pool.length,1)]||story.coverImage,alt:story.title});
   const opening=page.opening.paragraphs.length?page.opening.paragraphs:[story.excerpt];
   return {
