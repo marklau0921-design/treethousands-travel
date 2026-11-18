@@ -122,7 +122,102 @@ const relationshipsBeforeRoutesImages = {
   walkingTogether: '/images/stories/relationships-before-routes/walking-together.jpg',
 };
 
+const persimmonStoryImages = {
+  hero: '/images/stories/when-the-persimmons-turn-red/01-hero-hillside-orchard.png',
+  growerWithPole: '/images/stories/when-the-persimmons-turn-red/02-grower-with-pole.png',
+  readingTheFruit: '/images/stories/when-the-persimmons-turn-red/03-reading-the-fruit.png',
+  checkingRipeness: '/images/stories/when-the-persimmons-turn-red/04-checking-ripeness.png',
+  workingTogether: '/images/stories/when-the-persimmons-turn-red/05-working-together-in-orchard.png',
+  mountainOrchard: '/images/stories/when-the-persimmons-turn-red/06-mountain-orchard.png',
+  longPoleHarvest: '/images/stories/when-the-persimmons-turn-red/07-long-pole-harvest.png',
+  fruitLowered: '/images/stories/when-the-persimmons-turn-red/08-fruit-lowered-from-tree.png',
+  harvestCrates: '/images/stories/when-the-persimmons-turn-red/09-harvest-crates.png',
+  bambooTray: '/images/stories/when-the-persimmons-turn-red/10-sorting-on-bamboo-tray.png',
+  peelingWorkshop: '/images/stories/when-the-persimmons-turn-red/11-home-peeling-workshop.png',
+  courtyardPreparation: '/images/stories/when-the-persimmons-turn-red/12-courtyard-preparation.png',
+  farmhouseLunch: '/images/stories/when-the-persimmons-turn-red/13-shared-farmhouse-lunch.png',
+  sunsetOrchard: '/images/stories/when-the-persimmons-turn-red/14-orchard-at-sunset.png',
+};
+
 export const publishedEditorialStories: EditorialStory[] = [{
+  id: 'when-the-persimmons-turn-red',
+  slug: 'when-the-persimmons-turn-red',
+  title: 'When the Persimmons Turn Red',
+  category: 'Village Notes',
+  date: '2026-11-18',
+  location: 'Rural Sichuan',
+  excerpt: 'In a Sichuan orchard, autumn becomes practical: which persimmons are ready, which must remain on the branch, and how a morning of picking continues through the courtyard, kitchen and shared table.',
+  coverImage: persimmonStoryImages.hero,
+  content: `The trees were already bright when we arrived, their leaves thinning around fruit that had taken months to ripen. What looked simple from the edge of the orchard became a sequence of judgements—colour, firmness, weather, reach and what each basket would be used for.
+
+By joining the day at the pace of the host family, picking fruit became more than an activity. It became a way to understand how land, household work and hospitality remain connected.
+
+The season would continue without us. What we carried away was not the claim of having become farmers, but a more precise memory of how colour, judgement, labour and hospitality came together around one tree.`,
+  pageContent: {
+    meta: {
+      category: 'Village Notes', location: 'Rural Sichuan', publishedDate: '2026-11-18',
+      excerpt: 'In a Sichuan orchard, autumn becomes practical: which persimmons are ready, which must remain on the branch, and how a morning of picking continues through the courtyard, kitchen and shared table.',
+    },
+    opening: {
+      contextLabel: 'Seasonal Village Life', placeLabel: 'Place', chapterLabel: 'Chapter', recordedLabel: 'Published',
+      paragraphs: [
+        'From the road, the orchard appeared ready all at once. Orange fruit held the morning light between darker branches, and the trees seemed to offer a clear invitation: come closer and begin picking.',
+        'Inside the gate, the decision was less obvious. Some persimmons had reached the right colour but were still too firm. Some would be eaten fresh. Others needed to survive the journey back to the courtyard without bruising. A few were left for later because another cold night would change them.',
+        'The family did not need us to collect everything as quickly as possible. They needed us to learn what was useful that morning. The experience began not with a basket, but with watching how a practiced hand read the tree.',
+      ],
+    },
+    inside: {
+      eyebrow: 'Inside the Harvest', title: 'A harvest is made from decisions',
+      context: 'Seasonal work is often reduced to one photogenic gesture: reaching into a tree and returning with bright fruit. The real task extends before and after that moment.',
+      body: 'The host showed us how colour changes near the stem, how the skin responds to pressure and which branches can bear a hand or a picking pole. Fruit for eating soon was separated from fruit that needed time. The basket slowly became a record of many small choices rather than a measure of speed.',
+      images: [persimmonStoryImages.growerWithPole, persimmonStoryImages.readingTheFruit], backgroundColor: '#dfd4c2',
+    },
+    quote: {
+      eyebrow: 'Learning Another Household’s Pace', quote: 'The point was not to perform farm work for a morning. It was to become useful without asking the day to stop being real.',
+      body: 'Our hosts decided where we could help, which tools were appropriate and when to pause. We were not replacing experienced labour or turning the orchard into a game. We were entering a real sequence of work carefully enough to understand its rhythm.',
+      images: [persimmonStoryImages.checkingRipeness, persimmonStoryImages.workingTogether], backgroundColor: '#f0e7d8',
+    },
+    closing: {
+      eyebrow: 'Leave Some Fruit on the Tree', title: 'The season continues after the visit',
+      paragraphs: [
+        'When we returned to the orchard, the trees were still bright. Our baskets had not emptied them, nor should they have. Fruit remained for later days, for different uses and for decisions that belonged to the family after we left.',
+        'A meaningful rural experience does not need to contain the whole harvest or imitate a household’s life. It needs a clear place within a real day: enough participation to understand the work, enough context to respect its value and enough time together for the people behind the experience to remain more than scenery.',
+        'The season would continue without us. What we carried away was not the claim of having become farmers, but a more precise memory of how colour, judgement, labour and hospitality came together around one tree.',
+      ],
+      image: persimmonStoryImages.sunsetOrchard, backgroundColor: '#c7c9b8',
+    },
+    related: { eyebrow: 'Continue Reading', title: 'More Village Stories', backgroundColor: '#e6ddcf' },
+    navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#713f24', textColor: '#ffffff' },
+    page: { backgroundColor: '#f5efe5', textColor: '#202a22', accentColor: '#a64f24' },
+    contentBlocks: [
+      {
+        id: 'persimmon-read-the-tree', type: 'our-story-sheet', eyebrow: '01 — Read the Tree', title: 'The first lesson happened with empty hands.',
+        body: ['We walked between the rows and looked at how sunlight, slope and shelter changed the colour from one tree to the next. Even within a single crown, fruit could be at several stages.', 'The tree had a history that morning—recent rain, cooler nights, branches already harvested and fruit reserved for another purpose. Paying attention was part of the work.'],
+        quote: '', images: [persimmonStoryImages.mountainOrchard], captions: ['Persimmon trees following the slope of a Sichuan hillside'], backgroundColor: '#dfd6c7', textColor: '#202a22', accentColor: '#a64f24', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'persimmon-tool-and-judgement', type: 'story-spread', eyebrow: '02 — Tool and Judgement', title: 'The pole extends the hand, not the judgement.',
+        body: ['Higher fruit required a long picking pole with a small basket at its end. The tool looked simple until we tried to guide it between branches without damaging the fruit or the tree.', 'Demonstration turned into repetition: position, lift, turn, lower, check. A successful pick was quiet. The fruit arrived intact, and the branch settled back into place.'],
+        quote: '', images: [persimmonStoryImages.longPoleHarvest, persimmonStoryImages.fruitLowered], captions: ['Positioning the long pole among the branches', 'Lowering the fruit without bruising it'], backgroundColor: '#f3eee5', textColor: '#202a22', accentColor: '#8f542f', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'persimmon-different-futures', type: 'our-story-mosaic', eyebrow: '03 — Different Futures', title: 'Baskets reveal what each fruit may become.',
+        body: ['Back in the courtyard, the harvest separated into groups. Size mattered, but so did firmness, marks on the skin and how soon the fruit would be eaten.', 'Some would remain in the household. Some might be shared with neighbours or sold. Others could be peeled and dried so the season would continue into colder months.'],
+        quote: 'Sorting makes the household economy visible through practical choices.', images: [persimmonStoryImages.harvestCrates, persimmonStoryImages.bambooTray], captions: ['Fresh fruit arriving in field crates', 'Sorting fruit for drying and other uses'], backgroundColor: '#ded2c1', textColor: '#202a22', accentColor: '#a64f24', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'persimmon-courtyard-continues', type: 'explore-visual', eyebrow: '04 — The Courtyard Continues the Orchard', title: 'The work changes form after picking.',
+        body: ['Baskets were moved out of direct sun. Fruit was checked again, and simple tools appeared for peeling and preparing what would be preserved.', 'The courtyard connected field decisions with household routines. Conversation could continue because hands were occupied: one person sorting, another preparing, someone moving between the kitchen and the doorway.'],
+        quote: '', images: [persimmonStoryImages.peelingWorkshop, persimmonStoryImages.courtyardPreparation], captions: ['Peeling fruit with a hand-operated tool', 'Preparing the harvest together in the courtyard'], backgroundColor: '#ebe2d5', textColor: '#202a22', accentColor: '#96502e', imageSide: 'left', imageFit: 'cover', visible: true,
+      },
+      {
+        id: 'persimmon-shared-meal', type: 'story-closing', eyebrow: '05 — A Meal Gives the Day Another Scale', title: 'The table creates time for a more honest conversation.',
+        body: ['Lunch grew from the ordinary logic of the household: vegetables available nearby, preserved food from an earlier season, rice, tea and dishes that could feed everyone working that day.', 'At the table, questions changed. We spoke less about how to pick and more about the timing of the harvest, difficult weather, where younger family members now lived and how fruit moved from the village to a market.', 'The meal did not explain rural life completely. It made enough time for a more honest conversation to begin.'],
+        quote: '', images: [persimmonStoryImages.farmhouseLunch], captions: ['A simple farmhouse lunch shared after the morning’s work'], backgroundColor: '#cfd0bd', textColor: '#202a22', accentColor: '#8f542f', imageSide: 'right', imageFit: 'cover', visible: true,
+      },
+    ],
+  },
+}, {
   id: 'where-the-tea-hills-begin',
   slug: 'where-the-tea-hills-begin',
   title: 'Where the Tea Hills Begin',
