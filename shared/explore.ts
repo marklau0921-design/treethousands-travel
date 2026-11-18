@@ -116,11 +116,16 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
     introduction: 'Autumn in Heishui does not arrive as one colour at one moment. It moves down the mountain with altitude, weather and light—turning broadleaf forest red and gold while evergreen trees hold the deeper structure of the valley.',
     statement: 'Autumn is not one colour arriving at once. It is a landscape changing at different speeds.', details: ['Colour Forest', 'Mountain Valley', 'Village Landscape', 'Seasonal Light', 'Short Walks', 'Field Notes'],
   },
+  'harvest-persimmons-with-a-village-family': {
+    title: 'Harvest Persimmons With a Village Family', subtitle: 'Enter a Sichuan orchard at the pace of one household—learning which fruit is ready, helping with the harvest and following the work back to the courtyard and shared table.',
+    introduction: 'A persimmon harvest is more than the moment fruit leaves the branch. This seasonal experience follows a real working day: reading the trees with a local host, using simple picking tools, sorting fruit for different uses and sharing an ordinary farmhouse lunch. The family leads the work, and participation is shaped around what is genuinely useful that day.',
+    statement: 'The harvest becomes meaningful when we understand the decisions, work and relationships behind it.', details: ['Orchard Walk', 'Seasonal Picking', 'Local Knowledge', 'Courtyard Sorting', 'Persimmon Preparation', 'Shared Lunch'],
+  },
 };
 
 // Explore has one overview page. Category names are filters within that page,
 // not standalone CMS pages or routes.
-export const defaultExploreSlugs = ['build-with-what-is-already-here', 'a-day-at-the-shared-house', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn', 'work-the-fields-with-local-farmers', 'a-day-with-giant-panda-keepers'];
+export const defaultExploreSlugs = ['harvest-persimmons-with-a-village-family', 'build-with-what-is-already-here', 'a-day-at-the-shared-house', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn', 'work-the-fields-with-local-farmers', 'a-day-with-giant-panda-keepers'];
 
 const emptyActivity: ExploreActivityInfo = {
   enabled: false, type: '', status: 'planning', statusLabel: 'By Arrangement', dateLabel: 'Arranged around the project and participants',
@@ -216,9 +221,118 @@ const sharedHouseDayGallery = [
   '06-campfire-circle.jpg', '01-campfire-close.jpg', '02-forest-road.jpg', '07-suspension-bridge.jpg',
 ].map(name => `${sharedHouseDayAsset}/${name}`);
 
+const persimmonActivityAsset = '/images/stories/when-the-persimmons-turn-red';
+const persimmonActivityGallery = [
+  '01-hero-hillside-orchard.png', '02-grower-with-pole.png', '03-reading-the-fruit.png', '04-checking-ripeness.png',
+  '05-working-together-in-orchard.png', '06-mountain-orchard.png', '07-long-pole-harvest.png', '08-fruit-lowered-from-tree.png',
+  '09-harvest-crates.png', '10-sorting-on-bamboo-tray.png', '11-home-peeling-workshop.png', '12-courtyard-preparation.png',
+  '13-shared-farmhouse-lunch.png', '14-orchard-at-sunset.png',
+].map(name => `${persimmonActivityAsset}/${name}`);
+
 export function createDefaultExplorePage(slug: string): ExplorePageContent {
   const copy = PAGE_COPY[slug] ?? PAGE_COPY['village-life'];
   const pageIndex = Math.max(0, defaultExploreSlugs.indexOf(slug));
+  if (slug === 'harvest-persimmons-with-a-village-family') return {
+    admin: { origin: 'confirmed' },
+    homepageCard: { title: copy.title, image: persimmonActivityGallery[4] },
+    activity: {
+      ...emptyActivity, enabled: true, type: 'Seasonal Orchard & Village Life', status: 'seasonal', statusLabel: 'Autumn · By Arrangement',
+      dateLabel: 'During the local persimmon harvest', duration: 'Full day', groupSize: '2–8 participants', difficulty: 'Light to moderate',
+      location: 'Rural Sichuan', registrationLabel: 'Register Your Interest', registrationHref: '/join-us/contact',
+      note: 'The exact date and tasks follow fruit ripeness, weather and the host household’s real work. Picking, preparation and lunch arrangements are confirmed before the visit.',
+    },
+    activityDetail: {
+      category: 'Village Life',
+      excerpt: 'Spend a seasonal day with a Sichuan village family, learning to read the orchard, harvest carefully, sort the fruit and share the table that completes the working day.',
+      gallery: persimmonActivityGallery,
+      purpose: {
+        eyebrow: 'Why This Experience Exists', title: 'A bright fruit opens a window onto a working household.',
+        paragraphs: ['From the road, a persimmon orchard can appear ready all at once. Inside the trees, every choice is more precise: which fruit is ripe, which should remain, what can travel without bruising and what will be dried for winter.', 'This experience makes time for those decisions. Guests follow the host family’s pace and learn how orchard work continues through the courtyard, kitchen and household economy.'],
+        image: persimmonActivityGallery[5],
+      },
+      currentWork: {
+        eyebrow: 'What You Will Experience', title: 'Follow the harvest from branch to shared table.',
+        paragraphs: ['The day begins by walking the orchard with an experienced grower. After a demonstration, guests may help with suitable low branches or use a picking pole under close guidance.', 'Back in the courtyard, fruit is checked and sorted for eating, sharing, selling or drying. Depending on the household’s work, the day may include peeling or arranging fruit before everyone pauses for a simple farmhouse lunch.'],
+        images: [persimmonActivityGallery[1], persimmonActivityGallery[11]],
+      },
+      participation: {
+        eyebrow: 'The Rhythm of the Day', title: 'Five connected moments, led by the household.', introduction: 'The sequence follows the harvest, while the precise tasks remain responsive to fruit, weather and local needs.',
+        items: [
+          { title: 'Read the Orchard', description: 'Walk between the trees and learn how colour, firmness, slope and recent weather affect ripeness.', image: persimmonActivityGallery[2] },
+          { title: 'Learn to Pick', description: 'Begin with a demonstration and practise removing suitable fruit without damaging the branch.', image: persimmonActivityGallery[3] },
+          { title: 'Use the Long Pole', description: 'When appropriate, guide a traditional picking pole among higher branches and lower fruit carefully.', image: persimmonActivityGallery[6] },
+          { title: 'Sort the Harvest', description: 'Separate fruit by condition and intended use, seeing how practical decisions shape its value.', image: persimmonActivityGallery[9] },
+          { title: 'Share the Table', description: 'Finish with an ordinary household meal and conversation about the season and village life.', image: persimmonActivityGallery[12] },
+        ],
+      },
+      fit: {
+        eyebrow: 'Is This for You?', title: 'Patience and attention matter more than farming experience.', introduction: 'No previous experience is required. A good fit begins with respect for real work and comfort in an outdoor village environment.',
+        items: ['You want to understand seasonal rural life through a specific working day.', 'You can walk on uneven orchard ground and stand for periods of time.', 'You are willing to follow the host’s judgement about which fruit and tools are appropriate.', 'You accept that weather and ripeness may change the programme.', 'You will ask before photographing people, homes or private working spaces.'],
+      },
+      flexibility: {
+        eyebrow: 'Shaped Around the Harvest', title: 'The fruit—not a fixed performance—sets the timetable.',
+        paragraphs: ['Persimmons ripen according to temperature, rain, altitude and the position of each tree. We confirm visits within the local harvest period and check conditions again close to the day.', 'If rain, fruit condition or household needs change, the balance may move from picking toward sorting, peeling, drying or conversation. The experience remains connected to useful work rather than a staged activity list.'],
+        points: ['Local harvest dates', 'Recent weather', 'Fruit condition', 'Household work underway', 'Group ages and mobility', 'Dietary and transport needs'], image: persimmonActivityGallery[7],
+      },
+      people: {
+        eyebrow: 'Learning Alongside', title: 'Local knowledge leads every part of the day.',
+        paragraphs: ['The host family decides which trees are ready, which tools can be used and where guests can contribute safely. Their judgement comes from returning to the orchard across many seasons.', 'Participation does not replace skilled or paid labour. It creates a defined place for visitors inside an existing day—useful enough to learn, limited enough to respect the work.'],
+        images: [persimmonActivityGallery[4], persimmonActivityGallery[8]],
+      },
+      practical: {
+        eyebrow: 'Before You Join', title: 'Prepare for an outdoor working day and a shared household meal.', introduction: 'Final arrangements are confirmed for each visit. These points apply to most persimmon-harvest days.',
+        items: [
+          { title: 'Physical Level', description: 'Light to moderate walking and standing on uneven, sometimes damp orchard ground.' },
+          { title: 'Season', description: 'Normally autumn, with exact dates determined locally by ripeness and weather.' },
+          { title: 'What to Wear', description: 'Closed non-slip shoes, practical layers and sun or light rain protection.' },
+          { title: 'Tools & Safety', description: 'Use only the tools and branches identified by the host; ladders and specialist work remain restricted.' },
+          { title: 'Food', description: 'A simple farmhouse lunch is included when confirmed. Tell us about allergies and dietary needs early.' },
+          { title: 'Children & Access', description: 'Suitability depends on age, supervision, orchard conditions and mobility requirements.' },
+        ],
+      },
+      principles: { eyebrow: 'Our Shared Principles', title: 'Enter the harvest without taking it over.', items: ['Watch before picking.', 'Follow the household’s decisions.', 'Handle fruit, trees and tools carefully.', 'Photograph people only with permission.', 'Leave space for work and life to continue after the visit.'] },
+      closing: {
+        eyebrow: 'Begin a Conversation', title: 'Tell us when your China journey reaches Sichuan.',
+        paragraphs: ['Share your travel dates, group size, ages, mobility and dietary needs. We will check the local season and speak with the host household before suggesting the right day.', 'This works best as a two-to-three-day rural module within a wider China journey, allowing time for the village, the household and the season to be understood beyond a single activity.'],
+        image: persimmonActivityGallery[13],
+      },
+      roles: {
+        eyebrow: 'Ways to Join the Day', title: 'There Is More Than One Way to Take Part', footer: 'No farming experience is required. Bring attention, practical clothing and a willingness to follow local guidance.', linkLabel: 'Tell Us About Your Group →',
+        items: [
+          { title: 'Orchard Learner', description: 'Observe how the host reads colour, firmness, weather and the needs of each tree.', icon: 'leaf' },
+          { title: 'Helping Hands', description: 'Support suitable picking, carrying, sorting or preparation tasks at the household’s pace.', icon: 'hands' },
+          { title: 'Food Learner', description: 'Follow how fresh and preserved foods connect the harvest to the shared meal.', icon: 'cook' },
+          { title: 'Photographer', description: 'Document landscape and work without directing people or interrupting routines.', icon: 'camera' },
+          { title: 'Writer / Storyteller', description: 'Record the seasonal knowledge and household decisions behind the day.', icon: 'writer' },
+          { title: 'Translator', description: 'Help conversation remain natural between local hosts and international guests.', icon: 'languages' },
+        ],
+      },
+      purposeStory: {
+        eyebrow: 'Why We Travel This Way', title: 'Participation Begins With Becoming Useful, Not Performing Rural Life.',
+        paragraphs: ['Seasonal work is often reduced to one photogenic gesture: reaching into a tree and returning with bright fruit. The real harvest extends before and after that moment.', 'A practiced hand reads the stem, skin and branch before choosing. In the courtyard, another sequence begins as fruit is separated for eating, selling, sharing or preserving.', 'Tree Thousands creates this day as a paid local experience within a wider journey. The household sets the boundaries and receives value for its time, knowledge, food and hospitality.', 'Guests are not asked to pretend they have become farmers. They are invited to participate carefully enough to understand how land, labour and household life remain connected.'],
+        quote: 'The point is not to perform farm work for a morning. It is to become useful without asking the day to stop being real.', mainImage: persimmonActivityGallery[0], insetImage: persimmonActivityGallery[10],
+      },
+      placeStory: {
+        eyebrow: 'The Place Around the Harvest', title: 'Autumn Connects Orchard, Courtyard and Household.', introduction: 'In rural Sichuan, the orchard is part of a wider system of slopes, paths, homes, markets and seasonal routines.',
+        paragraphs: ['Sunlight and shelter make fruit ripen at different speeds even within the same orchard. This unevenness is why the day begins with observation rather than a promise to pick every visible persimmon.', 'The courtyard continues the work of the trees. Here fruit is checked again, moved out of direct sun and prepared according to how the household plans to use it.', 'A meal gives the day another scale. Around the table, the harvest becomes a conversation about weather, family, local markets and the choices that keep a rural household moving through the year.'], image: persimmonActivityGallery[13],
+      },
+    },
+    hero: { eyebrow: 'Explore / Village Life', title: copy.title, subtitle: copy.subtitle, image: persimmonActivityGallery[0], backgroundColor: '#713f24', overlayOpacity: 16 },
+    introduction: { eyebrow: 'A seasonal invitation', text: copy.introduction, backgroundColor: '#f5efe5', textColor: '#202a22' },
+    visual: { eyebrow: 'The experience', title: 'From orchard judgement to the shared table.', paragraphs: [], images: [], backgroundColor: '#f5efe5' },
+    details: { eyebrow: 'Activity Details', title: 'What the day may hold', description: 'Every visit follows the real harvest and the host household’s pace.', backgroundColor: '#eadfce', items: copy.details.map((title, index) => ({ title, image: persimmonActivityGallery[[5, 6, 2, 8, 10, 12][index]] })) },
+    statement: { eyebrow: 'A way of participating', text: copy.statement, backgroundColor: '#713f24', textColor: '#fff8ef' },
+    perspectives: { eyebrow: 'Continue Exploring', title: 'Understand the Season More Deeply', backgroundColor: '#f8f3eb', selectedStoryIds: [], items: [
+      { title: 'When the Persimmons Turn Red', description: 'Read the story behind the orchard, courtyard and shared table.', href: '/stories/article/when-the-persimmons-turn-red', image: persimmonActivityGallery[3] },
+      { title: 'Village Life', description: 'Discover other experiences shaped by rural work, food and relationships.', href: '/explore/village-life', image: persimmonActivityGallery[11] },
+      { title: 'Our Way of Travel', description: 'Learn why local guidance, useful participation and context shape every experience.', href: '/our-story/our-way-of-travel', image: persimmonActivityGallery[12] },
+    ] },
+    stories: { eyebrow: 'From the Journal', title: 'Related Story', viewAllLabel: 'View all stories →', viewAllHref: '/stories', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { category: 'Village Notes', title: 'When the Persimmons Turn Red', href: '/stories/article/when-the-persimmons-turn-red', image: persimmonActivityGallery[13] },
+    ] },
+    cta: { eyebrow: 'Take Part', title: 'Ready to follow the persimmon harvest into village life?', buttonLabel: 'Register Your Interest', buttonHref: '/join-us/contact', backgroundColor: '#d85f2d', textColor: '#ffffff', buttonBackgroundColor: '#202a22', buttonTextColor: '#ffffff', textureImage: '', textureOpacity: 20 },
+    contentBlocks: [],
+  };
   if (slug === 'a-day-at-the-shared-house') return {
     admin: { origin: 'confirmed' },
     homepageCard: { title: copy.title, image: sharedHouseDayGallery[0] },
