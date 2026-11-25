@@ -23,7 +23,14 @@ export interface ExploreActivityDetail {
   closing: { eyebrow: string; title: string; paragraphs: string[]; image: string };
   roles: { eyebrow: string; title: string; footer: string; linkLabel: string; items: Array<{ title: string; description: string; icon: string }> };
   purposeStory: { eyebrow: string; title: string; paragraphs: string[]; quote: string; mainImage: string; insetImage: string };
-  placeStory: { eyebrow: string; title: string; introduction: string; paragraphs: string[]; image: string };
+  placeStory: {
+    eyebrow: string;
+    title: string;
+    introduction: string;
+    paragraphs: string[];
+    image: string;
+    relatedStory?: { label: string; href: string };
+  };
 }
 export interface ExploreActivityInfo {
   enabled: boolean;
@@ -121,11 +128,29 @@ const PAGE_COPY: Record<string, { title: string; subtitle: string; introduction:
     introduction: 'A persimmon harvest is more than the moment fruit leaves the branch. This seasonal experience follows a real working day: reading the trees with a local host, using simple picking tools, sorting fruit for different uses and sharing an ordinary farmhouse lunch. The family leads the work, and participation is shaped around what is genuinely useful that day.',
     statement: 'The harvest becomes meaningful when we understand the decisions, work and relationships behind it.', details: ['Orchard Walk', 'Seasonal Picking', 'Local Knowledge', 'Courtyard Sorting', 'Persimmon Preparation', 'Shared Lunch'],
   },
+  'morning-market-to-table': {
+    title: 'From the Morning Market to the Table',
+    subtitle: 'Shop for seasonal ingredients with a local host in rural Sichuan, then help prepare and share a home-cooked lunch.',
+    introduction: 'Start at a local market with a host who shops there regularly. Choose what to cook based on what is fresh that morning, then head to the kitchen to wash and prepare the ingredients together.',
+    statement: 'What you find at the market shapes what you cook at home.',
+    details: ['Market Walk', 'Seasonal Ingredients', 'Shopping With a Host', 'Kitchen Preparation', 'Home Cooking', 'Shared Lunch'],
+  },
 };
 
 // Explore has one overview page. Category names are filters within that page,
 // not standalone CMS pages or routes.
-export const defaultExploreSlugs = ['harvest-persimmons-with-a-village-family', 'build-with-what-is-already-here', 'a-day-at-the-shared-house', 'pick-tea-with-local-growers', 'walk-beneath-four-sisters', 'share-a-day-of-village-life', 'read-the-colours-of-autumn', 'work-the-fields-with-local-farmers', 'a-day-with-giant-panda-keepers'];
+export const defaultExploreSlugs = [
+  'morning-market-to-table',
+  'harvest-persimmons-with-a-village-family',
+  'build-with-what-is-already-here',
+  'a-day-at-the-shared-house',
+  'pick-tea-with-local-growers',
+  'walk-beneath-four-sisters',
+  'share-a-day-of-village-life',
+  'read-the-colours-of-autumn',
+  'work-the-fields-with-local-farmers',
+  'a-day-with-giant-panda-keepers',
+];
 
 const emptyActivity: ExploreActivityInfo = {
   enabled: false, type: '', status: 'planning', statusLabel: 'By Arrangement', dateLabel: 'Arranged around the project and participants',
@@ -149,6 +174,156 @@ const defaultActivityDetail: ExploreActivityDetail = {
   purposeStory: { eyebrow: 'Why We Do This', title: '', paragraphs: [], quote: '', mainImage: '', insetImage: '' },
   placeStory: { eyebrow: 'The Place Around the Activity', title: '', introduction: '', paragraphs: [], image: '' },
 };
+
+function createMorningMarketExplorePage(): ExplorePageContent {
+  const copy = PAGE_COPY['morning-market-to-table'];
+  const photo = (number: number) => `/images/stories/what-the-morning-market-carries-home/${String(number).padStart(2, '0')}.jpg`;
+  const storyHref = '/stories/article/what-the-morning-market-carries-home';
+  const enquiryHref = '/join-us/contact';
+  const enquiryLabel = 'Enquire About This Experience';
+  return {
+    admin: { origin: 'confirmed' },
+    homepageCard: { title: copy.title, image: photo(6) },
+    activity: {
+      enabled: true,
+      type: 'Market & Home Cooking',
+      status: 'planning',
+      statusLabel: 'By Arrangement',
+      dateLabel: 'On local market days',
+      duration: 'Half day, through lunch',
+      groupSize: 'Small group',
+      difficulty: 'Gentle walking',
+      location: 'Rural Sichuan',
+      registrationLabel: enquiryLabel,
+      registrationHref: enquiryHref,
+      note: 'This is a paid, locally hosted experience. We confirm the market day, host, price and meal arrangements before you book.',
+    },
+    activityDetail: {
+      category: 'Village Life',
+      excerpt: 'Spend a morning at a Sichuan market with a local host. Pick what looks good, help prepare it in the kitchen and sit down to a home-cooked lunch together.',
+      gallery: [6, 2, 3, 10, 4, 7, 8, 12, 13, 5, 9, 1, 11, 14].map(photo),
+      purpose: {
+        eyebrow: 'A Morning With a Local Host',
+        title: 'See how the market shapes lunch.',
+        paragraphs: [copy.introduction],
+        image: photo(5),
+      },
+      currentWork: {
+        eyebrow: 'The Morning',
+        title: 'Shop for seasonal produce and cook a shared lunch.',
+        paragraphs: [
+          'We agree the meeting time once we know when the market opens and how far you are travelling.',
+          'The host shows which ingredients suit the dishes being planned and what can be swapped if a stall has sold out.',
+          'You can ask where an ingredient comes from or take part in a small purchase with the host’s help.',
+          'Your host guides the prep in the kitchen and handles any work with hot pans or sharp tools that calls for experience.',
+          'We confirm the meal arrangements and discuss dietary needs before the visit.',
+        ],
+        images: [photo(11), photo(14)],
+      },
+      participation: {
+        eyebrow: 'The Morning',
+        title: 'From shopping to lunch',
+        introduction: 'Your host adjusts the menu to what is available and guides each step.',
+        items: [
+          { title: 'Meet at the Morning Market', description: 'Walk the market with your host and see how produce arrives from nearby villages and other suppliers.', image: photo(4) },
+          { title: 'Choose Ingredients in Season', description: 'Compare what is for sale and decide with your host which greens, roots or other produce to bring home.', image: photo(7) },
+          { title: 'Buy What You Need', description: 'See how a seller weighs and prices produce and try a purchase with your host’s help.', image: photo(8) },
+          { title: 'Help Prepare Lunch', description: 'Wash, trim or sort the ingredients while your host sets the pace and demonstrates a preparation technique.', image: photo(12) },
+          { title: 'Sit Down Together', description: 'Share the dishes you helped prepare and ask how the household adapts its cooking through the year.', image: photo(13) },
+        ],
+      },
+      fit: {
+        eyebrow: 'Who It Suits',
+        title: 'An easy-paced morning for curious cooks and travellers.',
+        introduction: 'Guests can take part at a comfortable pace with guidance from their host.',
+        items: ['Comfortable walking or standing in a busy market.', 'Interested in learning how a household chooses and prepares food.', 'Happy to adapt the menu to the ingredients available that day.'],
+      },
+      flexibility: {
+        eyebrow: 'Dates and Availability',
+        title: 'Plan around market days and the host’s schedule.',
+        paragraphs: ['Market hours, produce and host availability shape each visit. We confirm a suitable morning with you before booking.'],
+        points: ['Market date', 'Host availability', 'Transport', 'Dietary and access needs'],
+        image: photo(2),
+      },
+      people: {
+        eyebrow: 'Your Local Host',
+        title: 'Shop with someone who knows the stalls.',
+        paragraphs: ['Your host introduces the market and guides cooking at a pace that works for the kitchen and your group.'],
+        images: [photo(4), photo(9)],
+      },
+      practical: {
+        eyebrow: 'Before You Join',
+        title: 'What to know before the market visit',
+        introduction: 'Share your travel dates and needs when you enquire so we can check what the host can accommodate.',
+        items: [
+          { title: 'Walking and Standing', description: 'Expect a gentle walk with periods of standing. Market paths can be narrow, busy or uneven.' },
+          { title: 'Market Days', description: 'The activity runs by arrangement around the local market calendar and host availability.' },
+          { title: 'What to Wear', description: 'Wear comfortable closed shoes and bring a light layer or rain protection in wet weather.' },
+          { title: 'Food and Allergies', description: 'Tell us about any allergies or dietary requirements. We will check menu options and what the kitchen can accommodate.' },
+          { title: 'Children and Access', description: 'Share ages and mobility needs when you enquire so we can check the market route and kitchen setup.' },
+          { title: 'Kitchen and Photography', description: 'Follow your host’s guidance around tools and hot surfaces. Ask before photographing people or private spaces.' },
+        ],
+      },
+      principles: {
+        eyebrow: 'Market Etiquette',
+        title: 'Follow the host’s lead.',
+        items: ['Leave room for local shoppers.', 'Ask before taking photographs.', 'Help with the tasks your host has shown you.'],
+      },
+      closing: {
+        eyebrow: 'Enquire',
+        title: 'Plan your market morning.',
+        paragraphs: ['Include your dates, group size and any food or access needs in your enquiry. We’ll confirm the host, meeting point, meal and price with you.'],
+        image: photo(14),
+      },
+      roles: {
+        eyebrow: 'How to Join In',
+        title: 'Make lunch together',
+        footer: 'Your host will help you choose tasks that suit your group.',
+        linkLabel: 'Ask About the Market Morning',
+        items: [
+          { title: 'Market Shopper', description: 'Help choose what to cook with the produce on offer that morning.', icon: 'leaf' },
+          { title: 'Kitchen Helper', description: 'Wash or trim vegetables and lay out bowls before the cooking starts.', icon: 'hands' },
+          { title: 'Home Cook', description: 'Watch a preparation technique and try the parts your host can guide you through.', icon: 'cook' },
+        ],
+      },
+      purposeStory: {
+        eyebrow: 'Why Follow a Local Shopping Trip?',
+        title: 'The host knows what to look for.',
+        paragraphs: [
+          'A seller can tell you when a bunch of greens was cut and how best to cook the thicker stems. Your host brings another kind of knowledge to the stall. They know what is already in the pantry, how many people need feeding and when it is worth changing the menu.',
+          'Following those decisions gives a market visit a purpose. Back in the kitchen, you can see how the produce you chose becomes part of a meal.',
+        ],
+        quote: 'What you find at the market shapes what you cook at home.',
+        mainImage: photo(5),
+        insetImage: photo(9),
+      },
+      placeStory: {
+        eyebrow: 'Rural Sichuan',
+        title: 'Market day brings the surrounding villages together.',
+        introduction: 'Produce comes in from small gardens, farms and wholesale suppliers. Familiar shoppers return for ingredients, news and the people they buy from.',
+        paragraphs: [
+          'The stalls and ingredients change with the season and the people selling that day. The morning is planned around the host’s working market and kitchen.',
+          'The photographs on this page were reconstructed as illustrations from reference images.',
+        ],
+        image: photo(1),
+        relatedStory: { label: 'Read What the Morning Market Carries Home', href: storyHref },
+      },
+    },
+    hero: { eyebrow: 'Explore / Village Life', title: copy.title, subtitle: copy.subtitle, image: photo(6), backgroundColor: '#ffffff', overlayOpacity: 0 },
+    introduction: { eyebrow: 'Market and Kitchen', text: copy.introduction, backgroundColor: '#ffffff', textColor: '#171717' },
+    visual: { eyebrow: 'The Morning', title: 'From the stalls to the kitchen', paragraphs: [], images: [], backgroundColor: '#f5f5f5' },
+    details: { eyebrow: 'Activity Details', title: 'What the morning may include', description: 'The market and host guide the plan.', backgroundColor: '#f5f5f5', items: copy.details.map((title, index) => ({ title, image: photo([6, 7, 8, 11, 12, 13][index]) })) },
+    statement: { eyebrow: 'The Menu', text: copy.statement, backgroundColor: '#111111', textColor: '#ffffff' },
+    perspectives: { eyebrow: 'Explore Further', title: 'The story behind the experience', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { title: 'What the Morning Market Carries Home', description: 'Follow a morning of shopping and cooking in rural Sichuan.', href: storyHref, image: photo(14) },
+    ] },
+    stories: { eyebrow: 'From the Journal', title: 'The story behind the experience', viewAllLabel: 'View all stories', viewAllHref: '/stories', backgroundColor: '#ffffff', selectedStoryIds: [], items: [
+      { category: 'Village Notes', title: 'What the Morning Market Carries Home', href: storyHref, image: photo(11) },
+    ] },
+    cta: { eyebrow: 'Enquire', title: 'Plan your market morning in Sichuan', buttonLabel: enquiryLabel, buttonHref: enquiryHref, backgroundColor: '#252f27', textColor: '#ffffff', buttonBackgroundColor: '#111111', buttonTextColor: '#ffffff', textureImage: '', textureOpacity: 20 },
+    contentBlocks: [],
+  };
+}
 
 const houseImages = {
   hero: '/images/stories/working-with-what-is-already-here/before-exterior.jpg',
@@ -230,6 +405,7 @@ const persimmonActivityGallery = [
 ].map(name => `${persimmonActivityAsset}/${name}`);
 
 export function createDefaultExplorePage(slug: string): ExplorePageContent {
+  if (slug === 'morning-market-to-table') return createMorningMarketExplorePage();
   const copy = PAGE_COPY[slug] ?? PAGE_COPY['village-life'];
   const pageIndex = Math.max(0, defaultExploreSlugs.indexOf(slug));
   if (slug === 'harvest-persimmons-with-a-village-family') return {

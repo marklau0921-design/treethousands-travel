@@ -236,9 +236,10 @@ const morningMarketEditorial: OurStoryEditorialContent = {
     backgroundImage: '/images/explore/share-a-day-of-village-life/06-village-lane.jpg',
   },
   cta: {
-    title: 'Share a day of village life', buttonLabel: 'Explore the experience',
-    buttonHref: '/explore/activity/share-a-day-of-village-life',
-    image: '/images/explore/share-a-day-of-village-life/01-mountain-village.jpg',
+    title: 'From the Morning Market to the Table',
+    buttonLabel: 'Explore the experience',
+    buttonHref: '/explore/activity/morning-market-to-table',
+    image: morningMarketImages.ingredients.src,
   },
 };
 
@@ -1406,16 +1407,32 @@ export function createDefaultStoryDetail(story: Pick<EditorialStory, 'title'|'ca
   };
 }
 
-export function normalizeStoryDetail(value: unknown, story: Pick<EditorialStory, 'title'|'category'|'date'|'location'|'excerpt'|'content'|'coverImage'>): StoryDetailPageContent {
+export function normalizeStoryDetail(
+  value: unknown,
+  story: Pick<EditorialStory, 'title'|'category'|'date'|'location'|'excerpt'|'content'|'coverImage'> & Partial<Pick<EditorialStory, 'slug'>>,
+): StoryDetailPageContent {
   const defaults = createDefaultStoryDetail(story);
   if (typeof value === 'string') { try { value = JSON.parse(value); } catch { return defaults; } }
   if (!value || typeof value !== 'object') return defaults;
   const page = value as Partial<StoryDetailPageContent>;
+  let editorialTemplate = page.editorialTemplate;
+  if (story.slug === morningMarketSlug) {
+    const template = editorialTemplate as Partial<OurStoryEditorialContent> | undefined;
+    const cta = template?.cta;
+    if (
+      cta?.title === 'Share a day of village life' &&
+      cta.buttonLabel === 'Explore the experience' &&
+      cta.buttonHref === '/explore/activity/share-a-day-of-village-life' &&
+      cta.image === '/images/explore/share-a-day-of-village-life/01-mountain-village.jpg'
+    ) {
+      editorialTemplate = { ...template, cta: { ...cta, ...morningMarketEditorial.cta } };
+    }
+  }
   return {
     admin: { origin: normalizeContentOrigin(page.admin?.origin, 'placeholder') },
     meta: { ...defaults.meta, ...(page.meta ?? {}) }, opening: { ...defaults.opening, ...(page.opening ?? {}), paragraphs: page.opening?.paragraphs ?? defaults.opening.paragraphs },
     inside: { ...defaults.inside, ...(page.inside ?? {}), images: page.inside?.images ?? defaults.inside.images }, quote: { ...defaults.quote, ...(page.quote ?? {}), images: page.quote?.images ?? defaults.quote.images },
     closing: { ...defaults.closing, ...(page.closing ?? {}), paragraphs: page.closing?.paragraphs ?? defaults.closing.paragraphs }, related: { ...defaults.related, ...(page.related ?? {}) },
-    navigation: { ...defaults.navigation, ...(page.navigation ?? {}) }, page: { ...defaults.page, ...(page.page ?? {}) }, contentBlocks: normalizeEditorialBlocks(page.contentBlocks), editorialTemplate: page.editorialTemplate,
+    navigation: { ...defaults.navigation, ...(page.navigation ?? {}) }, page: { ...defaults.page, ...(page.page ?? {}) }, contentBlocks: normalizeEditorialBlocks(page.contentBlocks), editorialTemplate,
   };
 }

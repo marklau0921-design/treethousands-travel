@@ -619,6 +619,14 @@ export default function ExploreActivityDetail({
           font-size: 16px;
           line-height: 1.78;
         }
+        .activity-detail-page .place-related-story {
+          display: inline-block;
+          color: #252f27;
+          font-size: 16px;
+          font-weight: 600;
+          text-decoration: underline;
+          text-underline-offset: 4px;
+        }
         .activity-detail-page .gallery-modal {
           background: #fff;
           color: #222;
@@ -1077,6 +1085,14 @@ export default function ExploreActivityDetail({
                   {detail.placeStory.paragraphs.slice(1).join(" ")}
                 </p>
               </div>
+              {detail.placeStory.relatedStory && (
+                <Link
+                  href={detail.placeStory.relatedStory.href}
+                  className="place-related-story"
+                >
+                  {detail.placeStory.relatedStory.label}
+                </Link>
+              )}
             </div>
           </div>
         </div>
