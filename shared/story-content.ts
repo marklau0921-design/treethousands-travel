@@ -1,5 +1,6 @@
 import { normalizeEditorialBlocks, type EditorialBlock } from './editorial-blocks';
 import { normalizeContentOrigin, type ContentOrigin } from './content-origin';
+import type { OurStoryEditorialContent } from '../client/src/content/ourStoryEditorialPages';
 
 export const STORY_CATEGORIES = ['All Stories', 'Brand Stories', 'Village Notes', 'Local Life', 'Journal'] as const;
 export type StoryCategory = Exclude<(typeof STORY_CATEGORIES)[number], 'All Stories'>;
@@ -139,7 +140,144 @@ const persimmonStoryImages = {
   sunsetOrchard: '/images/stories/when-the-persimmons-turn-red/14-orchard-at-sunset.png',
 };
 
-export const publishedEditorialStories: EditorialStory[] = [{
+const morningMarketSlug = 'what-the-morning-market-carries-home';
+const morningMarketTitle = 'What the Morning Market Carries Home';
+const morningMarketDate = '2026-11-25';
+const morningMarketLocation = 'Rural Sichuan';
+const morningMarketExcerpt = 'Before breakfast, a rural Sichuan market gathers growers, cooks, neighbours and the ingredients of the coming week. One household’s shopping trip follows that food from the stalls to the midday table.';
+
+const morningMarketImage = (file: string, alt: string) => ({ src: `/images/stories/${morningMarketSlug}/${file}.jpg`, alt });
+const morningMarketImages = {
+  hero: morningMarketImage('01', 'A market street with stalls on both sides of the road'),
+  stallsOpening: morningMarketImage('02', 'A market vendor arranging winter melons on a low trolley'),
+  breakfastSteam: morningMarketImage('03', 'Steam rising from a breakfast vendor’s stall'),
+  carryingProduce: morningMarketImage('04', 'A shopper carrying a woven basket of leafy vegetables'),
+  stallConversation: morningMarketImage('05', 'A conversation at a market stall'),
+  marketLane: morningMarketImage('06', 'Shoppers and produce vendors sharing a narrow market lane'),
+  choosingGreens: morningMarketImage('07', 'Shoppers examining leafy greens at a low stall'),
+  discussingProduce: morningMarketImage('08', 'A seller counting change at a lotus-root stall'),
+  weighingGreens: morningMarketImage('09', 'A seller weighing vegetables beside baskets of greens'),
+  motorbikeDelivery: morningMarketImage('10', 'A motorbike carrying crates along a village lane'),
+  ingredients: morningMarketImage('11', 'Fresh produce and bowls spread across a kitchen table'),
+  kitchenPrep: morningMarketImage('12', 'Vegetables being prepared on a kitchen worktop'),
+  sharedLunch: morningMarketImage('13', 'A household sharing a meal around a round table'),
+  packingDown: morningMarketImage('14', 'A vendor sweeping as the market winds down'),
+};
+
+const morningMarketOpening = [
+  'This is an illustrative account of a Sichuan market morning, with images reconstructed from reference photographs.',
+  'The first vendors were already working when we reached the market. A tarpaulin was being tied above one stall. Vegetables were spread across woven baskets at another. Someone lifted the lid of a bamboo steamer, and for a moment the cold morning air filled with warmth.',
+  'The market assembled itself through repeated actions. A table unfolded, a scale was balanced, a crate opened and a neighbour called across the lane. Motorbikes arrived carrying more than seemed possible. Shoppers went straight to the people they knew.',
+  'We had come with our host to buy ingredients for lunch. The list gave us a starting point. What we bought would depend on what looked good, what the sellers told us and what was already at home.',
+];
+
+const morningMarketConversation = 'Sometimes our host explained an ingredient. Sometimes she stopped to catch up with someone she knew. Following her through the stalls gave us a place in a morning that was already underway.';
+const morningMarketQuote = 'We arrived with a list. Our host knew the stalls and the small decisions that would turn it into lunch.';
+
+const morningMarketStreet = [
+  'In daylight, the market street might look too narrow for everything it holds. In the early hour, people made space together. Crates became counters. Doorways became storage. The edge of the road became a place to eat breakfast, repair a tool or exchange news from another village.',
+  'Produce came from small plots and larger farms, from warmer valleys and cooler slopes. One short street brought together fields, households and journeys that had begun before sunrise.',
+];
+
+const morningMarketChoosing = [
+  'At one vegetable stall, our host turned the cut ends of a bunch of greens toward the light. At another, she pressed a thumb against a root and asked when it had been dug. She asked where the mushrooms had come from and changed one planned dish when they looked good.',
+  'Tender leaves suited one dish and sturdier stems another. A marked vegetable could still be the right choice if it would be cooked that day. Prices mattered alongside freshness, familiarity and what the kitchen needed.',
+];
+
+const morningMarketSellers = [
+  'Some sellers had travelled only a few kilometres. Others brought goods from a larger wholesale market before dawn. A woman with a small basket of eggs would leave when the basket was empty. A permanent shopkeeper would stay after the temporary stalls disappeared.',
+  'Those different journeys shaped what each person could sell and how long they could stay. In one conversation, our host asked how much of a vegetable was left. In the next, she asked when the seller would be back.',
+];
+
+const morningMarketKitchen = [
+  'Back at the house, bags were opened and the morning’s purchases spread across the table. We washed the greens, grouped the ingredients in cooking order and kept the work surface clear. Our host handled the knife, the heat and the timing.',
+  'The dishes brought the morning back into view. There were the greens chosen by their cut stems and the mushrooms that changed the shopping list. Something preserved in the household pantry connected lunch to an earlier season.',
+  'As we ate, our host told us which vendor was related to a neighbour, why prices had changed and what would appear at the market when the weather turned colder. Around the table, there was time for the questions we had carried home along with the food.',
+];
+
+const morningMarketClosing = 'By midday, tables were folding, empty baskets were going back onto motorbikes and the road was widening again. Across the surrounding villages, the ingredients were finding their way into kitchens, into meals and into plans for the week ahead. We left with a route through one ordinary morning and a better sense of the people who grow, carry, choose and cook the food that makes it possible.';
+
+const morningMarketEditorial: OurStoryEditorialContent = {
+  hero: {
+    image: morningMarketImages.hero.src, alt: morningMarketImages.hero.alt,
+    metaLeft: 'TREE THOUSANDS / VILLAGE NOTES', metaRight: '',
+    title: morningMarketTitle, subtitle: morningMarketExcerpt,
+  },
+  beginning: {
+    eyebrow: 'MARKET MORNING', title: 'Before the signs\nwere fully visible',
+    paragraphs: morningMarketOpening,
+    images: [morningMarketImages.stallsOpening, morningMarketImages.breakfastSteam, morningMarketImages.carryingProduce, morningMarketImages.stallConversation],
+  },
+  turning: {
+    eyebrow: 'CHOOSING WITH A HOST', title: 'The list leaves room\nfor the season',
+    leftParagraphs: morningMarketStreet,
+    rightParagraphs: morningMarketChoosing,
+    images: [morningMarketImages.marketLane, morningMarketImages.choosingGreens, morningMarketImages.discussingProduce],
+    captions: ['A market lane gathers people and produce from nearby villages.', 'Choosing greens for the day’s meal.'],
+  },
+  action: {
+    eyebrow: 'HOW FOOD GETS HERE', title: 'Every stall has a different\ndistance behind it',
+    paragraphs: morningMarketSellers,
+    images: [morningMarketImages.weighingGreens, morningMarketImages.carryingProduce, morningMarketImages.motorbikeDelivery],
+  },
+  belief: {
+    eyebrow: 'BACK AT THE HOUSE', title: 'The kitchen continues\nthe market',
+    paragraphs: morningMarketKitchen,
+    sideParagraphs: [morningMarketConversation],
+    quote: morningMarketQuote,
+    images: [morningMarketImages.ingredients, morningMarketImages.kitchenPrep, morningMarketImages.sharedLunch],
+  },
+  closing: {
+    eyebrow: 'AFTER THE STALLS CLOSE', title: 'The market carries on\nafter the bags are empty',
+    paragraph: morningMarketClosing, image: morningMarketImages.packingDown,
+  },
+  recommendations: {
+    title: 'More ways to explore', description: 'Spend time with the people and places that shape village life.',
+    backgroundImage: '/images/explore/share-a-day-of-village-life/06-village-lane.jpg',
+  },
+  cta: {
+    title: 'Share a day of village life', buttonLabel: 'Explore the experience',
+    buttonHref: '/explore/activity/share-a-day-of-village-life',
+    image: '/images/explore/share-a-day-of-village-life/01-mountain-village.jpg',
+  },
+};
+
+const morningMarketStory: EditorialStory = {
+  id: morningMarketSlug,
+  slug: morningMarketSlug,
+  title: morningMarketTitle,
+  category: 'Village Notes',
+  date: morningMarketDate,
+  location: morningMarketLocation,
+  excerpt: morningMarketExcerpt,
+  coverImage: morningMarketImages.hero.src,
+  content: [...morningMarketOpening, ...morningMarketStreet, ...morningMarketChoosing, ...morningMarketSellers, ...morningMarketKitchen, morningMarketClosing].join('\n\n'),
+  pageContent: {
+    admin: { origin: 'confirmed' },
+    meta: { category: 'Village Notes', location: morningMarketLocation, publishedDate: morningMarketDate, excerpt: morningMarketExcerpt },
+    opening: { contextLabel: 'Market Morning', placeLabel: 'Place', chapterLabel: 'Chapter', recordedLabel: 'Published', paragraphs: morningMarketOpening },
+    inside: {
+      eyebrow: 'Choosing With a Host', title: 'The list leaves room for the season',
+      context: morningMarketStreet.join(' '), body: morningMarketChoosing.join(' '),
+      images: [morningMarketImages.stallsOpening.src, morningMarketImages.breakfastSteam.src], backgroundColor: '#e9e3d7',
+    },
+    quote: {
+      eyebrow: 'Shopping Is a Way of Listening', quote: morningMarketQuote, body: morningMarketConversation,
+      images: [morningMarketImages.carryingProduce.src, morningMarketImages.stallConversation.src], backgroundColor: '#f8f5ee',
+    },
+    closing: {
+      eyebrow: 'After the Stalls Close', title: 'The market carries on after the bags are empty',
+      paragraphs: [morningMarketClosing], image: morningMarketImages.packingDown.src, backgroundColor: '#e9e3d7',
+    },
+    related: { eyebrow: 'Continue Reading', title: 'More Village Stories', backgroundColor: '#e5ddce' },
+    navigation: { previousLabel: '← Previous Story', nextLabel: 'Next Story →', backgroundColor: '#17352d', textColor: '#ffffff' },
+    page: { backgroundColor: '#f5f1e8', textColor: '#17251f', accentColor: '#9b5e3d' },
+    contentBlocks: [],
+    editorialTemplate: morningMarketEditorial,
+  },
+};
+
+export const publishedEditorialStories: EditorialStory[] = [morningMarketStory, {
   id: 'when-the-persimmons-turn-red',
   slug: 'when-the-persimmons-turn-red',
   title: 'When the Persimmons Turn Red',
